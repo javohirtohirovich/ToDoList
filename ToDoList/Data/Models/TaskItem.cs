@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using ToDoList.Data.Enums;
 
-namespace ToDoList.Data.Entites;
+namespace ToDoList.Data.Models;
 
 [Table("TaskItems")]
 public class TaskItem
@@ -11,7 +11,7 @@ public class TaskItem
     public int TaskId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public DateTime DueDate { get; set; }
+    public DateTime DueDate { get; set; }   
     public int Priority { get; set; }
     public TaskStatusEnum Status { get; set; } = TaskStatusEnum.Pending;
     public int? CategoryId { get; set; }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
-using ToDoList.Data.Entites;
+using ToDoList.Data.Models;
 
 namespace ToDoList
 {
@@ -13,25 +13,7 @@ namespace ToDoList
             InitializeComponent();
             _context = mainContext;
             mainContext.Database.Migrate();
-            SeedDatabaseTest();
             MainPage = new AppShell();
-        }
-
-        private void SeedDatabaseTest()
-        {
-            if (_context.Categories.Any())
-            {
-                return;
-            }
-
-            var category = new Category
-            {
-                Name = "JavohirTest",
-            };
-
-            _context.Categories.Add(category);
-            _context.SaveChanges();
-
         }
     }
 }

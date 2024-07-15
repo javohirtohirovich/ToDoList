@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ToDoList.Data.Entites;
+namespace ToDoList.Data.Models;
 
 [Table("TaskTags")]
 public class TaskTag

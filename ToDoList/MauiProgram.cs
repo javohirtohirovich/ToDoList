@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using Telerik.Maui.Controls.Compatibility;
 using ToDoList.Data;
+using ToDoList.Services;
 using ToDoList.ViewModel;
+using ToDoList.Views;
 
 namespace ToDoList;
 
@@ -11,6 +13,7 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
+            .UseTelerik()
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
             {
@@ -23,6 +26,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<MainViewModel>();
 
         builder.Services.AddTransient<DetailPage>();
+        builder.Services.AddTransient<AddTaskPage>();
+        builder.Services.AddTransient<ITaskItemService, TaskItemService>();
+
         builder.Services.AddTransient<DetailViewModel>();
 
         builder.Services.AddDbContext<MainContext>();

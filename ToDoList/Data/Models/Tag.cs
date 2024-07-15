@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ToDoList.Data.Entites;
+namespace ToDoList.Data.Models;
 
 [Table("Tags")]
 public class Tag
