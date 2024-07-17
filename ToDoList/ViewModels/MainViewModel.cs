@@ -37,7 +37,10 @@ public partial class MainViewModel : ObservableObject
         var taskItem = new TaskItem()
         {
             Title = TaskTitle,
-            Status = TaskStatusEnum.Pending,
+            Status = TaskStatusEnum.InProgress,
+            Priority = TaskPriority.Critical,
+            Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
+            DueDate = DateTime.Now,
         };
 
         await _taskItemService.AddTaskItemAsync(taskItem);

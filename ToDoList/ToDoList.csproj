@@ -20,6 +20,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<WindowsAppSdkDeploymentManagerInitialize>false</WindowsAppSdkDeploymentManagerInitialize>
 
+
 		<!-- Display name -->
 		<ApplicationTitle>ToDoList</ApplicationTitle>
 
@@ -36,6 +37,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<WindowsPackageType>MSIX</WindowsPackageType>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -57,6 +59,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\calendar.png" />
 	  <None Remove="Resources\Images\check_mark.png" />
 	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\plus.png" />
@@ -64,6 +67,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.7" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
@@ -74,7 +78,6 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.70" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-		<PackageReference Include="Telerik.UI.for.Maui.Trial" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -88,6 +91,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\StatisticsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TaskItemPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\TodoItemView.xaml">

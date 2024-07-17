@@ -11,8 +11,8 @@ public class TaskItem
     public int TaskId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public DateTime DueDate { get; set; }   
-    public int Priority { get; set; }
+    public DateTime DueDate { get; set; }
+    public TaskPriority Priority { get; set; } = TaskPriority.Medium;
     public TaskStatusEnum Status { get; set; } = TaskStatusEnum.Pending;
     public int? CategoryId { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;

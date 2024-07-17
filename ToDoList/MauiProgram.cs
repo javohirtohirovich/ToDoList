@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using Telerik.Maui.Controls.Compatibility;
 using ToDoList.Data;
 using ToDoList.Services;
 using ToDoList.ViewModel;
 using ToDoList.Views;
+using CommunityToolkit.Maui;
+
+
 
 namespace ToDoList;
 
@@ -13,8 +15,8 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
-            .UseTelerik()
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -21,6 +21,14 @@ public class MainContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<TaskItem>()
+            .Property(t => t.Status)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<TaskItem>()
+            .Property(t => t.Priority)
+            .HasConversion<string>();
+
         modelBuilder.Entity<TaskTag>()
             .HasKey(tt => new { tt.TaskId, tt.TagId });
 

@@ -1,5 +1,7 @@
-﻿using ToDoList.Data;
+﻿using CommunityToolkit.Maui.Views;
+using ToDoList.Data;
 using ToDoList.ViewModel;
+using ToDoList.Views;
 
 namespace ToDoList;
 
@@ -17,5 +19,11 @@ public partial class MainPage : ContentPage
     protected override async void OnAppearing()
     {
 
+    }
+
+    private void ShowPopupButton_Clicked(object sender, EventArgs e)
+    {
+        var popup = new TaskItemPopup();
+        this.ShowPopup(popup);
     }
 }
