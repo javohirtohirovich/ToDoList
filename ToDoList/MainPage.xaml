@@ -5,6 +5,7 @@
              x:Class="ToDoList.MainPage"
              xmlns:viewmodel="clr-namespace:ToDoList.ViewModel"
              x:DataType="viewmodel:MainViewModel"
+             xmlns:Views="clr-namespace:ToDoList.Views"
              xmlns:type="clr-namespace:ToDoList.Data.Models">
     <Grid Padding="10"
           RowSpacing="0"
@@ -199,12 +200,16 @@
                                             </Grid>
                                         </Frame>
 
-                                        <Border Grid.Column="2"
-                                                Background="Gray">
-                                            <Button Clicked="ShowPopupButton_Clicked">
-                                                
-                                            </Button>
-                                        </Border>
+                                        <ImageButton Source="menu.png" 
+                                                     WidthRequest="25" 
+                                                     HeightRequest="25" 
+                                                     Margin="0,0,10,0" 
+                                                     Grid.Column="2" 
+                                                     
+                                                     Clicked="ShowPopupButton_Clicked"
+                                                     >
+                                        </ImageButton>
+                                        
                                     </Grid>
 
                                     <Grid Grid.Row="1">

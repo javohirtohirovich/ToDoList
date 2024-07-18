@@ -6,5 +6,6 @@ public interface ITaskItemService
 {
     public Task AddTaskItemAsync(TaskItem taskItem);
     public IQueryable<TaskItem> GetAllTasksAsync();
+    public Task<bool> DeleteTaskItemAsync(int taskId);
 
 }

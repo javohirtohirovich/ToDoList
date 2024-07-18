@@ -61,8 +61,13 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\calendar.png" />
 	  <None Remove="Resources\Images\check_mark.png" />
+	  <None Remove="Resources\Images\close.png" />
+	  <None Remove="Resources\Images\edit.png" />
 	  <None Remove="Resources\Images\logo.png" />
+	  <None Remove="Resources\Images\menu.png" />
 	  <None Remove="Resources\Images\plus.png" />
+	  <None Remove="Resources\Images\trash.png" />
+	  <None Remove="Resources\Images\x_buton_popup.png" />
 	  <None Remove="Resources\Images\x_clear.png" />
 	</ItemGroup>
 

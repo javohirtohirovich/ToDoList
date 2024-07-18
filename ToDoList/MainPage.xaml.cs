@@ -26,4 +26,9 @@ public partial class MainPage : ContentPage
         var popup = new TaskItemPopup();
         this.ShowPopup(popup);
     }
+
+    private void ImageButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }

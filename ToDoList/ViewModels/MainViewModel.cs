@@ -48,7 +48,15 @@ public partial class MainViewModel : ObservableObject
         TaskTitle = string.Empty;
     }
 
-
+    [RelayCommand]
+    public async Task DeleteTaskItem(TaskItem taskItem)
+    {
+        if (taskItem is not null)
+        {
+            var result = await _taskItemService.DeleteTaskItemAsync(taskItem.TaskId);
+            if (result) { TaskItems.Remove(taskItem); }
+        }
+    }
     [RelayCommand]
     public async Task Tap(string s)
     {

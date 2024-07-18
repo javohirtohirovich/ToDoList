@@ -2,18 +2,61 @@
 <toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-               x:Class="ToDoList.Views.TaskItemPopup">
+               x:Class="ToDoList.Views.TaskItemPopup"
+               Color="Transparent">
+    <Frame Background="White"
+           WidthRequest="250"
+           HeightRequest="130"
+           HasShadow="True"
+           Padding="0"
+           CornerRadius="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ImageButton Grid.Row="0"
+                         HorizontalOptions="EndAndExpand"
+                         Margin="0,5,10,10"
+                         VerticalOptions="Center"
+                         Source="close.png"
+                         WidthRequest="20"
+                         HeightRequest="20"
+                         Clicked="OnCloseButtonClicked"
+                         Background="Transparent" />
 
-    <StackLayout VerticalOptions="Center"
-                 HorizontalOptions="Center">
-        <Frame BackgroundColor="White"
-               Padding="20"
-               CornerRadius="10">
-            <StackLayout>
-                <Label Text="This is a popup!" />
-                <Button Text="Close"
-                        Clicked="OnCloseButtonClicked" />
-            </StackLayout>
-        </Frame>
-    </StackLayout>
+            <VerticalStackLayout Spacing="20"
+                                 Grid.Row="1"
+                                 VerticalOptions="FillAndExpand"
+                                 Background="Transparent">
+                <HorizontalStackLayout Margin="10,0,0,0">
+                    <HorizontalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer />
+                    </HorizontalStackLayout.GestureRecognizers>
+                    <Image Source="edit.png"
+                           WidthRequest="20"
+                           HeightRequest="20" />
+                    <Label Text="Edit"
+                           VerticalOptions="Center"
+                           Margin="10,0,0,0" />
+
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Margin="10,0,0,0">
+                    <HorizontalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer />
+                    </HorizontalStackLayout.GestureRecognizers>
+                    <Image Source="trash.png"
+                           WidthRequest="20"
+                           HeightRequest="20" />
+                    <Label Text="Remove"
+                           VerticalOptions="Center"
+                           Margin="10,0,0,0" />
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+        </Grid>
+    </Frame>
+
+
 </toolkit:Popup>
