@@ -13,7 +13,7 @@ public partial class MainViewModel : ObservableObject
     IConnectivity connectivity;
     private readonly ITaskItemService _taskItemService;
 
-    public MainViewModel(IConnectivity connectivity,  ITaskItemService taskItemService)
+    public MainViewModel(IConnectivity connectivity, ITaskItemService taskItemService)
     {
         TaskItems = new ObservableCollection<TaskItem>();
         this.connectivity = connectivity;
@@ -27,9 +27,10 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private string taskTitle;
 
+
     [RelayCommand]
     public async Task AddQuickTask()
-    { 
+    {
         if (string.IsNullOrWhiteSpace(TaskTitle))
         {
             return;
@@ -71,7 +72,7 @@ public partial class MainViewModel : ObservableObject
 
     private void LoadTasks()
     {
-        var tasks =  _taskItemService.GetAllTasksAsync().ToList();
+        var tasks = _taskItemService.GetAllTasksAsync().ToList();
         foreach (var task in tasks)
         {
             TaskItems.Add(task);

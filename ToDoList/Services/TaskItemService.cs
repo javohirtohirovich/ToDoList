@@ -1,5 +1,4 @@
-﻿using SQLitePCL;
-using ToDoList.Data;
+﻿using ToDoList.Data;
 using ToDoList.Data.Models;
 
 namespace ToDoList.Services;

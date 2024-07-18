@@ -204,8 +204,7 @@
                                                      WidthRequest="25" 
                                                      HeightRequest="25" 
                                                      Margin="0,0,10,0" 
-                                                     Grid.Column="2" 
-                                                     
+                                                     Grid.Column="2"   
                                                      Clicked="ShowPopupButton_Clicked"
                                                      >
                                         </ImageButton>
