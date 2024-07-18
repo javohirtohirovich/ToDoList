@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 using ToDoList.Data.Enums;
 using ToDoList.Data.Models;
 
@@ -6,13 +8,22 @@ namespace ToDoList.ViewModels.DataViewModels;
 
 public partial class TaskItemViewModel : ObservableObject
 {
-    internal readonly TaskItem _taskItem;
     public TaskItemViewModel(TaskItem taskItem)
     {
-        _taskItem = taskItem;
+        taskId = taskItem.TaskId;
+        title = taskItem.Title;
+        description = taskItem.Description;
+        dueDate = taskItem.DueDate;
+        priority = taskItem.Priority;
+        status = taskItem.Status;
+        categoryId = taskItem.CategoryId;
+        taskTags = taskItem.TaskTags?.ToObservableCollection() ?? new ObservableCollection<TaskTag>();
+        createdAt = taskItem.CreatedAt;
+        updatedAt = taskItem.UpdatedAt;
     }
 
-    public int TaskId => _taskItem.TaskId;
+    [ObservableProperty]
+    private int taskId;
 
     [ObservableProperty]
     private string title;
@@ -32,20 +43,13 @@ public partial class TaskItemViewModel : ObservableObject
     [ObservableProperty]
     private int? categoryId;
 
-    public DateTime CreatedAt => _taskItem.CreatedAt;
-    public DateTime UpdatedAt => _taskItem.UpdatedAt;
+    [ObservableProperty]
+    private DateTime createdAt;
 
-    public Category Category => _taskItem.Category;
-    public List<TaskTag> TaskTags => _taskItem.TaskTags;
+    [ObservableProperty]
+    private DateTime updatedAt;
 
-    public void SaveChanges()
-    {
-        _taskItem.Title = Title;
-        _taskItem.Description = Description;
-        _taskItem.DueDate = DueDate;
-        _taskItem.Priority = Priority;
-        _taskItem.Status = Status;
-        _taskItem.CategoryId = CategoryId;
-    }
+    [ObservableProperty]
+    private ObservableCollection<TaskTag> taskTags;
 
 }

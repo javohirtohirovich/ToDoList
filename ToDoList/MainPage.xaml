@@ -6,7 +6,7 @@
              xmlns:viewmodel="clr-namespace:ToDoList.ViewModel"
              x:DataType="viewmodel:MainViewModel"
              xmlns:Views="clr-namespace:ToDoList.Views"
-             xmlns:type="clr-namespace:ToDoList.Data.Models">
+             xmlns:type="clr-namespace:ToDoList.ViewModels.DataViewModels">
     <Grid Padding="10"
           RowSpacing="0"
           ColumnSpacing="10">
@@ -15,12 +15,13 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
         <CollectionView Grid.Row="0"
                         ItemsSource="{Binding TaskItems}"
                         SelectionMode="None">
 
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="type:TaskItem">
+                <DataTemplate x:DataType="type:TaskItemViewModel">
                     <SwipeView>
                         <Frame Padding="5,0,0,0"
                                Margin="5"
@@ -91,8 +92,9 @@
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".60*" />
+                                            <ColumnDefinition Width=".50*" />
                                             <ColumnDefinition Width=".30*" />
+                                            <ColumnDefinition Width=".10*" />
                                             <ColumnDefinition Width=".10*" />
                                         </Grid.ColumnDefinitions>
 
@@ -106,10 +108,7 @@
                                                FontFamily="Inter-Bold"
                                                MaximumWidthRequest="180" />
 
-                                        <!--<Border Grid.Column="1"
-                                                Background="Yellow">
-                                            <Label Text="{Binding Priority}" />
-                                        </Border>-->
+
                                         <Frame Grid.Column="1"
                                                HorizontalOptions="Start"
                                                HeightRequest="25"
@@ -200,15 +199,20 @@
                                             </Grid>
                                         </Frame>
 
-                                        <ImageButton Source="menu.png" 
-                                                     WidthRequest="25" 
-                                                     HeightRequest="25" 
-                                                     Margin="0,0,10,0" 
-                                                     Grid.Column="2"   
-                                                     Clicked="ShowPopupButton_Clicked"
-                                                     >
+                                        <ImageButton Source="edit.png"
+                                                     WidthRequest="20"
+                                                     HeightRequest="20"
+                                                     Margin="0,0,10,0"
+                                                     Grid.Column="2">
                                         </ImageButton>
-                                        
+                                        <ImageButton Source="trash.png"
+                                                     WidthRequest="20"
+                                                     HeightRequest="20"
+                                                     Margin="0,0,10,0"
+                                                     Grid.Column="3"
+                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTaskItemCommand}"
+                                                     CommandParameter="{Binding}">
+                                        </ImageButton>
                                     </Grid>
 
                                     <Grid Grid.Row="1">
@@ -237,7 +241,7 @@
                                                   Scale="1.5"
                                                   Color="Gray"
                                                   HorizontalOptions="Center"
-                                                  VerticalOptions="Center"/>
+                                                  VerticalOptions="Center" />
                                     </Grid>
 
                                     <Grid Grid.Row="2">
@@ -366,9 +370,17 @@
                                         </Frame>
                                     </Grid>
 
+                                    <CollectionView Grid.Row="3"
+                                                    ItemsSource="{Binding TaskTags}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="type:TaskTagViewModel">
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="{Binding Tag.Name}" />
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
 
-                                    <Label Grid.Row="3"
-                                           Text="{Binding TaskTags}" />
 
                                 </Grid>
 
@@ -376,31 +388,6 @@
                             </Grid>
                         </Frame>
                     </SwipeView>
-
-                    <!--<SwipeView>
-
-                        <Grid Padding="0,5">
-                            <Frame HeightRequest="100">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=TapCommand}"
-                                                          CommandParameter="{Binding .}" />
-                                </Frame.GestureRecognizers>
-
-                                <Label Text="{Binding Title}"
-                                       FontSize="24" />
-                            </Frame>
-                        </Grid>
-
-                        <SwipeView.RightItems>
-                            <SwipeItems>
-                                <SwipeItem Text="Delete"
-                                           BackgroundColor="Red"
-                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteCommand}"
-                                           CommandParameter="{Binding .}" />
-                            </SwipeItems>
-                        </SwipeView.RightItems>
-
-                    </SwipeView>-->
 
                 </DataTemplate>
             </CollectionView.ItemTemplate>

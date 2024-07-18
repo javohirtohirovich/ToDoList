@@ -19,5 +19,5 @@ public class TaskItem
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
     public Category Category { get; set; }
-    public List<TaskTag> TaskTags { get; set; }
+    public ICollection<TaskTag> TaskTags { get; set; } = new List<TaskTag>();
 }

@@ -5,24 +5,25 @@ using ToDoList.Data.Models;
 using ToDoList.Data.Enums;
 using ToDoList.Services;
 using ToDoList.Views;
+using ToDoList.ViewModels.DataViewModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace ToDoList.ViewModel;
 
 public partial class MainViewModel : ObservableObject
 {
-    IConnectivity connectivity;
     private readonly ITaskItemService _taskItemService;
 
-    public MainViewModel(IConnectivity connectivity, ITaskItemService taskItemService)
+    public MainViewModel(ITaskItemService taskItemService)
     {
-        TaskItems = new ObservableCollection<TaskItem>();
-        this.connectivity = connectivity;
+        TaskItems = new ObservableCollection<TaskItemViewModel>();
         this._taskItemService = taskItemService;
         LoadTasks();
     }
 
     [ObservableProperty]
-    ObservableCollection<TaskItem> taskItems;
+    ObservableCollection<TaskItemViewModel> taskItems;
 
     [ObservableProperty]
     private string taskTitle;
@@ -31,31 +32,42 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     public async Task AddQuickTask()
     {
-        if (string.IsNullOrWhiteSpace(TaskTitle))
+        if (!string.IsNullOrWhiteSpace(TaskTitle))
         {
-            return;
-        }
-        var taskItem = new TaskItem()
-        {
-            Title = TaskTitle,
-            Status = TaskStatusEnum.InProgress,
-            Priority = TaskPriority.Critical,
-            Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
-            DueDate = DateTime.Now,
-        };
+            var taskItemViewModel = new TaskItemViewModel(new TaskItem
+            {
+                Title = TaskTitle,
+                Status = TaskStatusEnum.InProgress,
+                Priority = TaskPriority.Critical,
+                Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
+                DueDate = DateTime.Now,
+            });
 
-        await _taskItemService.AddTaskItemAsync(taskItem);
-        TaskItems.Add(taskItem);
-        TaskTitle = string.Empty;
+            await _taskItemService.AddTaskItemAsync(new TaskItem
+            {
+                Title = TaskTitle,
+                Status = TaskStatusEnum.InProgress,
+                Priority = TaskPriority.Critical,
+                Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
+                DueDate = DateTime.Now,
+            });
+
+            TaskItems.Add(taskItemViewModel);
+            TaskTitle = string.Empty;
+        }
     }
 
     [RelayCommand]
-    public async Task DeleteTaskItem(TaskItem taskItem)
+    public async Task DeleteTaskItem(TaskItemViewModel taskItemViewModel)
     {
-        if (taskItem is not null)
+        if (taskItemViewModel is not null)
         {
-            var result = await _taskItemService.DeleteTaskItemAsync(taskItem.TaskId);
-            if (result) { TaskItems.Remove(taskItem); }
+            var answer = await Application.Current.MainPage.DisplayAlert("Warning!", "Are you sure you want to delete this task?", "Yes", "No");
+            if (answer)
+            {
+                var result = await _taskItemService.DeleteTaskItemAsync(taskItemViewModel.TaskId);
+                if (result) { TaskItems.Remove(taskItemViewModel); }
+            }
         }
     }
     [RelayCommand]
@@ -70,12 +82,14 @@ public partial class MainViewModel : ObservableObject
         await Shell.Current.GoToAsync(nameof(AddTaskPage));
     }
 
-    private void LoadTasks()
+    private async Task LoadTasks()
     {
-        var tasks = _taskItemService.GetAllTasksAsync().ToList();
+        var table = _taskItemService.GetAllTasks();
+        var tasks = await table.ToListAsync();
+        TaskItems.Clear();
         foreach (var task in tasks)
         {
-            TaskItems.Add(task);
+            TaskItems.Add(new TaskItemViewModel(task));
         }
     }
 }

@@ -20,12 +20,12 @@ public partial class TaskTagViewModel : ObservableObject
     public TaskItemViewModel Task { get; }
     public TagViewModel Tag { get; }
 
-    public void SaveChanges()
-    {
-        Task.SaveChanges();
-        Tag.SaveChanges();
-        _taskTag.Task = Task._taskItem;
-        _taskTag.Tag = Tag._tag;
-    }
+    //public void SaveChanges()
+    //{
+    //    Task.SaveChanges();
+    //    Tag.SaveChanges();
+    //    _taskTag.Task = Task._taskItem;
+    //    _taskTag.Tag = Tag._tag;
+    //}
 }
     

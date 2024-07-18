@@ -33,7 +33,7 @@ public class TaskItemService : ITaskItemService
         }
     }
 
-    public IQueryable<TaskItem> GetAllTasksAsync()
+    public IQueryable<TaskItem> GetAllTasks()
     {
         return _context.Tasks;
     }
