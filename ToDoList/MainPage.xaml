@@ -145,7 +145,7 @@
                                                     <Setter Property="BorderColor"
                                                             Value="{DynamicResource CriticalPriorityColor}" />
                                                 </DataTrigger>
-                                                
+
                                             </Frame.Triggers>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -234,15 +234,18 @@
                                                MaxLines="5">
                                             <!-- Add MaxLines attribute -->
                                         </Label>
-
                                         <CheckBox Grid.Column="1"
                                                   Margin="10,20,0,0"
-                                                  x:Name="SelectedBox"
-                                                  IsChecked="False"
+                                                  IsChecked="{Binding IsCompleted}"
                                                   Scale="1.5"
                                                   Color="Gray"
                                                   HorizontalOptions="Center"
-                                                  VerticalOptions="Center" />
+                                                  VerticalOptions="Center">
+                                            <CheckBox.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CheckTaskCommand}"
+                                                                      CommandParameter="{Binding .}" />
+                                            </CheckBox.GestureRecognizers>
+                                        </CheckBox>
                                     </Grid>
 
                                     <Grid Grid.Row="2">

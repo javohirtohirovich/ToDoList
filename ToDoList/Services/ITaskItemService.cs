@@ -8,5 +8,6 @@ public interface ITaskItemService
     public IQueryable<TaskItem> GetAllTasks();
     public Task<bool> DeleteTaskItemAsync(int taskId);
     public Task UpdateExpiredTasksAsync();
+    public Task<bool> ChangeTaskToCompletedOrIncompleteAsync(int taskId, bool isCompleted);
 
 }

@@ -42,7 +42,7 @@ public partial class TaskItemViewModel : ObservableObject
     private TaskStatusEnum status;
 
     [ObservableProperty]
-    public bool isCompleted;
+    private bool isCompleted;
 
     [ObservableProperty]
     private int? categoryId;
@@ -56,4 +56,5 @@ public partial class TaskItemViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<TaskTag> taskTags;
 
+   
 }

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using ToDoList.Data.Enums;
 using ToDoList.Data.Models;
 using ToDoList.Services;
@@ -26,7 +27,6 @@ public partial class MainViewModel : ObservableObject
 
     [ObservableProperty]
     private string taskTitle;
-
 
     [RelayCommand]
     public async Task AddQuickTask()
@@ -57,6 +57,16 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
+    public async Task CheckTask(TaskItemViewModel taskItemViewModel)
+    {
+        if(taskItemViewModel is not null)
+        {
+            var result = await _taskItemService.ChangeTaskToCompletedOrIncompleteAsync(taskItemViewModel.TaskId, taskItemViewModel.IsCompleted);
+            if (result) { TaskItems.Remove(taskItemViewModel); }
+        }
+    }
+    
+    [RelayCommand]
     public async Task DeleteTaskItem(TaskItemViewModel taskItemViewModel)
     {
         if (taskItemViewModel is not null)
@@ -68,11 +78,6 @@ public partial class MainViewModel : ObservableObject
                 if (result) { TaskItems.Remove(taskItemViewModel); }
             }
         }
-    }
-    [RelayCommand]
-    public async Task Tap(string s)
-    {
-        await Shell.Current.GoToAsync($"{nameof(DetailPage)}?Text={s}");
     }
 
     [RelayCommand]
