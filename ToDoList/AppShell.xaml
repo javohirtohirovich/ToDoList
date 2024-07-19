@@ -36,10 +36,7 @@
                       ContentTemplate="{DataTemplate views:CategoriesPage}"
                       Route="DetailPage"
                       Icon="dotnet_bot" />
-        <ShellContent Title="Statistics"
-                      ContentTemplate="{DataTemplate views:StatisticsPage}"
-                      Route="StatisticsPage"
-                      Icon="dotnet_bot" />
+       
     </FlyoutItem>
 
 </Shell>

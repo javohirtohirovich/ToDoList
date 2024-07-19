@@ -7,5 +7,6 @@ public interface ITaskItemService
     public Task AddTaskItemAsync(TaskItem taskItem);
     public IQueryable<TaskItem> GetAllTasks();
     public Task<bool> DeleteTaskItemAsync(int taskId);
+    public Task UpdateExpiredTasksAsync();
 
 }

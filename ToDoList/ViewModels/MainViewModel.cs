@@ -1,15 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using ToDoList.Data.Models;
-using ToDoList.Data.Enums;
-using ToDoList.Services;
-using ToDoList.Views;
-using ToDoList.ViewModels.DataViewModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
+using System.Collections.ObjectModel;
+using ToDoList.Data.Enums;
+using ToDoList.Data.Models;
+using ToDoList.Services;
+using ToDoList.ViewModels.DataViewModels;
+using ToDoList.Views;
 
-namespace ToDoList.ViewModel;
+namespace ToDoList.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
@@ -82,8 +81,9 @@ public partial class MainViewModel : ObservableObject
         await Shell.Current.GoToAsync(nameof(AddTaskPage));
     }
 
-    private async Task LoadTasks()
+    public async Task LoadTasks()
     {
+        await _taskItemService.UpdateExpiredTasksAsync();
         var table = _taskItemService.GetAllTasks();
         var tasks = await table.ToListAsync();
         TaskItems.Clear();

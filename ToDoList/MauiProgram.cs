@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using ToDoList.Data;
 using ToDoList.Services;
-using ToDoList.ViewModel;
+using ToDoList.ViewModels;
 using ToDoList.Views;
 using CommunityToolkit.Maui;
 
@@ -30,7 +30,7 @@ public static class MauiProgram
         builder.Services.AddTransient<DetailPage>();
         builder.Services.AddTransient<AddTaskPage>();
         builder.Services.AddTransient<ITaskItemService, TaskItemService>();
-
+        builder.Services.AddTransient<AddTaskViewModel>();
         builder.Services.AddTransient<DetailViewModel>();
 
         builder.Services.AddDbContext<MainContext>();

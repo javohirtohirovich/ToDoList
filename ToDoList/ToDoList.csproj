@@ -61,11 +61,15 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\calendar.png" />
 	  <None Remove="Resources\Images\check_mark.png" />
+	  <None Remove="Resources\Images\clipboard.png" />
 	  <None Remove="Resources\Images\close.png" />
+	  <None Remove="Resources\Images\description.png" />
 	  <None Remove="Resources\Images\edit.png" />
 	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\menu.png" />
+	  <None Remove="Resources\Images\overdue.png" />
 	  <None Remove="Resources\Images\plus.png" />
+	  <None Remove="Resources\Images\priority.png" />
 	  <None Remove="Resources\Images\trash.png" />
 	  <None Remove="Resources\Images\x_buton_popup.png" />
 	  <None Remove="Resources\Images\x_clear.png" />
@@ -89,22 +93,7 @@
 	  <MauiXaml Update="Views\AddTaskPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\CategoriesPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\DetailPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\StatisticsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\TaskDescriptionPopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\TaskItemPopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\TodoItemView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

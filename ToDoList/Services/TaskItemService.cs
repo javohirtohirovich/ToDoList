@@ -1,4 +1,6 @@
-﻿using ToDoList.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ToDoList.Data;
+using ToDoList.Data.Enums;
 using ToDoList.Data.Models;
 
 namespace ToDoList.Services;
@@ -41,5 +43,19 @@ public class TaskItemService : ITaskItemService
     public async Task<int> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateExpiredTasksAsync()
+    {
+        var now = DateTime.UtcNow.AddHours(5);
+        var expiredTasks = await _context.Tasks
+            .Where(task => task.DueDate < now && task.Status != TaskStatusEnum.Overdue)
+            .ToListAsync();
+
+        foreach (var task in expiredTasks)
+        {
+            task.Status = TaskStatusEnum.Overdue;
+        }
+        await _context.SaveChangesAsync();
     }
 }

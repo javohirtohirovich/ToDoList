@@ -6,5 +6,6 @@ public enum TaskStatusEnum
     InProgress = 2,
     Completed = 3,
     OnHold = 4,
-    Cancelled = 5
+    Cancelled = 5,
+    Overdue = 6,
 }
