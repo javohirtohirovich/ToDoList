@@ -1,19 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
-using ToDoList.Data.Models;
 
-namespace ToDoList
+namespace ToDoList;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    public App(MainContext mainContext)
     {
-        private readonly MainContext _context;
-
-        public App(MainContext mainContext)
-        {
-            InitializeComponent();
-            _context = mainContext;
-            mainContext.Database.Migrate();
-            MainPage = new AppShell();
-        }
+        InitializeComponent();
+        mainContext.Database.Migrate();
+        MainPage = new AppShell();
     }
 }

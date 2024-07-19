@@ -16,6 +16,7 @@ public partial class TaskItemViewModel : ObservableObject
         dueDate = taskItem.DueDate;
         priority = taskItem.Priority;
         status = taskItem.Status;
+        isCompleted = taskItem.IsCompleted;
         categoryId = taskItem.CategoryId;
         taskTags = taskItem.TaskTags?.ToObservableCollection() ?? new ObservableCollection<TaskTag>();
         createdAt = taskItem.CreatedAt;
@@ -39,6 +40,9 @@ public partial class TaskItemViewModel : ObservableObject
 
     [ObservableProperty]
     private TaskStatusEnum status;
+
+    [ObservableProperty]
+    public bool isCompleted;
 
     [ObservableProperty]
     private int? categoryId;

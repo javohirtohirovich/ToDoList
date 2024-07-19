@@ -84,7 +84,7 @@ public partial class MainViewModel : ObservableObject
     public async Task LoadTasks()
     {
         await _taskItemService.UpdateExpiredTasksAsync();
-        var table = _taskItemService.GetAllTasks();
+        var table = _taskItemService.GetAllTasks().Where(x => x.IsCompleted == false);
         var tasks = await table.ToListAsync();
         TaskItems.Clear();
         foreach (var task in tasks)

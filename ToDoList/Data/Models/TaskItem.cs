@@ -14,6 +14,7 @@ public class TaskItem
     public DateTime DueDate { get; set; }
     public TaskPriority Priority { get; set; } = TaskPriority.Medium;
     public TaskStatusEnum Status { get; set; } = TaskStatusEnum.Pending;
+    public bool IsCompleted { get; set; } = false;
     public int? CategoryId { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
