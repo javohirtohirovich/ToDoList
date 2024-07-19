@@ -17,26 +17,13 @@
         </VerticalStackLayout>
     </Shell.FlyoutHeader>
 
-    <Shell.FlyoutFooter>
-        <VerticalStackLayout>
-            <Image Source="dotnet_bot.png"
-                   WidthRequest="100" />
-            <Label Text="To Do app"
-                   HorizontalTextAlignment="Center" />
-        </VerticalStackLayout>
-    </Shell.FlyoutFooter>
-
     <FlyoutItem Title="Home"
                 FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Home"
                       ContentTemplate="{DataTemplate local:MainPage}"
                       Route="MainPage"
                       Icon="dotnet_bot" />
-        <ShellContent Title="Details"
-                      ContentTemplate="{DataTemplate views:CategoriesPage}"
-                      Route="DetailPage"
-                      Icon="dotnet_bot" />
-       
+
     </FlyoutItem>
 
 </Shell>

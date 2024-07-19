@@ -70,6 +70,7 @@
 	  <None Remove="Resources\Images\overdue.png" />
 	  <None Remove="Resources\Images\plus.png" />
 	  <None Remove="Resources\Images\priority.png" />
+	  <None Remove="Resources\Images\status.png" />
 	  <None Remove="Resources\Images\trash.png" />
 	  <None Remove="Resources\Images\x_buton_popup.png" />
 	  <None Remove="Resources\Images\x_clear.png" />
@@ -91,9 +92,6 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\AddTaskPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\DetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

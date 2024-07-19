@@ -5,8 +5,6 @@ using ToDoList.ViewModels;
 using ToDoList.Views;
 using CommunityToolkit.Maui;
 
-
-
 namespace ToDoList;
 
 public static class MauiProgram
@@ -27,7 +25,6 @@ public static class MauiProgram
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddSingleton<MainViewModel>();
 
-        builder.Services.AddTransient<DetailPage>();
         builder.Services.AddTransient<AddTaskPage>();
         builder.Services.AddTransient<ITaskItemService, TaskItemService>();
         builder.Services.AddTransient<AddTaskViewModel>();

@@ -12,38 +12,6 @@
             <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <!--<NavigationPage.TitleView>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="165" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Label x:Name="itemTitle"
-                   Grid.Column="0"
-                   TextColor="White"
-                   VerticalTextAlignment="Center"
-                   FontSize="18"
-                   FontFamily="Inter-Regular"
-                   LineBreakMode="TailTruncation" />
-            <ImageButton Grid.Column="1"
-                         HorizontalOptions="Center"
-                         Source="saveitem.png"
-                         HeightRequest="25" />
-            <ImageButton Grid.Column="2"
-                         HorizontalOptions="Center"
-                         Source="attachment.png"
-                         WidthRequest="25"
-                         HeightRequest="35" />
-            <ImageButton Grid.Column="3"
-                         HorizontalOptions="Center"
-                         Source="menu.png"
-                         HeightRequest="35" />
-        </Grid>
-    </NavigationPage.TitleView>-->
-
     <ContentPage.Content>
         <ScrollView VerticalScrollBarVisibility="Always">
             <StackLayout Margin="20"
@@ -137,8 +105,8 @@
                                FontFamily="Inter-SemiBold" />
                         <Image Source="priority.png"
                                Aspect="AspectFit"
-                               HeightRequest="20"
-                               WidthRequest="20" />
+                               HeightRequest="18"
+                               WidthRequest="18" />
                     </HorizontalStackLayout>
 
                     <Frame Style="{DynamicResource ToDoItemFrame}"
@@ -158,7 +126,7 @@
                         <Label FontSize="20"
                                Text="Task Status"
                                FontFamily="Inter-SemiBold" />
-                        <Image Source="priority.png"
+                        <Image Source="status.png"
                                Aspect="AspectFit"
                                HeightRequest="20"
                                WidthRequest="20" />
