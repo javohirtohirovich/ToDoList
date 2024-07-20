@@ -22,7 +22,7 @@
 
 
 		<!-- Display name -->
-		<ApplicationTitle>ToDoList</ApplicationTitle>
+		<ApplicationTitle>todo</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.todolist</ApplicationId>
@@ -42,14 +42,14 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#E1E1E1" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#E1E1E1" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
+		<MauiImage Update="Resources\Images\todo.png" Resize="True" BaseSize="300,185" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -59,18 +59,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\about.png" />
 	  <None Remove="Resources\Images\calendar.png" />
+	  <None Remove="Resources\Images\cancel.png" />
+	  <None Remove="Resources\Images\checking.png" />
 	  <None Remove="Resources\Images\check_mark.png" />
 	  <None Remove="Resources\Images\clipboard.png" />
 	  <None Remove="Resources\Images\close.png" />
+	  <None Remove="Resources\Images\completed.png" />
 	  <None Remove="Resources\Images\description.png" />
 	  <None Remove="Resources\Images\edit.png" />
+	  <None Remove="Resources\Images\home.png" />
 	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\menu.png" />
+	  <None Remove="Resources\Images\on_hold.png" />
 	  <None Remove="Resources\Images\overdue.png" />
+	  <None Remove="Resources\Images\pending.png" />
 	  <None Remove="Resources\Images\plus.png" />
 	  <None Remove="Resources\Images\priority.png" />
+	  <None Remove="Resources\Images\progress.png" />
 	  <None Remove="Resources\Images\status.png" />
+	  <None Remove="Resources\Images\todo.png" />
 	  <None Remove="Resources\Images\trash.png" />
 	  <None Remove="Resources\Images\x_buton_popup.png" />
 	  <None Remove="Resources\Images\x_clear.png" />

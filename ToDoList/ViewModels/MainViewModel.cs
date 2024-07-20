@@ -19,7 +19,12 @@ public partial class MainViewModel : ObservableObject
     {
         TaskItems = new ObservableCollection<TaskItemViewModel>();
         this._taskItemService = taskItemService;
-        LoadTasks();
+        InitializeAsync();
+    }
+
+    private async void InitializeAsync()
+    {
+        await LoadTasks();
     }
 
     [ObservableProperty]
@@ -38,8 +43,6 @@ public partial class MainViewModel : ObservableObject
                 Title = TaskTitle,
                 Status = TaskStatusEnum.InProgress,
                 Priority = TaskPriority.Critical,
-                Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
-                DueDate = DateTime.Now,
             });
 
             await _taskItemService.AddTaskItemAsync(new TaskItem
@@ -47,8 +50,6 @@ public partial class MainViewModel : ObservableObject
                 Title = TaskTitle,
                 Status = TaskStatusEnum.InProgress,
                 Priority = TaskPriority.Critical,
-                Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
-                DueDate = DateTime.Now,
             });
 
             TaskItems.Add(taskItemViewModel);
@@ -59,13 +60,13 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     public async Task CheckTask(TaskItemViewModel taskItemViewModel)
     {
-        if(taskItemViewModel is not null)
+        if (taskItemViewModel is not null)
         {
             var result = await _taskItemService.ChangeTaskToCompletedOrIncompleteAsync(taskItemViewModel.TaskId, taskItemViewModel.IsCompleted);
             if (result) { TaskItems.Remove(taskItemViewModel); }
         }
     }
-    
+
     [RelayCommand]
     public async Task DeleteTaskItem(TaskItemViewModel taskItemViewModel)
     {

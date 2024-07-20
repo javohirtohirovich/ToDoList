@@ -33,8 +33,7 @@ public partial class AddTaskViewModel : ObservableObject
             var dueDateTime = CombineDateAndTime(DueDateTask, DueTimeTask);
             if (dueDateTime < DateTime.Now)
             {
-                // Ogohlantirish ko'rsatish
-                await Application.Current.MainPage.DisplayAlert("Xato", "Belgilangan vaqt o'tib ketgan.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "Belgilangan vaqt o'tib ketgan.", "OK");
                 return;
             }
             await _taskItemService.AddTaskItemAsync(new TaskItem

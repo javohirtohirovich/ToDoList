@@ -10,20 +10,53 @@
 
     <Shell.FlyoutHeader>
         <VerticalStackLayout>
-            <Image Source="dotnet_bot.png"
-                   WidthRequest="100" />
-            <Label Text="To Do app"
-                   HorizontalTextAlignment="Center" />
+            <Image Source="todo.png"
+                   WidthRequest="70" />
         </VerticalStackLayout>
     </Shell.FlyoutHeader>
+    
 
     <FlyoutItem Title="Home"
                 FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Home"
                       ContentTemplate="{DataTemplate local:MainPage}"
                       Route="MainPage"
-                      Icon="dotnet_bot" />
+                      Icon="home"
+                      />
+        
+       
+    </FlyoutItem>
+    <FlyoutItem Title="Completed tasks"
+                FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Completed tasks"
+                      ContentTemplate="{DataTemplate local:MainPage}"
+                      Icon="checking" />
+
+
+    </FlyoutItem>
+    
+    <FlyoutItem Title="About"
+                FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="About"
+                      ContentTemplate="{DataTemplate local:MainPage}"
+                      Icon="about" />
+
 
     </FlyoutItem>
 
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Background="#CACACA">
+            <Label Text="ToDoList App" HorizontalOptions="Start"
+                   FontSize="15"
+                   FontFamily="Bold"
+                   Margin="30,0,0,0"
+                   TextColor="#535353"/>
+            <Label Text="Version: 1.0"
+                   HorizontalOptions="StartAndExpand"
+                   Margin="34,0,0,10"
+                   FontSize="12"
+                   FontFamily="Bold"
+                   TextColor="#535353" />
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
 </Shell>

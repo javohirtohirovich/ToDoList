@@ -28,7 +28,6 @@ public static class MauiProgram
         builder.Services.AddTransient<AddTaskPage>();
         builder.Services.AddTransient<ITaskItemService, TaskItemService>();
         builder.Services.AddTransient<AddTaskViewModel>();
-        builder.Services.AddTransient<DetailViewModel>();
 
         builder.Services.AddDbContext<MainContext>();
 

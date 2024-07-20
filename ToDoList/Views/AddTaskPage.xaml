@@ -41,8 +41,8 @@
                                        Placeholder="Task Name"
                                        FontFamily="Inter-Regular"
                                        PlaceholderColor="Gray"
-                                       ReturnType="Next" 
-                                       Text="{Binding TaskItemViewModel.Title }"/>
+                                       ReturnType="Next"
+                                       Text="{Binding TaskItemViewModel.Title }" />
                             </StackLayout>
                         </Frame>
                     </StackLayout>
@@ -70,8 +70,8 @@
                                 HeightRequest="100"
                                 HorizontalTextAlignment="Start"
                                 VerticalTextAlignment="Start"
-                                PlaceholderColor="Grey" 
-                                Text="{Binding TaskItemViewModel.Description }"/>
+                                PlaceholderColor="Grey"
+                                Text="{Binding TaskItemViewModel.Description }" />
                     </Frame>
                 </StackLayout>
                 <StackLayout>
@@ -91,9 +91,11 @@
                         <HorizontalStackLayout Spacing="10">
                             <DatePicker x:Name="datePicker"
                                         MinimumDate="{Binding DueDateTask}"
-                                        Format="D" Date="{Binding DueDateTask}"></DatePicker>
+                                        Format="D"
+                                        Date="{Binding DueDateTask}"></DatePicker>
                             <TimePicker x:Name="timePicker"
-                                        Format="t" Time="{Binding DueTimeTask}"></TimePicker>
+                                        Format="t"
+                                        Time="{Binding DueTimeTask}"></TimePicker>
                         </HorizontalStackLayout>
                     </Frame>
 
@@ -154,8 +156,8 @@
                     </Button>
                 </StackLayout>
 
-               
-                
+
+
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
