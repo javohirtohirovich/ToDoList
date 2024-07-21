@@ -91,10 +91,10 @@
                         <HorizontalStackLayout Spacing="10">
                             <DatePicker x:Name="datePicker"
                                         MinimumDate="{Binding TodayDate}"
-                                        Date="{Binding DueDateTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}"/>
+                                        Date="{Binding DueDateTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}" />
                             <TimePicker x:Name="timePicker"
-                                        Time="{Binding DueTimeTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}"/>
-                            
+                                        Time="{Binding DueTimeTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}" />
+
                         </HorizontalStackLayout>
                     </Frame>
 
@@ -143,14 +143,20 @@
                                 SelectedItem="{Binding TaskItemViewModel.Status, Mode=TwoWay}">
                         </Picker>
                     </Frame>
-                    <Button WidthRequest="200"
+                    <Button WidthRequest="150"
                             HeightRequest="50"
                             Margin="0,7,0,0"
                             x:Name="AddTaskItemButton"
                             Text="Add"
                             FontSize="23"
-                            Background="#919191"
+                            BorderColor="#808080"
+                            BorderWidth="1"
+                            TextColor="#808080"
+                            BackgroundColor="White"
                             Command="{Binding AddTaskItemCommand}">
+                        <Button.ImageSource>
+                            <FileImageSource File="add.png" />
+                        </Button.ImageSource>
 
                     </Button>
                 </StackLayout>
