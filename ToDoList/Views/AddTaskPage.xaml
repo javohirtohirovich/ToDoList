@@ -90,12 +90,11 @@
                            CornerRadius="10">
                         <HorizontalStackLayout Spacing="10">
                             <DatePicker x:Name="datePicker"
-                                        MinimumDate="{Binding DueDateTask}"
-                                        Format="D"
-                                        Date="{Binding DueDateTask}"></DatePicker>
+                                        MinimumDate="{Binding TodayDate}"
+                                        Date="{Binding DueDateTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}"/>
                             <TimePicker x:Name="timePicker"
-                                        Format="t"
-                                        Time="{Binding DueTimeTask}"></TimePicker>
+                                        Time="{Binding DueTimeTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}"/>
+                            
                         </HorizontalStackLayout>
                     </Frame>
 

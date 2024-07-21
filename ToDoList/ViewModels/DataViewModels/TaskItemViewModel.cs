@@ -33,7 +33,7 @@ public partial class TaskItemViewModel : ObservableObject
     private string description;
 
     [ObservableProperty]
-    private DateTime dueDate;
+    private DateTime? dueDate;
 
     [ObservableProperty]
     private TaskPriority priority;

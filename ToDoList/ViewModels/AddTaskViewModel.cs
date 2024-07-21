@@ -3,55 +3,68 @@ using CommunityToolkit.Mvvm.Input;
 using ToDoList.Data.Models;
 using ToDoList.Services;
 using ToDoList.ViewModels.DataViewModels;
+using System;
 
-namespace ToDoList.ViewModels;
-
-public partial class AddTaskViewModel : ObservableObject
+namespace ToDoList.ViewModels
 {
-    private readonly ITaskItemService _taskItemService;
-
-    public AddTaskViewModel(ITaskItemService taskItemService)
+    public partial class AddTaskViewModel : ObservableObject
     {
-        TaskItemViewModel = new TaskItemViewModel(new TaskItem());
-        this._taskItemService = taskItemService;
-        DueDateTask = DateTime.Now.Date;
-        DueTimeTask = DateTime.Now.TimeOfDay;
-    }
+        private readonly ITaskItemService _taskItemService;
 
-    [ObservableProperty]
-    private TaskItemViewModel taskItemViewModel;
-    [ObservableProperty]
-    private DateTime dueDateTask;
-    [ObservableProperty]
-    private TimeSpan dueTimeTask;
-
-    [RelayCommand]
-    public async Task AddTaskItem()
-    {
-        if (TaskItemViewModel is not null)
+        public AddTaskViewModel(ITaskItemService taskItemService)
         {
-            var dueDateTime = CombineDateAndTime(DueDateTask, DueTimeTask);
-            if (dueDateTime < DateTime.Now)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Belgilangan vaqt o'tib ketgan.", "OK");
-                return;
-            }
-            await _taskItemService.AddTaskItemAsync(new TaskItem
-            {
-                Title = TaskItemViewModel.Title,
-                Description = TaskItemViewModel.Description,
-                Priority = TaskItemViewModel.Priority,
-                Status = TaskItemViewModel.Status,
-                DueDate = dueDateTime,
-            });
-
-            await Shell.Current.GoToAsync("//MainPage");
-
+            TaskItemViewModel = new TaskItemViewModel(new TaskItem());
+            TodayDate = DateTime.Now.Date;
+            DueDateTask = null;
+            DueTimeTask = null;
+            _taskItemService = taskItemService;
         }
-    }
 
-    private DateTime CombineDateAndTime(DateTime date, TimeSpan time)
-    {
-        return date.Date.Add(time);
+        [ObservableProperty]
+        private TaskItemViewModel taskItemViewModel;
+
+        [ObservableProperty]
+        private DateTime? dueDateTask;
+
+        [ObservableProperty]
+        private TimeSpan? dueTimeTask;
+
+        [ObservableProperty]
+        private DateTime todayDate;
+
+        [RelayCommand]
+        public async Task AddTaskItem()
+        {
+            if (TaskItemViewModel != null)
+            {
+                DateTime? dueDateTime = null;
+                if (DueDateTask.HasValue && DueTimeTask.HasValue)
+                {
+                    dueDateTime = CombineDateAndTime(DueDateTask.Value, DueTimeTask.Value);
+                    if (dueDateTime < DateTime.Now)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", "The specified time has passed!", "OK");
+                        return;
+                    }
+                }
+
+                var taskItem = new TaskItem
+                {
+                    Title = TaskItemViewModel.Title,
+                    Description = TaskItemViewModel.Description,
+                    Priority = TaskItemViewModel.Priority,
+                    Status = TaskItemViewModel.Status,
+                    DueDate = dueDateTime,
+                };
+                await _taskItemService.AddTaskItemAsync(taskItem);
+
+                await Shell.Current.GoToAsync("//MainPage");
+            }
+        }
+
+        private DateTime CombineDateAndTime(DateTime date, TimeSpan time)
+        {
+            return date.Date.Add(time);
+        }
     }
 }
