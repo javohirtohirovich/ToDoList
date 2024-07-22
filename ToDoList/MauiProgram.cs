@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 using ToDoList.Data;
 using ToDoList.Services;
 using ToDoList.ViewModels;
 using ToDoList.Views;
-using CommunityToolkit.Maui;
 
 namespace ToDoList;
 

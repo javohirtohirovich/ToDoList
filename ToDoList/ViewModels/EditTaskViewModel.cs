@@ -99,7 +99,7 @@ public partial class EditTaskViewModel : ObservableObject, IQueryAttributable
         TaskItemViewModel.Status = taskItem.Status;
         TaskItemViewModel.Priority = taskItem.Priority;
 
-        if(taskItem.DueDate  is not null)
+        if (taskItem.DueDate is not null)
         {
             DueTimeTask = taskItem.DueDate?.TimeOfDay;
             DueDateTask = DateTime.Parse(taskItem.DueDate?.Date.ToString("MM/dd/yyyy"));

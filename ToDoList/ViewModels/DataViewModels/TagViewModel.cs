@@ -12,7 +12,7 @@ public partial class TagViewModel : ObservableObject
         _tag = tag;
     }
     public int TagId => _tag.TagId;
-    
+
     [ObservableProperty]
     private string name;
 
