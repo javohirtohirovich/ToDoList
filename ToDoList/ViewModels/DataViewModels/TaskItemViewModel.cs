@@ -56,5 +56,5 @@ public partial class TaskItemViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<TaskTag> taskTags;
 
-
+   
 }

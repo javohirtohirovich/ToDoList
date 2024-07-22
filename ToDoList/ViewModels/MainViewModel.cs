@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using ToDoList.Data.Enums;
 using ToDoList.Data.Models;
 using ToDoList.Services;
 using ToDoList.ViewModels.DataViewModels;
@@ -88,9 +89,20 @@ public partial class MainViewModel : ObservableObject
 
     public async Task LoadTasks()
     {
-        var tasks = await _taskItemService.GetAllTasks().Where(x => !x.IsCompleted).ToListAsync();
+        var tasks = await _taskItemService.GetAllTasks()
+                                          .Where(x => !x.IsCompleted)
+                                          .ToListAsync();
+        var statusOrder = new List<TaskStatusEnum>
+        {
+            TaskStatusEnum.Overdue,
+            TaskStatusEnum.InProgress,
+            TaskStatusEnum.Pending,
+            TaskStatusEnum.OnHold,
+        };
+        var sortedTasks = tasks.OrderBy(t => statusOrder.IndexOf(t.Status)).ToList();
+
         TaskItems.Clear();
-        foreach (var task in tasks)
+        foreach (var task in sortedTasks)
         {
             TaskItems.Add(new TaskItemViewModel(task));
         }

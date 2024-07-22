@@ -25,7 +25,7 @@ public class TaskItemService : ITaskItemService
         var taskItem = await _context.Tasks.FindAsync(taskId);
         if (taskItem is not null)
         {
-            taskItem.IsCompleted = isCompleted;
+            taskItem.IsCompleted = !isCompleted;
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }
@@ -64,13 +64,12 @@ public class TaskItemService : ITaskItemService
 
     public IQueryable<TaskItem> GetAllTasks()
     {
-        return _context.Tasks;
+        return _context.Tasks.AsNoTracking();
     }
 
     public async Task<TaskItem> GetTaskItemAsync(int taskId)
     {
-        var taskItem = await _context.Tasks.FindAsync(taskId);
-        return taskItem;
+        return await _context.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.TaskId == taskId);
     }
 
     public async Task<int> SaveChangesAsync()
@@ -81,17 +80,26 @@ public class TaskItemService : ITaskItemService
     public async Task UpdateExpiredTasksAsync()
     {
         var now = DateTime.UtcNow.AddHours(5);
+
         var expiredTasks = await _context.Tasks
             .Where(task => task.DueDate < now && task.Status != TaskStatusEnum.Overdue)
             .ToListAsync();
 
-        if (expiredTasks.Any())
+        var notExpiredTasks = await _context.Tasks
+            .Where(task => task.DueDate > now && task.Status == TaskStatusEnum.Overdue)
+            .ToListAsync();
+
+        if (expiredTasks.Any() || notExpiredTasks.Any())
         {
             foreach (var task in expiredTasks)
             {
                 task.Status = TaskStatusEnum.Overdue;
             }
-            await _context.SaveChangesAsync();
+            foreach (var task in notExpiredTasks)
+            {
+                task.Status = TaskStatusEnum.Pending;
+            }
+            await SaveChangesAsync();
         }
     }
 }
