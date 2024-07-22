@@ -66,6 +66,7 @@
 	  <None Remove="Resources\Images\checking.png" />
 	  <None Remove="Resources\Images\check_mark.png" />
 	  <None Remove="Resources\Images\clipboard.png" />
+	  <None Remove="Resources\Images\clipboard_edit.png" />
 	  <None Remove="Resources\Images\close.png" />
 	  <None Remove="Resources\Images\completed.png" />
 	  <None Remove="Resources\Images\description.png" />
@@ -102,6 +103,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\AddTaskPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\EditTaskPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

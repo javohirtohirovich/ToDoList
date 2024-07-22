@@ -11,8 +11,9 @@ public class TaskItemService : ITaskItemService
 
     public TaskItemService(MainContext mainContext)
     {
-        _context = mainContext;
+        _context = mainContext ?? throw new ArgumentNullException(nameof(mainContext));
     }
+
     public async Task AddTaskItemAsync(TaskItem taskItem)
     {
         await _context.AddAsync(taskItem);
@@ -22,14 +23,13 @@ public class TaskItemService : ITaskItemService
     public async Task<bool> ChangeTaskToCompletedOrIncompleteAsync(int taskId, bool isCompleted)
     {
         var taskItem = await _context.Tasks.FindAsync(taskId);
-        if(taskItem is not null)
+        if (taskItem is not null)
         {
-            taskItem.IsCompleted = !isCompleted;
+            taskItem.IsCompleted = isCompleted;
             var result = await _context.SaveChangesAsync();
-            if (result > 0) { return true; }
-            else { return false; }
+            return result > 0;
         }
-        else { return false; }
+        return false;
     }
 
     public async Task<bool> DeleteTaskItemAsync(int taskId)
@@ -39,18 +39,38 @@ public class TaskItemService : ITaskItemService
         {
             _context.Tasks.Remove(taskItem);
             var result = await _context.SaveChangesAsync();
-            if (result > 0) { return true; }
-            else { return false; }
+            return result > 0;
         }
-        else
+        return false;
+    }
+
+    public async Task<bool> EditTaskItemAsync(int taskId, TaskItem taskItem)
+    {
+        var taskItemDatabase = await _context.Tasks.FindAsync(taskId);
+        if (taskItemDatabase is not null)
         {
-            return false;
+            taskItemDatabase.Title = taskItem.Title;
+            taskItemDatabase.Description = taskItem.Description;
+            taskItemDatabase.DueDate = taskItem.DueDate;
+            taskItemDatabase.Status = taskItem.Status;
+            taskItemDatabase.Priority = taskItem.Priority;
+            taskItemDatabase.IsCompleted = taskItem.IsCompleted;
+
+            var result = await _context.SaveChangesAsync();
+            return result > 0;
         }
+        return false;
     }
 
     public IQueryable<TaskItem> GetAllTasks()
     {
         return _context.Tasks;
+    }
+
+    public async Task<TaskItem> GetTaskItemAsync(int taskId)
+    {
+        var taskItem = await _context.Tasks.FindAsync(taskId);
+        return taskItem;
     }
 
     public async Task<int> SaveChangesAsync()
@@ -65,10 +85,13 @@ public class TaskItemService : ITaskItemService
             .Where(task => task.DueDate < now && task.Status != TaskStatusEnum.Overdue)
             .ToListAsync();
 
-        foreach (var task in expiredTasks)
+        if (expiredTasks.Any())
         {
-            task.Status = TaskStatusEnum.Overdue;
+            foreach (var task in expiredTasks)
+            {
+                task.Status = TaskStatusEnum.Overdue;
+            }
+            await _context.SaveChangesAsync();
         }
-        await _context.SaveChangesAsync();
     }
 }

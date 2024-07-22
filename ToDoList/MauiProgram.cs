@@ -23,11 +23,14 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
         builder.Services.AddTransient<MainPage>();
-        builder.Services.AddSingleton<MainViewModel>();
-
         builder.Services.AddTransient<AddTaskPage>();
-        builder.Services.AddTransient<ITaskItemService, TaskItemService>();
+        builder.Services.AddTransient<EditTaskPage>();
+
+        builder.Services.AddScoped<MainViewModel>();
         builder.Services.AddTransient<AddTaskViewModel>();
+        builder.Services.AddTransient<EditTaskViewModel>();
+
+        builder.Services.AddTransient<ITaskItemService, TaskItemService>();
 
         builder.Services.AddDbContext<MainContext>();
 

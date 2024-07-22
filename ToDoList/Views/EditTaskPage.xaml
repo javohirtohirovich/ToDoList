@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ToDoList.Views.AddTaskPage"
-             x:DataType="vm:AddTaskViewModel"
+             x:Class="ToDoList.Views.EditTaskPage"
+             x:DataType="vm:EditTaskViewModel"
              xmlns:converters="clr-namespace:ToDoList.Converters"
              xmlns:vm="clr-namespace:ToDoList.ViewModels"
              xmlns:enums="clr-namespace:ToDoList.Data.Enums"
-             Title="AddTaskPage"
+             Title="EditTaskPage"
              Background="#F0F0F0">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -94,7 +94,6 @@
                            BorderColor="#808080">
                         <HorizontalStackLayout Spacing="10">
                             <DatePicker x:Name="datePicker"
-                                        MinimumDate="{Binding TodayDate}"
                                         Date="{Binding DueDateTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}" />
                             <TimePicker x:Name="timePicker"
                                         Time="{Binding DueTimeTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}" />
@@ -154,23 +153,20 @@
                     <Button WidthRequest="150"
                             HeightRequest="50"
                             Margin="0,7,0,0"
-                            x:Name="AddTaskItemButton"
-                            Text="Add"
+                            x:Name="EditTaskItemButton"
+                            Text="Edit"
                             FontSize="23"
                             BorderColor="#808080"
                             BorderWidth="1"
                             TextColor="#808080"
                             BackgroundColor="White"
-                            Command="{Binding AddTaskItemCommand}">
+                            Command="{Binding EditTaskItemCommand}">
                         <Button.ImageSource>
-                            <FileImageSource File="add.png" />
+                            <FileImageSource File="clipboard_edit.png" />
                         </Button.ImageSource>
 
                     </Button>
                 </StackLayout>
-
-
-
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -17,7 +17,7 @@ namespace ToDoList.ViewModels
             TodayDate = DateTime.Now.Date;
             DueDateTask = null;
             DueTimeTask = null;
-            _taskItemService = taskItemService;
+            this._taskItemService = taskItemService;
         }
 
         [ObservableProperty]

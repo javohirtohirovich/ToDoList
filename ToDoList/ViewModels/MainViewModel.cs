@@ -80,14 +80,20 @@ public partial class MainViewModel : ObservableObject
         await Shell.Current.GoToAsync(nameof(AddTaskPage));
     }
 
+    [RelayCommand]
+    public async Task GoEditTaskPage(TaskItemViewModel taskItemViewModel)
+    {
+        await Shell.Current.GoToAsync($"{nameof(EditTaskPage)}?TaskItemId={taskItemViewModel.TaskId}");
+    }
+
     public async Task LoadTasks()
     {
-        var table = _taskItemService.GetAllTasks().Where(x => x.IsCompleted == false);
-        var tasks = await table.ToListAsync();
+        var tasks = await _taskItemService.GetAllTasks().Where(x => !x.IsCompleted).ToListAsync();
         TaskItems.Clear();
         foreach (var task in tasks)
         {
             TaskItems.Add(new TaskItemViewModel(task));
         }
     }
+
 }
