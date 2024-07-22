@@ -35,7 +35,7 @@ namespace ToDoList.ViewModels
         [RelayCommand]
         public async Task AddTaskItem()
         {
-            if (TaskItemViewModel != null)
+            if (TaskItemViewModel is not null && !String.IsNullOrWhiteSpace(TaskItemViewModel.Title))
             {
                 DateTime? dueDateTime = null;
                 if (DueDateTask.HasValue && DueTimeTask.HasValue)
@@ -59,6 +59,10 @@ namespace ToDoList.ViewModels
                 await _taskItemService.AddTaskItemAsync(taskItem);
 
                 await Shell.Current.GoToAsync("//MainPage");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Warning", "A task name is required", "OK");
             }
         }
 

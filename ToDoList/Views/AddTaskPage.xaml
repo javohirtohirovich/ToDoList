@@ -6,7 +6,8 @@
              x:DataType="vm:AddTaskViewModel"
              xmlns:vm="clr-namespace:ToDoList.ViewModels"
              xmlns:enums="clr-namespace:ToDoList.Data.Enums"
-             Title="AddTaskPage">
+             Title="AddTaskPage"
+             Background="#F0F0F0">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
@@ -34,7 +35,8 @@
                                Padding="7"
                                Margin="0,10,0,0"
                                HorizontalOptions="FillAndExpand"
-                               CornerRadius="10">
+                               CornerRadius="10"
+                               BorderColor="#808080">
                             <StackLayout>
                                 <Entry x:Name="NameField"
                                        Margin="0,0,0,0"
@@ -63,7 +65,8 @@
                            Padding="5"
                            Margin="0,10,0,0"
                            HorizontalOptions="FillAndExpand"
-                           CornerRadius="10">
+                           CornerRadius="10"
+                           BorderColor="#808080">
                         <Editor x:Name="DescField"
                                 FontFamily="Inter-Regular"
                                 Placeholder="Task Description"
@@ -87,7 +90,8 @@
                     <Frame Style="{DynamicResource ToDoItemFrame}"
                            Padding="10"
                            Margin="0,10,0,0"
-                           CornerRadius="10">
+                           CornerRadius="10"
+                           BorderColor="#808080">
                         <HorizontalStackLayout Spacing="10">
                             <DatePicker x:Name="datePicker"
                                         MinimumDate="{Binding TodayDate}"
@@ -113,9 +117,11 @@
                     <Frame Style="{DynamicResource ToDoItemFrame}"
                            Padding="10"
                            Margin="0,10,0,0"
-                           CornerRadius="10">
+                           CornerRadius="10"
+                           BorderColor="#808080">
                         <Picker x:Name="PriorityPicker"
                                 FontSize="Body"
+                                TextColor="Grey"
                                 ItemsSource="{Binding Source={enums:TaskPriority}, Converter={StaticResource EnumToCollectionConverter}, ConverterParameter={x:Type enums:TaskPriority}}"
                                 SelectedItem="{Binding TaskItemViewModel.Priority, Mode=TwoWay}">
                         </Picker>
@@ -136,9 +142,11 @@
                     <Frame Style="{DynamicResource ToDoItemFrame}"
                            Padding="10"
                            Margin="0,10,0,0"
-                           CornerRadius="10">
+                           CornerRadius="10"
+                           BorderColor="#808080">
                         <Picker x:Name="StatusPicker"
                                 FontSize="Body"
+                                TextColor="Grey"
                                 ItemsSource="{Binding Source={ enums:TaskStatusEnum}, Converter={StaticResource EnumToCollectionConverter}, ConverterParameter={x:Type enums:TaskStatusEnum}}"
                                 SelectedItem="{Binding TaskItemViewModel.Status, Mode=TwoWay}">
                         </Picker>

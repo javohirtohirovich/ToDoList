@@ -4,7 +4,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <!--begin:: New Color-->
-    <Color x:Key="ButtonTextColor">#919191</Color>
+    <Color x:Key="ButtonTextColor">#808080</Color>
 
     <!--begin:: Priority Color-->
     <Color x:Key="LowPriorityColor">LightGreen</Color>

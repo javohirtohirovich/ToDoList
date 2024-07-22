@@ -2,8 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using ToDoList.Data.Enums;
 using ToDoList.Data.Models;
 using ToDoList.Services;
 using ToDoList.ViewModels.DataViewModels;
@@ -24,6 +22,7 @@ public partial class MainViewModel : ObservableObject
 
     private async void InitializeAsync()
     {
+        await _taskItemService.UpdateExpiredTasksAsync();
         await LoadTasks();
     }
 
@@ -38,21 +37,15 @@ public partial class MainViewModel : ObservableObject
     {
         if (!string.IsNullOrWhiteSpace(TaskTitle))
         {
-            var taskItemViewModel = new TaskItemViewModel(new TaskItem
+            var taskItem = new TaskItem
             {
-                Title = TaskTitle,
-                Status = TaskStatusEnum.InProgress,
-                Priority = TaskPriority.Critical,
-            });
+                Title = TaskTitle
+            };
+            var taskItemViewModel = new TaskItemViewModel(taskItem);
 
-            await _taskItemService.AddTaskItemAsync(new TaskItem
-            {
-                Title = TaskTitle,
-                Status = TaskStatusEnum.InProgress,
-                Priority = TaskPriority.Critical,
-            });
-
+            await _taskItemService.AddTaskItemAsync(taskItem);
             TaskItems.Add(taskItemViewModel);
+
             TaskTitle = string.Empty;
         }
     }
@@ -89,7 +82,6 @@ public partial class MainViewModel : ObservableObject
 
     public async Task LoadTasks()
     {
-        await _taskItemService.UpdateExpiredTasksAsync();
         var table = _taskItemService.GetAllTasks().Where(x => x.IsCompleted == false);
         var tasks = await table.ToListAsync();
         TaskItems.Clear();

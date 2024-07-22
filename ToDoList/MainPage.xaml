@@ -6,7 +6,13 @@
              xmlns:viewmodel="clr-namespace:ToDoList.ViewModels"
              x:DataType="viewmodel:MainViewModel"
              xmlns:Views="clr-namespace:ToDoList.Views"
-             xmlns:type="clr-namespace:ToDoList.ViewModels.DataViewModels">
+             xmlns:type="clr-namespace:ToDoList.ViewModels.DataViewModels"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             Shell.BackgroundColor="#EFEFEF"
+             Background="#FEFEFE">
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#808080" />
+    </Page.Behaviors>
     <Grid Padding="10"
           RowSpacing="0"
           ColumnSpacing="10">
@@ -28,7 +34,7 @@
                                HeightRequest="170"
                                CornerRadius="20"
                                BorderColor="Transparent"
-                               BackgroundColor="#F0F0F0">
+                               BackgroundColor="#EEEEEE">
                             <Grid>
 
                                 <Grid.ColumnDefinitions>
@@ -285,8 +291,7 @@
                                                Margin="0,0,0,0"
                                                Padding="3"
                                                BorderColor="Gray"
-                                               BackgroundColor="Transparent"
-                                               >
+                                               BackgroundColor="Transparent">
                                             <Frame.Triggers>
 
                                                 <DataTrigger TargetType="Frame"
@@ -416,13 +421,13 @@
                      VerticalOptions="End"
                      HorizontalOptions="End"
                      Margin="0,0,0,20"
-                     BackgroundColor="AliceBlue"
                      CornerRadius="50"
                      Source="plus.png"
                      Command="{Binding GoAddTaskPageCommand}" />
 
         <Frame Grid.Row="1"
-               Background="AliceBlue">
+               Background="#EEEEEE"
+               BorderColor="#808080">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".90*" />
@@ -441,6 +446,8 @@
                              HeightRequest="25"
                              Grid.Column="1"
                              IsVisible="True"
+                             VerticalOptions="End"
+                             Margin="0,0,0,5"
                              Command="{Binding AddQuickTaskCommand}" />
             </Grid>
         </Frame>

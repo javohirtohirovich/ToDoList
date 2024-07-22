@@ -6,7 +6,8 @@
        xmlns:views="clr-namespace:ToDoList.Views"
        Shell.FlyoutBehavior="Flyout"
        Title="ToDoList"
-       Shell.TabBarIsVisible="False">
+       Shell.TabBarIsVisible="False"
+       >
 
     <Shell.FlyoutHeader>
         <VerticalStackLayout>
