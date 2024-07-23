@@ -23,9 +23,13 @@ public class TaskItemService : ITaskItemService
     public async Task<bool> ChangeTaskStatus(int taskId, TaskStatusEnum status)
     {
         var taskItem = await _context.Tasks.FindAsync(taskId);
-        if(taskItem is not null)
+        if (taskItem is not null)
         {
             taskItem.Status = status;
+            if (status == TaskStatusEnum.Completed)
+            {
+                taskItem.IsCompleted = true;
+            }
             return await _context.SaveChangesAsync() > 0;
         }
         return false;
@@ -37,6 +41,7 @@ public class TaskItemService : ITaskItemService
         if (taskItem is not null)
         {
             taskItem.IsCompleted = !isCompleted;
+            taskItem.Status = TaskStatusEnum.Completed;
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }
@@ -66,7 +71,7 @@ public class TaskItemService : ITaskItemService
             taskItemDatabase.Status = taskItem.Status;
             taskItemDatabase.Priority = taskItem.Priority;
             taskItemDatabase.IsCompleted = taskItem.IsCompleted;
-
+            taskItemDatabase.UpdatedAt = DateTime.UtcNow.AddHours(5);
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }

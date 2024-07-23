@@ -27,412 +27,425 @@
         </Grid.RowDefinitions>
 
         <!--begin:: TaskItem Collection View-->
-        <CollectionView Grid.Row="0"
-                        ItemsSource="{Binding TaskItems}"
-                        SelectionMode="None">
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                    Command="{Binding RefreshCommand}">
+            <CollectionView Grid.Row="0"
+                            ItemsSource="{Binding TaskItems}"
+                            SelectionMode="None">
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="type:TaskItemViewModel">
-                    <SwipeView>
-                        <Frame Padding="5,0,0,0"
-                               Margin="5"
-                               HeightRequest="170"
-                               CornerRadius="20"
-                               BorderColor="Transparent"
-                               BackgroundColor="#EEEEEE">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="type:TaskItemViewModel">
+                        <SwipeView>
+                            <Frame Padding="5,0,0,0"
+                                   Margin="5"
+                                   HeightRequest="170"
+                                   CornerRadius="20"
+                                   BorderColor="Transparent"
+                                   BackgroundColor="#EEEEEE">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <!--1-begin:: Left Border for Task Priority Color-->
-                                <Frame BorderColor="Transparent"
-                                       CornerRadius="20"
-                                       Grid.Column="0"
-                                       HasShadow="False"
-                                       Grid.RowSpan="5"
-                                       Margin="-10,-10,0,-20"
-                                       WidthRequest="25"
-                                       HorizontalOptions="Start">
-                                    <Frame.Triggers>
+                                    <!--1-begin:: Left Border for Task Priority Color-->
+                                    <Frame BorderColor="Transparent"
+                                           CornerRadius="20"
+                                           Grid.Column="0"
+                                           HasShadow="False"
+                                           Grid.RowSpan="5"
+                                           Margin="-10,-10,0,-20"
+                                           WidthRequest="25"
+                                           HorizontalOptions="Start">
+                                        <Frame.Triggers>
 
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding Priority}"
-                                                     Value="High">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource HighPriorityColor}" />
-                                        </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Priority}"
+                                                         Value="High">
+                                                <Setter Property="BackgroundColor"
+                                                        Value="{DynamicResource HighPriorityColor}" />
+                                            </DataTrigger>
 
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding Priority}"
-                                                     Value="Medium">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource MediumPriorityColor}" />
-                                        </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Priority}"
+                                                         Value="Medium">
+                                                <Setter Property="BackgroundColor"
+                                                        Value="{DynamicResource MediumPriorityColor}" />
+                                            </DataTrigger>
 
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding Priority}"
-                                                     Value="Low">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource LowPriorityColor}" />
-                                        </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Priority}"
+                                                         Value="Low">
+                                                <Setter Property="BackgroundColor"
+                                                        Value="{DynamicResource LowPriorityColor}" />
+                                            </DataTrigger>
 
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding Priority}"
-                                                     Value="Critical">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource CriticalPriorityColor}" />
-                                        </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Priority}"
+                                                         Value="Critical">
+                                                <Setter Property="BackgroundColor"
+                                                        Value="{DynamicResource CriticalPriorityColor}" />
+                                            </DataTrigger>
 
-                                        <!--<DataTrigger TargetType="Frame"
-                                                     Binding="{Binding Priority}"
-                                                     Value="">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="Transparent" />
-                                        </DataTrigger>-->
-                                    </Frame.Triggers>
-                                </Frame>
-                                <!--1-end:: Left Border for Task Priority Color-->
+                                            <!--<DataTrigger TargetType="Frame"
+                                             Binding="{Binding Priority}"
+                                             Value="">
+                                    <Setter Property="BackgroundColor"
+                                            Value="Transparent" />
+                                </DataTrigger>-->
+                                        </Frame.Triggers>
+                                    </Frame>
+                                    <!--1-end:: Left Border for Task Priority Color-->
 
-                                <!--2-begin:: Task Details-->
-                                <Grid Grid.Column="1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="35" />
-                                        <RowDefinition Height="70" />
-                                        <RowDefinition Height="35" />
-                                        <RowDefinition Height="30" />
-                                    </Grid.RowDefinitions>
+                                    <!--2-begin:: Task Details-->
+                                    <Grid Grid.Column="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35" />
+                                            <RowDefinition Height="70" />
+                                            <RowDefinition Height="35" />
+                                            <RowDefinition Height="30" />
+                                        </Grid.RowDefinitions>
 
-                                    <!--1-begin:: Title, Task Priority, Edit and Delete buttons-->
-                                    <Grid Grid.Row="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".50*" />
-                                            <ColumnDefinition Width=".30*" />
-                                            <ColumnDefinition Width=".10*" />
-                                            <ColumnDefinition Width=".10*" />
-                                        </Grid.ColumnDefinitions>
+                                        <!--1-begin:: Title, Task Priority, Edit and Delete buttons-->
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".50*" />
+                                                <ColumnDefinition Width=".30*" />
+                                                <ColumnDefinition Width=".10*" />
+                                                <ColumnDefinition Width=".10*" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <Label Grid.Column="0"
-                                               Text="{Binding Title}"
-                                               Margin="15,10,0,0"
-                                               HorizontalOptions="StartAndExpand"
-                                               VerticalOptions="End"
-                                               LineBreakMode="TailTruncation"
-                                               FontSize="20"
-                                               FontFamily="Inter-Bold"
-                                               MaximumWidthRequest="180" />
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding Title}"
+                                                   Margin="15,10,0,0"
+                                                   HorizontalOptions="StartAndExpand"
+                                                   VerticalOptions="End"
+                                                   LineBreakMode="TailTruncation"
+                                                   FontSize="20"
+                                                   FontFamily="Inter-Bold"
+                                                   MaximumWidthRequest="180" />
 
 
-                                        <Frame Grid.Column="1"
-                                               HorizontalOptions="Start"
-                                               HeightRequest="25"
-                                               WidthRequest="90"
-                                               Margin="0,0,0,0"
-                                               Padding="3"
-                                               BorderColor="Gray"
-                                               BackgroundColor="White">
-                                            <Frame.Triggers>
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding Priority}"
-                                                             Value="High">
-                                                    <Setter Property="BorderColor"
-                                                            Value="{DynamicResource HighPriorityColor}" />
-                                                </DataTrigger>
+                                            <Frame Grid.Column="1"
+                                                   HorizontalOptions="Start"
+                                                   HeightRequest="25"
+                                                   WidthRequest="90"
+                                                   Margin="0,0,0,0"
+                                                   Padding="3"
+                                                   BorderColor="Gray"
+                                                   BackgroundColor="White">
+                                                <Frame.Triggers>
+                                                    <DataTrigger TargetType="Frame"
+                                                                 Binding="{Binding Priority}"
+                                                                 Value="High">
+                                                        <Setter Property="BorderColor"
+                                                                Value="{DynamicResource HighPriorityColor}" />
+                                                    </DataTrigger>
 
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding Priority}"
-                                                             Value="Medium">
-                                                    <Setter Property="BorderColor"
-                                                            Value="{DynamicResource MediumPriorityColor}" />
-                                                </DataTrigger>
+                                                    <DataTrigger TargetType="Frame"
+                                                                 Binding="{Binding Priority}"
+                                                                 Value="Medium">
+                                                        <Setter Property="BorderColor"
+                                                                Value="{DynamicResource MediumPriorityColor}" />
+                                                    </DataTrigger>
 
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding Priority}"
-                                                             Value="Low">
-                                                    <Setter Property="BorderColor"
-                                                            Value="{DynamicResource LowPriorityColor}" />
-                                                </DataTrigger>
+                                                    <DataTrigger TargetType="Frame"
+                                                                 Binding="{Binding Priority}"
+                                                                 Value="Low">
+                                                        <Setter Property="BorderColor"
+                                                                Value="{DynamicResource LowPriorityColor}" />
+                                                    </DataTrigger>
 
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding Priority}"
-                                                             Value="Critical">
-                                                    <Setter Property="BorderColor"
-                                                            Value="{DynamicResource CriticalPriorityColor}" />
-                                                </DataTrigger>
+                                                    <DataTrigger TargetType="Frame"
+                                                                 Binding="{Binding Priority}"
+                                                                 Value="Critical">
+                                                        <Setter Property="BorderColor"
+                                                                Value="{DynamicResource CriticalPriorityColor}" />
+                                                    </DataTrigger>
 
-                                            </Frame.Triggers>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
+                                                </Frame.Triggers>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
 
-                                                <Label VerticalTextAlignment="Center"
-                                                       FontAutoScalingEnabled="False"
-                                                       FontFamily="Inter-Bold"
-                                                       TextColor="Black"
-                                                       Margin="5,0,0,0"
-                                                       Text="{Binding Priority}"
-                                                       Grid.Column="0"
-                                                       FontSize="14" />
+                                                    <Label VerticalTextAlignment="Center"
+                                                           FontAutoScalingEnabled="False"
+                                                           FontFamily="Inter-Bold"
+                                                           TextColor="Black"
+                                                           Margin="5,0,0,0"
+                                                           Text="{Binding Priority}"
+                                                           Grid.Column="0"
+                                                           FontSize="14" />
 
-                                                <Ellipse WidthRequest="15"
-                                                         HeightRequest="15"
-                                                         VerticalOptions="Center"
-                                                         HorizontalOptions="End"
-                                                         Grid.Column="1">
-                                                    <Ellipse.Triggers>
-                                                        <DataTrigger TargetType="Ellipse"
-                                                                     Binding="{Binding Priority}"
-                                                                     Value="High">
-                                                            <Setter Property="Fill"
-                                                                    Value="{DynamicResource HighPriorityColor}" />
-                                                        </DataTrigger>
+                                                    <Ellipse WidthRequest="15"
+                                                             HeightRequest="15"
+                                                             VerticalOptions="Center"
+                                                             HorizontalOptions="End"
+                                                             Grid.Column="1">
+                                                        <Ellipse.Triggers>
+                                                            <DataTrigger TargetType="Ellipse"
+                                                                         Binding="{Binding Priority}"
+                                                                         Value="High">
+                                                                <Setter Property="Fill"
+                                                                        Value="{DynamicResource HighPriorityColor}" />
+                                                            </DataTrigger>
 
-                                                        <DataTrigger TargetType="Ellipse"
-                                                                     Binding="{Binding Priority}"
-                                                                     Value="Medium">
-                                                            <Setter Property="Fill"
-                                                                    Value="{DynamicResource MediumPriorityColor}" />
-                                                        </DataTrigger>
+                                                            <DataTrigger TargetType="Ellipse"
+                                                                         Binding="{Binding Priority}"
+                                                                         Value="Medium">
+                                                                <Setter Property="Fill"
+                                                                        Value="{DynamicResource MediumPriorityColor}" />
+                                                            </DataTrigger>
 
-                                                        <DataTrigger TargetType="Ellipse"
-                                                                     Binding="{Binding Priority}"
-                                                                     Value="Low">
-                                                            <Setter Property="Fill"
-                                                                    Value="{DynamicResource LowPriorityColor}" />
-                                                        </DataTrigger>
+                                                            <DataTrigger TargetType="Ellipse"
+                                                                         Binding="{Binding Priority}"
+                                                                         Value="Low">
+                                                                <Setter Property="Fill"
+                                                                        Value="{DynamicResource LowPriorityColor}" />
+                                                            </DataTrigger>
 
-                                                        <DataTrigger TargetType="Ellipse"
-                                                                     Binding="{Binding Priority}"
-                                                                     Value="Critical">
-                                                            <Setter Property="Fill"
-                                                                    Value="{DynamicResource CriticalPriorityColor}" />
-                                                        </DataTrigger>
-                                                    </Ellipse.Triggers>
-                                                </Ellipse>
-                                            </Grid>
-                                        </Frame>
+                                                            <DataTrigger TargetType="Ellipse"
+                                                                         Binding="{Binding Priority}"
+                                                                         Value="Critical">
+                                                                <Setter Property="Fill"
+                                                                        Value="{DynamicResource CriticalPriorityColor}" />
+                                                            </DataTrigger>
+                                                        </Ellipse.Triggers>
+                                                    </Ellipse>
+                                                </Grid>
+                                            </Frame>
 
-                                        <ImageButton Source="edit.png"
-                                                     WidthRequest="20"
-                                                     HeightRequest="20"
-                                                     Margin="0,0,10,0"
-                                                     Grid.Column="2"
-                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoEditTaskPageCommand}"
-                                                     CommandParameter="{Binding}">
-                                        </ImageButton>
-                                        <ImageButton Source="trash.png"
-                                                     WidthRequest="20"
-                                                     HeightRequest="20"
-                                                     Margin="0,0,10,0"
-                                                     Grid.Column="3"
-                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTaskItemCommand}"
-                                                     CommandParameter="{Binding}">
-                                        </ImageButton>
+                                            <ImageButton Source="edit.png"
+                                                         WidthRequest="20"
+                                                         HeightRequest="20"
+                                                         Margin="0,0,10,0"
+                                                         Grid.Column="2"
+                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoEditTaskPageCommand}"
+                                                         CommandParameter="{Binding}">
+                                            </ImageButton>
+                                            <ImageButton Source="trash.png"
+                                                         WidthRequest="20"
+                                                         HeightRequest="20"
+                                                         Margin="0,0,10,0"
+                                                         Grid.Column="3"
+                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTaskItemCommand}"
+                                                         CommandParameter="{Binding}">
+                                            </ImageButton>
+                                        </Grid>
+                                        <!--1-end:: Title, Task Priority, Edit and Delete buttons-->
+
+                                        <!--2-begin:: Description and CheckBox for complete task-->
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".80*" />
+                                                <ColumnDefinition Width=".20*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding Description}"
+                                                   HorizontalOptions="StartAndExpand"
+                                                   LineBreakMode="WordWrap"
+                                                   Margin="15,5,0,0"
+                                                   VerticalOptions="Start"
+                                                   FontSize="Body"
+                                                   WidthRequest="250"
+                                                   FontFamily="Inter-Regular"
+                                                   MaxLines="5">
+                                                <!-- Add MaxLines attribute -->
+                                            </Label>
+                                            <CheckBox Grid.Column="1"
+                                                      Margin="10,20,0,0"
+                                                      IsChecked="{Binding IsCompleted}"
+                                                      Scale="1.5"
+                                                      Color="Gray"
+                                                      HorizontalOptions="Center"
+                                                      VerticalOptions="Center">
+                                                <CheckBox.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CheckTaskCommand}"
+                                                                          CommandParameter="{Binding .}" />
+                                                </CheckBox.GestureRecognizers>
+                                            </CheckBox>
+                                        </Grid>
+                                        <!--2-end:: Description and CheckBox for complete task-->
+
+                                        <!--3-begin:: DueDate and Task Status-->
+                                        <Grid Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".60*" />
+                                                <ColumnDefinition Width=".40*" />
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <!--begin:: DueDate-->
+                                            <Frame Grid.Column="0"
+                                                   WidthRequest="130"
+                                                   Padding="6,0,0,0"
+                                                   Margin="20,0,15,0"
+                                                   HeightRequest="25"
+                                                   BackgroundColor="Transparent"
+                                                   BorderColor="Gray">
+                                                <HorizontalStackLayout>
+                                                    <Image Source="calendar.png"
+                                                           Aspect="AspectFit"
+                                                           MaximumWidthRequest="20"
+                                                           Margin="0,0,4,0" />
+                                                    <Label HorizontalOptions="StartAndExpand"
+                                                           VerticalOptions="Center"
+                                                           WidthRequest="120"
+                                                           TextColor="Black"
+                                                           FontFamily="Inter-Regular">
+                                                        <Label.FormattedText>
+                                                            <FormattedString>
+                                                                <!--<Span Text="📅 " FontSize="Medium"/>  Emoji-->
+                                                                <Span Text="{Binding DueDate, StringFormat='{0:MMM dd, HH:mm}'}" />
+                                                            </FormattedString>
+                                                        </Label.FormattedText>
+                                                    </Label>
+                                                </HorizontalStackLayout>
+                                            </Frame>
+                                            <!--end:: DueDate-->
+                                            
+                                            <!--begin:: Status-->
+                                            <Frame Grid.Column="1"
+                                                   HorizontalOptions="Start"
+                                                   HeightRequest="25"
+                                                   Margin="0,0,0,0"
+                                                   Padding="3"
+                                                   BorderColor="Gray"
+                                                   BackgroundColor="Transparent">
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=ChangeTaskStatusCommand}"
+                                                                          CommandParameter="{Binding .}" />
+                                                </Frame.GestureRecognizers>
+                                                <Frame.Triggers>
+
+                                                    <DataTrigger TargetType="Frame"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Pending">
+                                                        <Setter Property="WidthRequest"
+                                                                Value="93" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger TargetType="Frame"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="InProgress">
+                                                        <Setter Property="WidthRequest"
+                                                                Value="110" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger TargetType="Frame"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Completed">
+                                                        <Setter Property="WidthRequest"
+                                                                Value="100" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger TargetType="Frame"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="OnHold">
+                                                        <Setter Property="WidthRequest"
+                                                                Value="100" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Frame"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Cancelled">
+                                                        <Setter Property="WidthRequest"
+                                                                Value="100" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Frame"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Overdue">
+                                                        <Setter Property="WidthRequest"
+                                                                Value="100" />
+                                                    </DataTrigger>
+
+                                                </Frame.Triggers>
+                                                <HorizontalStackLayout>
+                                                    <Image HeightRequest="20"
+                                                           Aspect="AspectFit"
+                                                           Margin="0,0,2,0"
+                                                           MaximumWidthRequest="20">
+                                                        <Image.Triggers>
+                                                            <DataTrigger TargetType="Image"
+                                                                         Binding="{Binding Status}"
+                                                                         Value="Pending">
+                                                                <Setter Property="Source"
+                                                                        Value="pending.png" />
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Image"
+                                                                         Binding="{Binding Status}"
+                                                                         Value="InProgress">
+                                                                <Setter Property="Source"
+                                                                        Value="progress.png" />
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Image"
+                                                                         Binding="{Binding Status}"
+                                                                         Value="OnHold">
+                                                                <Setter Property="Source"
+                                                                        Value="on_hold.png" />
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Image"
+                                                                         Binding="{Binding Status}"
+                                                                         Value="Completed">
+                                                                <Setter Property="Source"
+                                                                        Value="completed.png" />
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Image"
+                                                                         Binding="{Binding Status}"
+                                                                         Value="Cancelled">
+                                                                <Setter Property="Source"
+                                                                        Value="cancel.png" />
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Image"
+                                                                         Binding="{Binding Status}"
+                                                                         Value="Overdue">
+                                                                <Setter Property="Source"
+                                                                        Value="overdue.png" />
+                                                            </DataTrigger>
+                                                        </Image.Triggers>
+                                                    </Image>
+                                                    <Label VerticalTextAlignment="Start"
+                                                           FontAutoScalingEnabled="False"
+                                                           FontFamily="Inter-Bold"
+                                                           TextColor="Black"
+                                                           Margin="5,0,0,0"
+                                                           Text="{Binding Status}">
+                                                       
+
+                                                    </Label>
+                                                </HorizontalStackLayout>
+                                            </Frame>
+                                            <!--end:: Status-->
+                                            
+                                        </Grid>
+                                        <!--end:: DueDate and Task Status-->
+
+                                        <!--4-begin:: Task tags-->
+                                        <CollectionView Grid.Row="3"
+                                                        ItemsSource="{Binding TaskTags}">
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate x:DataType="type:TaskTagViewModel">
+                                                    <StackLayout Orientation="Horizontal">
+                                                        <Label Text="{Binding Tag.Name}" />
+                                                    </StackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                        <!--4-end:: Task tags-->
+
                                     </Grid>
-                                    <!--1-end:: Title, Task Priority, Edit and Delete buttons-->
-
-                                    <!--2-begin:: Description and CheckBox for complete task-->
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".80*" />
-                                            <ColumnDefinition Width=".20*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Label Grid.Column="0"
-                                               Text="{Binding Description}"
-                                               HorizontalOptions="StartAndExpand"
-                                               LineBreakMode="WordWrap"
-                                               Margin="15,5,0,0"
-                                               VerticalOptions="Start"
-                                               FontSize="Body"
-                                               WidthRequest="250"
-                                               FontFamily="Inter-Regular"
-                                               MaxLines="5">
-                                            <!-- Add MaxLines attribute -->
-                                        </Label>
-                                        <CheckBox Grid.Column="1"
-                                                  Margin="10,20,0,0"
-                                                  IsChecked="{Binding IsCompleted}"
-                                                  Scale="1.5"
-                                                  Color="Gray"
-                                                  HorizontalOptions="Center"
-                                                  VerticalOptions="Center">
-                                            <CheckBox.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CheckTaskCommand}"
-                                                                      CommandParameter="{Binding .}" />
-                                            </CheckBox.GestureRecognizers>
-                                        </CheckBox>
-                                    </Grid>
-                                    <!--2-end:: Description and CheckBox for complete task-->
-
-                                    <!--3-begin:: DueDate and Task Status-->
-                                    <Grid Grid.Row="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".60*" />
-                                            <ColumnDefinition Width=".40*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Frame Grid.Column="0"
-                                               WidthRequest="130"
-                                               Padding="6,0,0,0"
-                                               Margin="20,0,15,0"
-                                               HeightRequest="25"
-                                               BackgroundColor="Transparent"
-                                               BorderColor="Gray">
-                                            <HorizontalStackLayout>
-                                                <Image Source="calendar.png"
-                                                       Aspect="AspectFit"
-                                                       MaximumWidthRequest="20"
-                                                       Margin="0,0,4,0" />
-                                                <Label HorizontalOptions="StartAndExpand"
-                                                       VerticalOptions="Center"
-                                                       WidthRequest="120"
-                                                       TextColor="Black"
-                                                       FontFamily="Inter-Regular">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <!--<Span Text="📅 " FontSize="Medium"/>  Emoji-->
-                                                            <Span Text="{Binding DueDate, StringFormat='{0:MMM dd, HH:mm}'}" />
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                            </HorizontalStackLayout>
-                                        </Frame>
-                                        <Frame Grid.Column="1"
-                                               HorizontalOptions="Start"
-                                               HeightRequest="25"
-                                               Margin="0,0,0,0"
-                                               Padding="3"
-                                               BorderColor="Gray"
-                                               BackgroundColor="Transparent">
-                                            <Frame.Triggers>
-
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding Status}"
-                                                             Value="Pending">
-                                                    <Setter Property="WidthRequest"
-                                                            Value="93" />
-                                                </DataTrigger>
-
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding Status}"
-                                                             Value="InProgress">
-                                                    <Setter Property="WidthRequest"
-                                                            Value="110" />
-                                                </DataTrigger>
-
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding Status}"
-                                                             Value="Completed">
-                                                    <Setter Property="WidthRequest"
-                                                            Value="100" />
-                                                </DataTrigger>
-
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding Status}"
-                                                             Value="OnHold">
-                                                    <Setter Property="WidthRequest"
-                                                            Value="100" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding Status}"
-                                                             Value="Cancelled">
-                                                    <Setter Property="WidthRequest"
-                                                            Value="100" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding Status}"
-                                                             Value="Overdue">
-                                                    <Setter Property="WidthRequest"
-                                                            Value="100" />
-                                                </DataTrigger>
-
-                                            </Frame.Triggers>
-                                            <HorizontalStackLayout>
-                                                <Image HeightRequest="20"
-                                                       Aspect="AspectFit"
-                                                       Margin="0,0,2,0"
-                                                       MaximumWidthRequest="20">
-                                                    <Image.Triggers>
-                                                        <DataTrigger TargetType="Image"
-                                                                     Binding="{Binding Status}"
-                                                                     Value="Pending">
-                                                            <Setter Property="Source"
-                                                                    Value="pending.png" />
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Image"
-                                                                     Binding="{Binding Status}"
-                                                                     Value="InProgress">
-                                                            <Setter Property="Source"
-                                                                    Value="progress.png" />
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Image"
-                                                                     Binding="{Binding Status}"
-                                                                     Value="OnHold">
-                                                            <Setter Property="Source"
-                                                                    Value="on_hold.png" />
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Image"
-                                                                     Binding="{Binding Status}"
-                                                                     Value="Completed">
-                                                            <Setter Property="Source"
-                                                                    Value="completed.png" />
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Image"
-                                                                     Binding="{Binding Status}"
-                                                                     Value="Cancelled">
-                                                            <Setter Property="Source"
-                                                                    Value="cancel.png" />
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Image"
-                                                                     Binding="{Binding Status}"
-                                                                     Value="Overdue">
-                                                            <Setter Property="Source"
-                                                                    Value="overdue.png" />
-                                                        </DataTrigger>
-                                                    </Image.Triggers>
-                                                </Image>
-                                                <Label VerticalTextAlignment="Start"
-                                                       FontAutoScalingEnabled="False"
-                                                       FontFamily="Inter-Bold"
-                                                       TextColor="Black"
-                                                       Margin="5,0,0,0"
-                                                       Text="{Binding Status}">
-                                                    <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding ChangeStatusCommand}" />
-                                                    </Label.GestureRecognizers>
-
-                                                </Label>
-                                            </HorizontalStackLayout>
-                                        </Frame>
-                                    </Grid>
-                                    <!--end:: DueDate and Task Status-->
-
-                                    <!--4-begin:: Task tags-->
-                                    <CollectionView Grid.Row="3"
-                                                    ItemsSource="{Binding TaskTags}">
-                                        <CollectionView.ItemTemplate>
-                                            <DataTemplate x:DataType="type:TaskTagViewModel">
-                                                <StackLayout Orientation="Horizontal">
-                                                    <Label Text="{Binding Tag.Name}" />
-                                                </StackLayout>
-                                            </DataTemplate>
-                                        </CollectionView.ItemTemplate>
-                                    </CollectionView>
-                                    <!--4-end:: Task tags-->
-
+                                    <!--2-end:: Task Details-->
                                 </Grid>
-                                <!--2-end:: Task Details-->
-                            </Grid>
-                        </Frame>
-                    </SwipeView>
+                            </Frame>
+                        </SwipeView>
 
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
 
-        </CollectionView>
+            </CollectionView>
+        </RefreshView>
+        
         <!--end:: TaskItem Collection View-->
 
         <!--begin:: Button For go Add Task Page-->

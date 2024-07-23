@@ -22,8 +22,6 @@ public partial class TaskItemViewModel : ObservableObject
         taskTags = taskItem.TaskTags?.ToObservableCollection() ?? new ObservableCollection<TaskTag>();
         createdAt = taskItem.CreatedAt;
         updatedAt = taskItem.UpdatedAt;
-
-        ChangeStatusCommand = new RelayCommand(ChangeStatus);
     }
 
     [ObservableProperty]
@@ -58,18 +56,4 @@ public partial class TaskItemViewModel : ObservableObject
 
     [ObservableProperty]
     private ObservableCollection<TaskTag> taskTags;
-
-    public RelayCommand ChangeStatusCommand { get; }
-
-    public void ChangeStatus()
-    {
-        Status = Status switch
-        {
-            TaskStatusEnum.Pending => TaskStatusEnum.InProgress,
-            TaskStatusEnum.InProgress => TaskStatusEnum.OnHold,
-            TaskStatusEnum.OnHold => TaskStatusEnum.Cancelled,
-            TaskStatusEnum.Cancelled => TaskStatusEnum.Pending,
-            _ => Status
-        }; 
-    }
 }

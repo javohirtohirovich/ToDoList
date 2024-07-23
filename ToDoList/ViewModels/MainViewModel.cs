@@ -33,6 +33,23 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private string taskTitle;
 
+    [ObservableProperty]
+    private bool isRefreshing;
+
+    [RelayCommand]
+    private async Task OnRefreshAsync()
+    {
+        try
+        {
+            IsRefreshing = true;
+            await LoadTasks();
+        }
+        finally
+        {
+            IsRefreshing = false;
+        }
+    }
+
     [RelayCommand]
     public async Task AddQuickTask()
     {
@@ -90,7 +107,7 @@ public partial class MainViewModel : ObservableObject
     public async Task LoadTasks()
     {
         var tasks = await _taskItemService.GetAllTasks()
-                                          .Where(x => !x.IsCompleted)
+                                          .Where(x => !x.IsCompleted && x.Status!=TaskStatusEnum.Completed && x.Status!=TaskStatusEnum.Cancelled)
                                           .ToListAsync();
         var statusOrder = new List<TaskStatusEnum>
         {
@@ -105,6 +122,31 @@ public partial class MainViewModel : ObservableObject
         foreach (var task in sortedTasks)
         {
             TaskItems.Add(new TaskItemViewModel(task));
+        }
+    }
+
+    [RelayCommand]
+    public async Task ChangeTaskStatus(TaskItemViewModel taskItemViewModel)
+    {
+        if (taskItemViewModel is not null)
+        {
+            var newStatus = taskItemViewModel.Status switch
+            {
+                TaskStatusEnum.Pending => TaskStatusEnum.InProgress,
+                TaskStatusEnum.InProgress => TaskStatusEnum.OnHold,
+                TaskStatusEnum.OnHold => TaskStatusEnum.Cancelled,
+                TaskStatusEnum.Cancelled => TaskStatusEnum.Overdue,
+                TaskStatusEnum.Overdue => TaskStatusEnum.Completed,
+                TaskStatusEnum.Completed => TaskStatusEnum.Pending,
+
+                _ => taskItemViewModel.Status
+            };
+
+            var result = await _taskItemService.ChangeTaskStatus(taskItemViewModel.TaskId, newStatus);
+            if (result)
+            {
+                taskItemViewModel.Status = newStatus;
+            }
         }
     }
 
