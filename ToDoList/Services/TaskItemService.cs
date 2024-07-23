@@ -20,6 +20,17 @@ public class TaskItemService : ITaskItemService
         await SaveChangesAsync();
     }
 
+    public async Task<bool> ChangeTaskStatus(int taskId, TaskStatusEnum status)
+    {
+        var taskItem = await _context.Tasks.FindAsync(taskId);
+        if(taskItem is not null)
+        {
+            taskItem.Status = status;
+            return await _context.SaveChangesAsync() > 0;
+        }
+        return false;
+    }
+
     public async Task<bool> ChangeTaskToCompletedOrIncompleteAsync(int taskId, bool isCompleted)
     {
         var taskItem = await _context.Tasks.FindAsync(taskId);

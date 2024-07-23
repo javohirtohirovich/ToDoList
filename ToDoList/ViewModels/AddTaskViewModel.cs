@@ -15,6 +15,7 @@ namespace ToDoList.ViewModels
         {
             TaskItemViewModel = new TaskItemViewModel(new TaskItem());
             TodayDate = DateTime.Now.Date;
+            IsEnableDueDate = false;
             DueDateTask = null;
             DueTimeTask = null;
             this._taskItemService = taskItemService;
@@ -22,6 +23,9 @@ namespace ToDoList.ViewModels
 
         [ObservableProperty]
         private TaskItemViewModel taskItemViewModel;
+
+        [ObservableProperty]
+        private bool isEnableDueDate;
 
         [ObservableProperty]
         private DateTime? dueDateTask;

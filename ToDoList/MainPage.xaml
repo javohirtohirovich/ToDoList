@@ -3,16 +3,20 @@
              xmlns:telerik="http://schemas.telerik.com/2022/xaml/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ToDoList.MainPage"
-             xmlns:viewmodel="clr-namespace:ToDoList.ViewModels"
              x:DataType="viewmodel:MainViewModel"
+             xmlns:viewmodel="clr-namespace:ToDoList.ViewModels"
              xmlns:Views="clr-namespace:ToDoList.Views"
              xmlns:type="clr-namespace:ToDoList.ViewModels.DataViewModels"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              Shell.BackgroundColor="#EFEFEF"
              Background="#FEFEFE">
+    <!--begin:: For Top Status Bar change color-->
     <Page.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="#808080" />
     </Page.Behaviors>
+    <!--end:: For Top Status Bar change color-->
+
+    <!--begin:: Main Grid-->
     <Grid Padding="10"
           RowSpacing="0"
           ColumnSpacing="10">
@@ -22,6 +26,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!--begin:: TaskItem Collection View-->
         <CollectionView Grid.Row="0"
                         ItemsSource="{Binding TaskItems}"
                         SelectionMode="None">
@@ -36,12 +41,12 @@
                                BorderColor="Transparent"
                                BackgroundColor="#EEEEEE">
                             <Grid>
-
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="10" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
+                                <!--1-begin:: Left Border for Task Priority Color-->
                                 <Frame BorderColor="Transparent"
                                        CornerRadius="20"
                                        Grid.Column="0"
@@ -88,7 +93,9 @@
                                         </DataTrigger>-->
                                     </Frame.Triggers>
                                 </Frame>
+                                <!--1-end:: Left Border for Task Priority Color-->
 
+                                <!--2-begin:: Task Details-->
                                 <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="35" />
@@ -96,6 +103,8 @@
                                         <RowDefinition Height="35" />
                                         <RowDefinition Height="30" />
                                     </Grid.RowDefinitions>
+
+                                    <!--1-begin:: Title, Task Priority, Edit and Delete buttons-->
                                     <Grid Grid.Row="0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width=".50*" />
@@ -223,7 +232,9 @@
                                                      CommandParameter="{Binding}">
                                         </ImageButton>
                                     </Grid>
+                                    <!--1-end:: Title, Task Priority, Edit and Delete buttons-->
 
+                                    <!--2-begin:: Description and CheckBox for complete task-->
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width=".80*" />
@@ -255,7 +266,9 @@
                                             </CheckBox.GestureRecognizers>
                                         </CheckBox>
                                     </Grid>
+                                    <!--2-end:: Description and CheckBox for complete task-->
 
+                                    <!--3-begin:: DueDate and Task Status-->
                                     <Grid Grid.Row="2">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width=".60*" />
@@ -387,12 +400,17 @@
                                                        TextColor="Black"
                                                        Margin="5,0,0,0"
                                                        Text="{Binding Status}">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding ChangeStatusCommand}" />
+                                                    </Label.GestureRecognizers>
 
                                                 </Label>
                                             </HorizontalStackLayout>
                                         </Frame>
                                     </Grid>
+                                    <!--end:: DueDate and Task Status-->
 
+                                    <!--4-begin:: Task tags-->
                                     <CollectionView Grid.Row="3"
                                                     ItemsSource="{Binding TaskTags}">
                                         <CollectionView.ItemTemplate>
@@ -403,11 +421,10 @@
                                             </DataTemplate>
                                         </CollectionView.ItemTemplate>
                                     </CollectionView>
-
+                                    <!--4-end:: Task tags-->
 
                                 </Grid>
-
-
+                                <!--2-end:: Task Details-->
                             </Grid>
                         </Frame>
                     </SwipeView>
@@ -416,7 +433,9 @@
             </CollectionView.ItemTemplate>
 
         </CollectionView>
+        <!--end:: TaskItem Collection View-->
 
+        <!--begin:: Button For go Add Task Page-->
         <ImageButton Grid.Row="0"
                      WidthRequest="50"
                      HeightRequest="50"
@@ -426,7 +445,9 @@
                      CornerRadius="50"
                      Source="plus.png"
                      Command="{Binding GoAddTaskPageCommand}" />
+        <!--end:: Button For go Add Task Page-->
 
+        <!--begin:: For Add Quick Task-->
         <Frame Grid.Row="1"
                Background="#EEEEEE"
                BorderColor="#808080">
@@ -441,7 +462,6 @@
                        Placeholder="Enter Quick Task Here"
                        ClearButtonVisibility="Never"
                        FontSize="20">
-
                 </Entry>
                 <ImageButton Source="check_mark.png"
                              WidthRequest="25"
@@ -453,6 +473,8 @@
                              Command="{Binding AddQuickTaskCommand}" />
             </Grid>
         </Frame>
-
+        <!--end:: For Add Quick Task-->
     </Grid>
+    <!--end:: Main Grid-->
+
 </ContentPage>

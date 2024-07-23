@@ -87,20 +87,33 @@
                                HeightRequest="18"
                                WidthRequest="18" />
                     </HorizontalStackLayout>
-                    <Frame Style="{DynamicResource ToDoItemFrame}"
-                           Padding="10"
-                           Margin="0,10,0,0"
-                           CornerRadius="10"
-                           BorderColor="#808080">
-                        <HorizontalStackLayout Spacing="10">
-                            <DatePicker x:Name="datePicker"
-                                        MinimumDate="{Binding TodayDate}"
-                                        Date="{Binding DueDateTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}" />
-                            <TimePicker x:Name="timePicker"
-                                        Time="{Binding DueTimeTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}" />
+                    <HorizontalStackLayout>
+                        <Frame Style="{DynamicResource ToDoItemFrame}"
+                               IsEnabled="{Binding IsEnableDueDate}"
+                               Padding="10"
+                               Margin="0,10,0,0"
+                               CornerRadius="10"
+                               BorderColor="#808080"
+                               WidthRequest="300">
+                            <HorizontalStackLayout Spacing="10">
+                                <DatePicker x:Name="datePicker"
+                                            MinimumDate="{Binding TodayDate}"
+                                            Date="{Binding DueDateTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}" />
+                                <TimePicker x:Name="timePicker"
+                                            Time="{Binding DueTimeTask, Mode=TwoWay, FallbackValue={x:Null}, TargetNullValue={x:Null}}" />
 
-                        </HorizontalStackLayout>
-                    </Frame>
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <CheckBox x:Name="IsEnableDueDate"
+                                  Scale="1.6"
+                                  VerticalOptions="Center"
+                                  Margin="15,0,0,0"
+                                  Color="#808080"
+                                  IsChecked="{Binding IsEnableDueDate}">
+                            
+                        </CheckBox>
+                    </HorizontalStackLayout>
+                    
 
                 </StackLayout>
                 <StackLayout>

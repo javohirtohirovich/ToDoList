@@ -1,4 +1,5 @@
-﻿using ToDoList.Data.Models;
+﻿using ToDoList.Data.Enums;
+using ToDoList.Data.Models;
 
 namespace ToDoList.Services;
 
@@ -10,5 +11,6 @@ public interface ITaskItemService
     public Task<bool> DeleteTaskItemAsync(int taskId);
     public Task UpdateExpiredTasksAsync();
     public Task<bool> ChangeTaskToCompletedOrIncompleteAsync(int taskId, bool isCompleted);
+    public Task<bool> ChangeTaskStatus(int taskId, TaskStatusEnum status);
     public Task<TaskItem> GetTaskItemAsync(int taskId);
 }
