@@ -147,7 +147,7 @@
 
         <!--begin:: Button For go Add Task Page-->
         <ImageButton Grid.Row="0"
-                     Command="{Binding ShowAddTaskItemBorderCommand}"
+                     Command="{Binding ShowAddTaskItemPopupCommand}"
                      WidthRequest="50"
                      HeightRequest="50"
                      VerticalOptions="End"

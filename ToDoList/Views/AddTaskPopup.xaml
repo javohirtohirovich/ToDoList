@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+               x:Class="ToDoList.Views.AddTaskPopup"
+               xmlns:vm="clr-namespace:ToDoList.ViewModels"
+               CanBeDismissedByTappingOutsideOfPopup="True"
+               VerticalOptions="End"
+               >
+
+    <Grid BackgroundColor="White"
+          Padding="10"
+          WidthRequest="400">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              BackgroundColor="White">
+            <HorizontalStackLayout HorizontalOptions="Center"
+                                   Spacing="35">
+                <HorizontalStackLayout Spacing="9"
+                                       VerticalOptions="Center"
+                                       Margin="0,0,0,0">
+                    <Image Source="calendar_add.png"
+                           WidthRequest="20"
+                           HeightRequest="20" />
+                    <Label Text="Set due date"
+                           FontSize="14"
+                           TextColor="Grey">
+                    </Label>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="7"
+                                       VerticalOptions="Center"
+                                       Margin="0,0,0,0">
+                    <Image Source="remind.png"
+                           WidthRequest="20"
+                           HeightRequest="20" />
+                    <Label Text="Remind me"
+                           FontSize="14"
+                           TextColor="Grey">
+                    </Label>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="7"
+                                       VerticalOptions="Center"
+                                       Margin="0,0,0,0">
+                    <Image Source="repeat.png"
+                           WidthRequest="20"
+                           HeightRequest="20" />
+                    <Label Text="Repeat"
+                           FontSize="14"
+                           TextColor="Grey">
+                    </Label>
+                </HorizontalStackLayout>
+            </HorizontalStackLayout>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="50" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0"
+                  BackgroundColor="White">
+                <CheckBox></CheckBox>
+            </Grid>
+            <Grid Grid.Column="1"
+                  VerticalOptions="FillAndExpand">
+                <Editor x:Name="TaskEditor"
+                        VerticalOptions="Center"
+                        VerticalTextAlignment="End"
+                        Placeholder="Add a task"
+                        PlaceholderColor="Grey"
+                        FontSize="17"
+                        Margin="10"
+                        AutoSize="TextChanges"
+                        Text="Text"
+                        >
+                    <!--<Editor.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="Focused"
+                                                        Command="{Binding EditorFocusedCommand}" />
+                        <toolkit:EventToCommandBehavior EventName="Unfocused"
+                                                        Command="{Binding EditorUnfocusedCommand}" />
+                    </Editor.Behaviors>-->
+                </Editor>
+            </Grid>
+            <Grid Grid.Column="2">
+                <ImageButton Source="up_arrow.png"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             Command="{Binding AddQuickTask}">
+                </ImageButton>
+            </Grid>
+        </Grid>
+    </Grid>
+</toolkit:Popup>

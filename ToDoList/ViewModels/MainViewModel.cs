@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
@@ -39,9 +40,10 @@ public partial class MainViewModel : ObservableObject
     private bool isEditorFocused;
 
     [RelayCommand]
-    private async Task ShowAddTaskItemBorder()
+    private async Task ShowAddTaskItemPopup()
     {
-        IsEditorFocused = !IsEditorFocused;
+        var popup = new AddTaskPopup();
+        await Application.Current.MainPage.ShowPopupAsync(popup);
     }
 
     [RelayCommand]
