@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using ToDoList.Data.Enums;
+using System.Runtime.CompilerServices;
 using ToDoList.Data.Models;
 using ToDoList.Services;
 using ToDoList.ViewModels.DataViewModels;
@@ -23,7 +23,6 @@ public partial class MainViewModel : ObservableObject
 
     private async void InitializeAsync()
     {
-        await _taskItemService.UpdateExpiredTasksAsync();
         await LoadTasks();
     }
 
@@ -35,6 +34,27 @@ public partial class MainViewModel : ObservableObject
 
     [ObservableProperty]
     private bool isRefreshing;
+
+    [ObservableProperty]
+    private bool isEditorFocused;
+
+    [RelayCommand]
+    private async Task ShowAddTaskItemBorder()
+    {
+        IsEditorFocused = !IsEditorFocused;
+    }
+
+    [RelayCommand]
+    private void EditorFocused()
+    {
+        IsEditorFocused = true;
+    }
+
+    [RelayCommand]
+    private void EditorUnfocused()
+    {
+        IsEditorFocused = false;
+    }
 
     [RelayCommand]
     private async Task OnRefreshAsync()
@@ -57,7 +77,7 @@ public partial class MainViewModel : ObservableObject
         {
             var taskItem = new TaskItem
             {
-                Title = TaskTitle
+                Task = TaskTitle
             };
             var taskItemViewModel = new TaskItemViewModel(taskItem);
 
@@ -99,6 +119,16 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task ChangeTaskImportantStatus(TaskItemViewModel taskItemViewModel)
+    {
+        var result = await _taskItemService.ChangeTaskImportantStatus(taskItemViewModel.TaskId, taskItemViewModel.IsImportant);
+        if (result)
+        {
+            taskItemViewModel.IsImportant = !taskItemViewModel.IsImportant;
+        }
+    }
+
+    [RelayCommand]
     public async Task GoEditTaskPage(TaskItemViewModel taskItemViewModel)
     {
         await Shell.Current.GoToAsync($"{nameof(EditTaskPage)}?TaskItemId={taskItemViewModel.TaskId}");
@@ -107,47 +137,12 @@ public partial class MainViewModel : ObservableObject
     public async Task LoadTasks()
     {
         var tasks = await _taskItemService.GetAllTasks()
-                                          .Where(x => !x.IsCompleted && x.Status!=TaskStatusEnum.Completed && x.Status!=TaskStatusEnum.Cancelled)
+                                          .Where(x => !x.IsCompleted)
                                           .ToListAsync();
-        var statusOrder = new List<TaskStatusEnum>
-        {
-            TaskStatusEnum.Overdue,
-            TaskStatusEnum.InProgress,
-            TaskStatusEnum.Pending,
-            TaskStatusEnum.OnHold,
-        };
-        var sortedTasks = tasks.OrderBy(t => statusOrder.IndexOf(t.Status)).ToList();
-
         TaskItems.Clear();
-        foreach (var task in sortedTasks)
+        foreach (var task in tasks)
         {
             TaskItems.Add(new TaskItemViewModel(task));
         }
     }
-
-    [RelayCommand]
-    public async Task ChangeTaskStatus(TaskItemViewModel taskItemViewModel)
-    {
-        if (taskItemViewModel is not null)
-        {
-            var newStatus = taskItemViewModel.Status switch
-            {
-                TaskStatusEnum.Pending => TaskStatusEnum.InProgress,
-                TaskStatusEnum.InProgress => TaskStatusEnum.OnHold,
-                TaskStatusEnum.OnHold => TaskStatusEnum.Cancelled,
-                TaskStatusEnum.Cancelled => TaskStatusEnum.Overdue,
-                TaskStatusEnum.Overdue => TaskStatusEnum.Completed,
-                TaskStatusEnum.Completed => TaskStatusEnum.Pending,
-
-                _ => taskItemViewModel.Status
-            };
-
-            var result = await _taskItemService.ChangeTaskStatus(taskItemViewModel.TaskId, newStatus);
-            if (result)
-            {
-                taskItemViewModel.Status = newStatus;
-            }
-        }
-    }
-
 }

@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using ToDoList.Data.Models;
 using ToDoList.Services;
 using ToDoList.ViewModels.DataViewModels;
-using System;
 
 namespace ToDoList.ViewModels
 {
@@ -39,7 +38,7 @@ namespace ToDoList.ViewModels
         [RelayCommand]
         public async Task AddTaskItem()
         {
-            if (TaskItemViewModel is not null && !String.IsNullOrWhiteSpace(TaskItemViewModel.Title))
+            if (TaskItemViewModel is not null && !String.IsNullOrWhiteSpace(TaskItemViewModel.Task))
             {
                 DateTime? dueDateTime = null;
                 if (DueDateTask.HasValue && DueTimeTask.HasValue)
@@ -54,10 +53,7 @@ namespace ToDoList.ViewModels
 
                 var taskItem = new TaskItem
                 {
-                    Title = TaskItemViewModel.Title,
-                    Description = TaskItemViewModel.Description,
-                    Priority = TaskItemViewModel.Priority,
-                    Status = TaskItemViewModel.Status,
+                    Task=taskItemViewModel.Task,
                     DueDate = dueDateTime,
                 };
                 await _taskItemService.AddTaskItemAsync(taskItem);

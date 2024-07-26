@@ -31,20 +31,6 @@ namespace ToDoList.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("ToDoList.Data.Models.Tag", b =>
-                {
-                    b.Property<int>("TagId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("TagId");
-
-                    b.ToTable("Tags");
-                });
-
             modelBuilder.Entity("ToDoList.Data.Models.TaskItem", b =>
                 {
                     b.Property<int>("TaskId")
@@ -57,24 +43,16 @@ namespace ToDoList.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime?>("DueDate")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<bool>("IsImportant")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Task")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -87,21 +65,6 @@ namespace ToDoList.Data.Migrations
                     b.ToTable("TaskItems");
                 });
 
-            modelBuilder.Entity("ToDoList.Data.Models.TaskTag", b =>
-                {
-                    b.Property<int>("TaskId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("TaskId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("TaskTags");
-                });
-
             modelBuilder.Entity("ToDoList.Data.Models.TaskItem", b =>
                 {
                     b.HasOne("ToDoList.Data.Models.Category", "Category")
@@ -111,38 +74,9 @@ namespace ToDoList.Data.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ToDoList.Data.Models.TaskTag", b =>
-                {
-                    b.HasOne("ToDoList.Data.Models.Tag", "Tag")
-                        .WithMany("TaskTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ToDoList.Data.Models.TaskItem", "Task")
-                        .WithMany("TaskTags")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tag");
-
-                    b.Navigation("Task");
-                });
-
             modelBuilder.Entity("ToDoList.Data.Models.Category", b =>
                 {
                     b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("ToDoList.Data.Models.Tag", b =>
-                {
-                    b.Navigation("TaskTags");
-                });
-
-            modelBuilder.Entity("ToDoList.Data.Models.TaskItem", b =>
-                {
-                    b.Navigation("TaskTags");
                 });
 #pragma warning restore 612, 618
         }

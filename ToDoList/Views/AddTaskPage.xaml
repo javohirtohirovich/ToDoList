@@ -5,7 +5,6 @@
              x:DataType="vm:AddTaskViewModel"
              xmlns:converters="clr-namespace:ToDoList.Converters"
              xmlns:vm="clr-namespace:ToDoList.ViewModels"
-             xmlns:enums="clr-namespace:ToDoList.Data.Enums"
              Title="AddTaskPage"
              Background="#F0F0F0">
     <ContentPage.Resources>
@@ -44,7 +43,7 @@
                                        FontFamily="Inter-Regular"
                                        PlaceholderColor="Gray"
                                        ReturnType="Next"
-                                       Text="{Binding TaskItemViewModel.Title }" />
+                                       Text="{Binding TaskItemViewModel.Task }" />
                             </StackLayout>
                         </Frame>
                     </StackLayout>
@@ -74,7 +73,7 @@
                                 HorizontalTextAlignment="Start"
                                 VerticalTextAlignment="Start"
                                 PlaceholderColor="Grey"
-                                Text="{Binding TaskItemViewModel.Description }" />
+                                Text="{Binding TaskItemViewModel.Task }" />
                     </Frame>
                 </StackLayout>
                 <StackLayout>
@@ -132,12 +131,12 @@
                            Margin="0,10,0,0"
                            CornerRadius="10"
                            BorderColor="#808080">
-                        <Picker x:Name="PriorityPicker"
+                        <!--<Picker x:Name="PriorityPicker"
                                 FontSize="Body"
                                 TextColor="Grey"
                                 ItemsSource="{Binding Source={enums:TaskPriority}, Converter={StaticResource EnumToCollectionConverter}, ConverterParameter={x:Type enums:TaskPriority}}"
                                 SelectedItem="{Binding TaskItemViewModel.Priority, Mode=TwoWay}">
-                        </Picker>
+                        </Picker>-->
                     </Frame>
                 </StackLayout>
 
@@ -157,12 +156,12 @@
                            Margin="0,10,0,0"
                            CornerRadius="10"
                            BorderColor="#808080">
-                        <Picker x:Name="StatusPicker"
+                        <!--<Picker x:Name="StatusPicker"
                                 FontSize="Body"
                                 TextColor="Grey"
                                 ItemsSource="{Binding Source={ enums:TaskStatusEnum}, Converter={StaticResource EnumToCollectionConverter}, ConverterParameter={x:Type enums:TaskStatusEnum}}"
                                 SelectedItem="{Binding TaskItemViewModel.Status, Mode=TwoWay}">
-                        </Picker>
+                        </Picker>-->
                     </Frame>
                     <Button WidthRequest="150"
                             HeightRequest="50"

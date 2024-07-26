@@ -1,8 +1,4 @@
-﻿using CommunityToolkit.Maui.Core.Extensions;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using ToDoList.Data.Enums;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using ToDoList.Data.Models;
 
 namespace ToDoList.ViewModels.DataViewModels;
@@ -12,38 +8,27 @@ public partial class TaskItemViewModel : ObservableObject
     public TaskItemViewModel(TaskItem taskItem)
     {
         taskId = taskItem.TaskId;
-        title = taskItem.Title;
-        description = taskItem.Description;
+        task = taskItem.Task;
         dueDate = taskItem.DueDate;
-        priority = taskItem.Priority;
-        status = taskItem.Status;
         isCompleted = taskItem.IsCompleted;
         categoryId = taskItem.CategoryId;
-        taskTags = taskItem.TaskTags?.ToObservableCollection() ?? new ObservableCollection<TaskTag>();
         createdAt = taskItem.CreatedAt;
         updatedAt = taskItem.UpdatedAt;
     }
-
     [ObservableProperty]
     private int taskId;
 
     [ObservableProperty]
-    private string title;
-
-    [ObservableProperty]
-    private string description;
+    private string task;
 
     [ObservableProperty]
     private DateTime? dueDate;
 
     [ObservableProperty]
-    private TaskPriority priority;
-
-    [ObservableProperty]
-    private TaskStatusEnum status;
-
-    [ObservableProperty]
     private bool isCompleted;
+
+    [ObservableProperty]
+    private bool isImportant;
 
     [ObservableProperty]
     private int? categoryId;
@@ -53,7 +38,4 @@ public partial class TaskItemViewModel : ObservableObject
 
     [ObservableProperty]
     private DateTime updatedAt;
-
-    [ObservableProperty]
-    private ObservableCollection<TaskTag> taskTags;
 }

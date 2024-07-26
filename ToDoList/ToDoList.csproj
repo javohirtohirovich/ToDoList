@@ -62,6 +62,7 @@
 	  <None Remove="Resources\Images\about.png" />
 	  <None Remove="Resources\Images\add.png" />
 	  <None Remove="Resources\Images\calendar.png" />
+	  <None Remove="Resources\Images\calendar_add.png" />
 	  <None Remove="Resources\Images\cancel.png" />
 	  <None Remove="Resources\Images\checking.png" />
 	  <None Remove="Resources\Images\check_mark.png" />
@@ -80,9 +81,14 @@
 	  <None Remove="Resources\Images\plus.png" />
 	  <None Remove="Resources\Images\priority.png" />
 	  <None Remove="Resources\Images\progress.png" />
+	  <None Remove="Resources\Images\remind.png" />
+	  <None Remove="Resources\Images\repeat.png" />
+	  <None Remove="Resources\Images\star_false.png" />
+	  <None Remove="Resources\Images\star_true.png" />
 	  <None Remove="Resources\Images\status.png" />
 	  <None Remove="Resources\Images\todo.png" />
 	  <None Remove="Resources\Images\trash.png" />
+	  <None Remove="Resources\Images\up_arrow.png" />
 	  <None Remove="Resources\Images\x_buton_popup.png" />
 	  <None Remove="Resources\Images\x_clear.png" />
 	</ItemGroup>
@@ -108,6 +114,10 @@
 	  <MauiXaml Update="Views\EditTaskPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Data\Migrations\" />
 	</ItemGroup>
 
 </Project>

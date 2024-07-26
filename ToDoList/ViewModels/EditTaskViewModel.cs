@@ -34,7 +34,7 @@ public partial class EditTaskViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     public async Task EditTaskItem()
     {
-        if (TaskItemViewModel is not null && !String.IsNullOrWhiteSpace(TaskItemViewModel.Title))
+        if (TaskItemViewModel is not null && !String.IsNullOrWhiteSpace(TaskItemViewModel.Task))
         {
             DateTime? dueDateTime = null;
             if (DueDateTask.HasValue && DueTimeTask.HasValue)
@@ -49,10 +49,7 @@ public partial class EditTaskViewModel : ObservableObject, IQueryAttributable
 
             var taskItem = new TaskItem
             {
-                Title = TaskItemViewModel.Title,
-                Description = TaskItemViewModel.Description,
-                Priority = TaskItemViewModel.Priority,
-                Status = TaskItemViewModel.Status,
+                Task = TaskItemViewModel.Task,
                 DueDate = dueDateTime,
             };
             await _taskItemService.EditTaskItemAsync(int.Parse(TaskItemId), taskItem);
@@ -93,11 +90,8 @@ public partial class EditTaskViewModel : ObservableObject, IQueryAttributable
     private async Task GetTaskItemAsync()
     {
         var taskItem = await _taskItemService.GetTaskItemAsync(int.Parse(TaskItemId));
-        TaskItemViewModel.Title = taskItem.Title;
-        TaskItemViewModel.Description = taskItem.Description;
+        TaskItemViewModel.Task = taskItem.Task;
         TaskItemViewModel.DueDate = taskItem.DueDate;
-        TaskItemViewModel.Status = taskItem.Status;
-        TaskItemViewModel.Priority = taskItem.Priority;
 
         if(taskItem.DueDate  is not null)
         {
