@@ -1,9 +1,9 @@
-﻿using CommunityToolkit.Maui.Views;
+﻿using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 using ToDoList.Data.Models;
 using ToDoList.Services;
 using ToDoList.ViewModels.DataViewModels;
@@ -14,17 +14,31 @@ namespace ToDoList.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly ITaskItemService _taskItemService;
+    private readonly IPopupService _popupService;
 
-    public MainViewModel(ITaskItemService taskItemService)
+    public MainViewModel(ITaskItemService taskItemService, IPopupService popupService)
     {
         TaskItems = new ObservableCollection<TaskItemViewModel>();
         this._taskItemService = taskItemService;
+        this._popupService = popupService;
         InitializeAsync();
     }
 
     private async void InitializeAsync()
     {
         await LoadTasks();
+    }
+
+    public async Task LoadTasks()
+    {
+        var tasks = await _taskItemService.GetAllTasks()
+                                          .Where(x => !x.IsCompleted)
+                                          .ToListAsync();
+        TaskItems.Clear();
+        foreach (var task in tasks)
+        {
+            TaskItems.Add(new TaskItemViewModel(task));
+        }
     }
 
     [ObservableProperty]
@@ -36,27 +50,6 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private bool isRefreshing;
 
-    [ObservableProperty]
-    private bool isEditorFocused;
-
-    [RelayCommand]
-    private async Task ShowAddTaskItemPopup()
-    {
-        var popup = new AddTaskPopup();
-        await Application.Current.MainPage.ShowPopupAsync(popup);
-    }
-
-    [RelayCommand]
-    private void EditorFocused()
-    {
-        IsEditorFocused = true;
-    }
-
-    [RelayCommand]
-    private void EditorUnfocused()
-    {
-        IsEditorFocused = false;
-    }
 
     [RelayCommand]
     private async Task OnRefreshAsync()
@@ -70,6 +63,14 @@ public partial class MainViewModel : ObservableObject
         {
             IsRefreshing = false;
         }
+    }
+
+    [RelayCommand]
+    private async Task ShowAddTaskItemPopup()
+    {
+
+        var popup = new AddTaskPopup(new AddTaskPopupViewModel());
+        await Application.Current.MainPage.ShowPopupAsync(popup);
     }
 
     [RelayCommand]
@@ -134,17 +135,5 @@ public partial class MainViewModel : ObservableObject
     public async Task GoEditTaskPage(TaskItemViewModel taskItemViewModel)
     {
         await Shell.Current.GoToAsync($"{nameof(EditTaskPage)}?TaskItemId={taskItemViewModel.TaskId}");
-    }
-
-    public async Task LoadTasks()
-    {
-        var tasks = await _taskItemService.GetAllTasks()
-                                          .Where(x => !x.IsCompleted)
-                                          .ToListAsync();
-        TaskItems.Clear();
-        foreach (var task in tasks)
-        {
-            TaskItems.Add(new TaskItemViewModel(task));
-        }
     }
 }

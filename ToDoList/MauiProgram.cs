@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core;
+using Maui.NullableDateTimePicker;
+using Microsoft.Extensions.Logging;
 using ToDoList.Data;
 using ToDoList.Services;
 using ToDoList.ViewModels;
 using ToDoList.Views;
-using CommunityToolkit.Maui;
 
 namespace ToDoList;
 
@@ -14,6 +16,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .ConfigureNullableDateTimePicker()
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
@@ -24,13 +27,18 @@ public static class MauiProgram
         builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<AddTaskPage>();
+        builder.Services.AddTransient<AddTaskPopup>();
+        builder.Services.AddTransient<SelectDatePopup>();
         builder.Services.AddTransient<EditTaskPage>();
 
         builder.Services.AddScoped<MainViewModel>();
         builder.Services.AddTransient<AddTaskViewModel>();
         builder.Services.AddTransient<EditTaskViewModel>();
+        builder.Services.AddTransient<AddTaskPopupViewModel>();
+        builder.Services.AddTransient<SelectDatePopupViewModel>();
 
         builder.Services.AddTransient<ITaskItemService, TaskItemService>();
+        builder.Services.AddTransient<IPopupService, PopupService>();
 
         builder.Services.AddDbContext<MainContext>();
 

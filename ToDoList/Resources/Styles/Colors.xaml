@@ -2,7 +2,6 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-
     <!--begin:: New Color-->
     <Color x:Key="ButtonTextColor">#808080</Color>
 

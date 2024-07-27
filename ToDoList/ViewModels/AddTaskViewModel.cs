@@ -4,71 +4,70 @@ using ToDoList.Data.Models;
 using ToDoList.Services;
 using ToDoList.ViewModels.DataViewModels;
 
-namespace ToDoList.ViewModels
+namespace ToDoList.ViewModels;
+
+public partial class AddTaskViewModel : ObservableObject
 {
-    public partial class AddTaskViewModel : ObservableObject
+    private readonly ITaskItemService _taskItemService;
+
+    public AddTaskViewModel(ITaskItemService taskItemService)
     {
-        private readonly ITaskItemService _taskItemService;
+        TaskItemViewModel = new TaskItemViewModel(new TaskItem());
+        TodayDate = DateTime.Now.Date;
+        IsEnableDueDate = false;
+        DueDateTask = null;
+        DueTimeTask = null;
+        this._taskItemService = taskItemService;
+    }
 
-        public AddTaskViewModel(ITaskItemService taskItemService)
+    [ObservableProperty]
+    private TaskItemViewModel taskItemViewModel;
+
+    [ObservableProperty]
+    private bool isEnableDueDate;
+
+    [ObservableProperty]
+    private DateTime? dueDateTask;
+
+    [ObservableProperty]
+    private TimeSpan? dueTimeTask;
+
+    [ObservableProperty]
+    private DateTime todayDate;
+
+    [RelayCommand]
+    public async Task AddTaskItem()
+    {
+        if (TaskItemViewModel is not null && !String.IsNullOrWhiteSpace(TaskItemViewModel.Task))
         {
-            TaskItemViewModel = new TaskItemViewModel(new TaskItem());
-            TodayDate = DateTime.Now.Date;
-            IsEnableDueDate = false;
-            DueDateTask = null;
-            DueTimeTask = null;
-            this._taskItemService = taskItemService;
-        }
-
-        [ObservableProperty]
-        private TaskItemViewModel taskItemViewModel;
-
-        [ObservableProperty]
-        private bool isEnableDueDate;
-
-        [ObservableProperty]
-        private DateTime? dueDateTask;
-
-        [ObservableProperty]
-        private TimeSpan? dueTimeTask;
-
-        [ObservableProperty]
-        private DateTime todayDate;
-
-        [RelayCommand]
-        public async Task AddTaskItem()
-        {
-            if (TaskItemViewModel is not null && !String.IsNullOrWhiteSpace(TaskItemViewModel.Task))
+            DateTime? dueDateTime = null;
+            if (DueDateTask.HasValue && DueTimeTask.HasValue)
             {
-                DateTime? dueDateTime = null;
-                if (DueDateTask.HasValue && DueTimeTask.HasValue)
+                dueDateTime = CombineDateAndTime(DueDateTask.Value, DueTimeTask.Value);
+                if (dueDateTime < DateTime.Now)
                 {
-                    dueDateTime = CombineDateAndTime(DueDateTask.Value, DueTimeTask.Value);
-                    if (dueDateTime < DateTime.Now)
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Error", "The specified time has passed!", "OK");
-                        return;
-                    }
+                    await Application.Current.MainPage.DisplayAlert("Error", "The specified time has passed!", "OK");
+                    return;
                 }
-
-                var taskItem = new TaskItem
-                {
-                    Task=taskItemViewModel.Task,
-                    DueDate = dueDateTime,
-                };
-                await _taskItemService.AddTaskItemAsync(taskItem);
-
-                await Shell.Current.GoToAsync("//MainPage");
             }
-            else
+
+            var taskItem = new TaskItem
             {
-                await Application.Current.MainPage.DisplayAlert("Warning", "A task name is required", "OK");
-            }
-        }
+                Task=taskItemViewModel.Task,
+                DueDate = dueDateTime,
+            };
+            await _taskItemService.AddTaskItemAsync(taskItem);
 
-        private DateTime CombineDateAndTime(DateTime date, TimeSpan time)
-        {
-            return date.Date.Add(time);
+            await Shell.Current.GoToAsync("//MainPage");
         }
+        else
+        {
+            await Application.Current.MainPage.DisplayAlert("Warning", "A task name is required", "OK");
+        }
+    }
+
+    private DateTime CombineDateAndTime(DateTime date, TimeSpan time)
+    {
+        return date.Date.Add(time);
     }
 }

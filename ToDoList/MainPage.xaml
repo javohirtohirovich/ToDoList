@@ -46,7 +46,8 @@
                                    Margin="10,5,10,0"
                                    CornerRadius="7"
                                    BorderColor="Transparent"
-                                   BackgroundColor="{StaticResource White}">
+                                   BackgroundColor="{StaticResource White}"
+                                   >
 
                                 <Grid Margin="0,0,0,0">
                                     <Grid.ColumnDefinitions>
@@ -159,7 +160,7 @@
                      />
         <!--end:: Button For go Add Task Page-->
 
-        <!--begin:: For Add Quick Task-->
+        <!--begin:: For Add Quick Task--><!--
         <Border Grid.Row="1"
                 Background="{StaticResource White}"
                 StrokeThickness="0"
@@ -249,7 +250,7 @@
                 </Grid>
             </Grid>
         </Border>
-        <!--end:: For Add Quick Task-->
+        --><!--end:: For Add Quick Task-->
 
     </Grid>
     <!--end:: Main Grid-->

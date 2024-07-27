@@ -3,10 +3,11 @@
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
                x:Class="ToDoList.Views.AddTaskPopup"
+               x:DataType="vm:AddTaskPopupViewModel"
                xmlns:vm="clr-namespace:ToDoList.ViewModels"
+               xmlns:ndtp="clr-namespace:Maui.NullableDateTimePicker;assembly=Maui.NullableDateTimePicker"
                CanBeDismissedByTappingOutsideOfPopup="True"
-               VerticalOptions="End"
-               >
+               VerticalOptions="End">
 
     <Grid BackgroundColor="White"
           Padding="10"
@@ -24,13 +25,18 @@
                 <HorizontalStackLayout Spacing="9"
                                        VerticalOptions="Center"
                                        Margin="0,0,0,0">
+                    
                     <Image Source="calendar_add.png"
                            WidthRequest="20"
                            HeightRequest="20" />
-                    <Label Text="Set due date"
+                    <Label Text="{Binding DueDateTasakLbl}"
                            FontSize="14"
                            TextColor="Grey">
                     </Label>
+
+                    <HorizontalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowDatePickerPopupCommand}" />
+                    </HorizontalStackLayout.GestureRecognizers>
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Spacing="7"
                                        VerticalOptions="Center"
@@ -77,8 +83,7 @@
                         FontSize="17"
                         Margin="10"
                         AutoSize="TextChanges"
-                        Text="Text"
-                        >
+                        Text="Text">
                     <!--<Editor.Behaviors>
                         <toolkit:EventToCommandBehavior EventName="Focused"
                                                         Command="{Binding EditorFocusedCommand}" />
@@ -89,9 +94,10 @@
             </Grid>
             <Grid Grid.Column="2">
                 <ImageButton Source="up_arrow.png"
-                             WidthRequest="30"
-                             HeightRequest="30"
-                             Command="{Binding AddQuickTask}">
+                             WidthRequest="27"
+                             HeightRequest="27"
+                             >
+                    
                 </ImageButton>
             </Grid>
         </Grid>
