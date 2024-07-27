@@ -69,11 +69,20 @@ public partial class MainViewModel : ObservableObject
     private async Task ShowAddTaskItemPopup()
     {
         var addTaskPopupViewModel = _serviceProvider.GetService<AddTaskPopupViewModel>();
+
+        // Subscribe to the TaskAdded event
+        addTaskPopupViewModel.TaskAdded += OnTaskAdded;
+
         var popup = new AddTaskPopup(addTaskPopupViewModel);
         await Application.Current.MainPage.ShowPopupAsync(popup);
-    }
 
-  
+        // Unsubscribe from the event after the popup is closed to avoid memory leaks
+        addTaskPopupViewModel.TaskAdded -= OnTaskAdded;
+    }
+    private void OnTaskAdded(object sender, TaskItemViewModel taskItemViewModel)
+    {
+        TaskItems.Add(taskItemViewModel);
+    }
 
     [RelayCommand]
     public async Task AddQuickTask()

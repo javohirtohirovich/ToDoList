@@ -10,6 +10,8 @@ namespace ToDoList.ViewModels;
 
 public partial class AddTaskPopupViewModel : ObservableObject
 {
+    public event EventHandler<TaskItemViewModel> TaskAdded;
+
     private readonly ITaskItemService _taskItemService;
     public AddTaskPopupViewModel(ITaskItemService taskItemService)
     {
@@ -17,7 +19,29 @@ public partial class AddTaskPopupViewModel : ObservableObject
         DueDateTasakLbl = "Set due date";
     }
 
-   
+    [RelayCommand]
+    public async Task AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(Task))
+        {
+            var taskItem = new TaskItem()
+            {
+                Task = Task,
+                DueDate = DueDateTask
+            };
+
+            await _taskItemService.AddTaskItemAsync(taskItem);
+            var taskItemViewModel = new TaskItemViewModel(taskItem);
+
+            // Raise the event to notify the MainViewModel
+            TaskAdded?.Invoke(this, taskItemViewModel);
+
+            DueDateTask = null;
+            DueDateTasakLbl = "Set due date";
+            Task = string.Empty;
+        }
+    }
+
     [RelayCommand]
     private async Task ShowDatePickerPopup()
     {

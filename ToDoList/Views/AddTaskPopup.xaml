@@ -94,6 +94,7 @@
             <Grid Grid.Column="1"
                   VerticalOptions="FillAndExpand">
                 <Editor x:Name="TaskEditor"
+                        Text="{Binding Task}"
                         VerticalOptions="Center"
                         VerticalTextAlignment="End"
                         Placeholder="Add a task"
@@ -101,13 +102,15 @@
                         FontSize="17"
                         Margin="10"
                         AutoSize="TextChanges"
+                        
                         >
                 </Editor>
             </Grid>
             <Grid Grid.Column="2">
                 <ImageButton Source="up_arrow.png"
                              WidthRequest="27"
-                             HeightRequest="27">
+                             HeightRequest="27"
+                             Command="{Binding AddTaskCommand}">
 
                 </ImageButton>
             </Grid>
