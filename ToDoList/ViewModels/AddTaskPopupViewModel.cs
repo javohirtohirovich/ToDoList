@@ -2,25 +2,35 @@
 using CommunityToolkit.Mvvm.Input;
 using Maui.NullableDateTimePicker;
 using System.Globalization;
+using ToDoList.Data.Models;
+using ToDoList.Services;
+using ToDoList.ViewModels.DataViewModels;
 
 namespace ToDoList.ViewModels;
 
 public partial class AddTaskPopupViewModel : ObservableObject
 {
-    public AddTaskPopupViewModel()
+    private readonly ITaskItemService _taskItemService;
+    public AddTaskPopupViewModel(ITaskItemService taskItemService)
     {
+        this._taskItemService = taskItemService;
         DueDateTasakLbl = "Set due date";
     }
+
+   
     [RelayCommand]
     private async Task ShowDatePickerPopup()
     {
-        //var popup = new SelectDatePopup(new SelectDatePopupViewModel());
-        //await Application.Current.MainPage.ShowPopupAsync(popup);
         INullableDateTimePickerOptions nullableDateTimePickerOptions = new NullableDateTimePickerOptions
         {
             NullableDateTime = DueDateTask,
             Mode = PickerModes.Date,
-            ShowWeekNumbers = true
+            ShowWeekNumbers = true,
+            HeaderBackgroundColor = Color.Parse("#5D70BD"),
+            ActivityIndicatorColor = Color.Parse("#5D70BD"),
+            ForeColor = Color.Parse("#5D70BD"),
+            MinDate = DateTime.Today,
+
             // .. other calendar options
         };
 
@@ -29,8 +39,14 @@ public partial class AddTaskPopupViewModel : ObservableObject
         {
             DueDateTask = popupResult.NullableDateTime;
             DueDateTasakLbl = FormatDueDateLabel(DueDateTask);
-            // DateTimeEntry.Text = popupResult.NullableDateTime?.ToString("g"); //If you are not using ViewModel
         }
+    }
+
+    [RelayCommand]
+    private void CancelSelectDate()
+    {
+        DueDateTasakLbl = "Set due date";
+        DueDateTask = null;
     }
 
     [ObservableProperty]
@@ -38,6 +54,9 @@ public partial class AddTaskPopupViewModel : ObservableObject
 
     [ObservableProperty]
     private string dueDateTasakLbl;
+
+    [ObservableProperty]
+    private string task;
 
     private string FormatDueDateLabel(DateTime? dueDate)
     {

@@ -28,14 +28,12 @@ public static class MauiProgram
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<AddTaskPage>();
         builder.Services.AddTransient<AddTaskPopup>();
-        builder.Services.AddTransient<SelectDatePopup>();
         builder.Services.AddTransient<EditTaskPage>();
 
         builder.Services.AddScoped<MainViewModel>();
         builder.Services.AddTransient<AddTaskViewModel>();
         builder.Services.AddTransient<EditTaskViewModel>();
         builder.Services.AddTransient<AddTaskPopupViewModel>();
-        builder.Services.AddTransient<SelectDatePopupViewModel>();
 
         builder.Services.AddTransient<ITaskItemService, TaskItemService>();
         builder.Services.AddTransient<IPopupService, PopupService>();

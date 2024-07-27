@@ -14,13 +14,13 @@ namespace ToDoList.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly ITaskItemService _taskItemService;
-    private readonly IPopupService _popupService;
+    private readonly IServiceProvider _serviceProvider;
 
-    public MainViewModel(ITaskItemService taskItemService, IPopupService popupService)
+    public MainViewModel(ITaskItemService taskItemService, IServiceProvider serviceProvider)
     {
         TaskItems = new ObservableCollection<TaskItemViewModel>();
         this._taskItemService = taskItemService;
-        this._popupService = popupService;
+        this._serviceProvider = serviceProvider;
         InitializeAsync();
     }
 
@@ -68,10 +68,12 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowAddTaskItemPopup()
     {
-
-        var popup = new AddTaskPopup(new AddTaskPopupViewModel());
+        var addTaskPopupViewModel = _serviceProvider.GetService<AddTaskPopupViewModel>();
+        var popup = new AddTaskPopup(addTaskPopupViewModel);
         await Application.Current.MainPage.ShowPopupAsync(popup);
     }
+
+  
 
     [RelayCommand]
     public async Task AddQuickTask()
