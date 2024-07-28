@@ -175,15 +175,6 @@
                             </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-                    <CollectionView.Footer>
-                        <Button Text="Add New Task"
-                                Margin="10,10,10,20"
-                                WidthRequest="50"
-                                BackgroundColor="Black"
-                                TextColor="White"
-                                CornerRadius="5"
-                                HorizontalOptions="Start"/>
-                    </CollectionView.Footer>
                 </CollectionView>
                 
             </RefreshView>
