@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Maui.NullableDateTimePicker;
 using System.Globalization;
@@ -35,6 +37,8 @@ public partial class AddTaskPopupViewModel : ObservableObject
 
             TaskAdded?.Invoke(this, taskItemViewModel);
 
+            var toast = Toast.Make("New task successful add!", ToastDuration.Short, 12);
+            await toast.Show();
             DueDateTask = null;
             DueDateTasakLbl = "Set due date";
             Task = string.Empty;

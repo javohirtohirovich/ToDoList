@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Maui.Views;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
@@ -139,6 +141,8 @@ public partial class MainViewModel : ObservableObject
             {
                 TaskItems.Remove(taskItemViewModel);
                 await PlayCompletionSound();
+                var toast = Toast.Make("Task completed!", ToastDuration.Short, 12);
+                await toast.Show();
             }
         }
     }

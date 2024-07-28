@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Maui.NullableDateTimePicker;
 using System.Globalization;
@@ -60,6 +62,8 @@ public partial class EditTaskPopupViewModel : ObservableObject
 
             TaskEdited?.Invoke(this, taskItemViewModel);
 
+            var toast = Toast.Make("Task successful edit!", ToastDuration.Short, 12);
+            await toast.Show();
         }
         else
         {
