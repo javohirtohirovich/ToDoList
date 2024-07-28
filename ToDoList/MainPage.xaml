@@ -12,11 +12,13 @@
              Shell.BackgroundColor="#307B82"
              Shell.TitleColor="White"
              Background="#5D70BD">
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:NullOrEmptyToBooleanConverter x:Key="NullOrEmptyToBooleanConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+
     <!--begin:: For Top Status Bar change color-->
     <Page.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="#307B82" />
@@ -24,11 +26,13 @@
     <!--end:: For Top Status Bar change color-->
 
     <AbsoluteLayout>
+
         <Image Source="background.png"
                Aspect="AspectFill"
                AbsoluteLayout.LayoutBounds="0,0,1,1"
                AbsoluteLayout.LayoutFlags="All"
                Opacity="1" />
+
         <!--begin:: Main Grid-->
         <Grid Padding="0"
               RowSpacing="0"
@@ -36,19 +40,8 @@
               AbsoluteLayout.LayoutBounds="0,0,1,1"
               AbsoluteLayout.LayoutFlags="All">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Image Source="mainbg.png"
-                   Aspect="AspectFill"
-                   AbsoluteLayout.LayoutBounds="0,0,1,1"
-                   AbsoluteLayout.LayoutFlags="All"
-                   Opacity="1" />
-            <!--begin:: TaskItem Collection View-->
-            <RefreshView  Grid.Row="0"
-                          IsRefreshing="{Binding IsRefreshing}"
-                          Command="{Binding RefreshCommand}">
+            <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                         Command="{Binding RefreshCommand}">
 
                 <CollectionView ItemsSource="{Binding TaskItems}"
                                 SelectionMode="None">
@@ -60,6 +53,8 @@
                                     <SwipeItems>
                                         <SwipeItem Text="Edit"
                                                    IconImageSource="edit_white.png"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowEditTaskItemPopupCommand}"
+                                                   CommandParameter="{Binding .}"
                                                    BackgroundColor="Green" />
                                     </SwipeItems>
                                 </SwipeView.LeftItems>
@@ -74,23 +69,26 @@
 
                                 </SwipeView.RightItems>
 
-
                                 <Frame Padding="0,0,0,0"
                                        Margin="10,5,10,0"
                                        CornerRadius="7"
                                        BorderColor="Transparent"
                                        BackgroundColor="{StaticResource White}">
+
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowEditTaskItemPopupCommand}"
                                                               CommandParameter="{Binding .}" />
                                     </Frame.GestureRecognizers>
+
                                     <Grid Margin="0,0,0,0">
+
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="43" />
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="43" />
                                         </Grid.ColumnDefinitions>
-                                        <Grid>
+
+                                        <Grid Grid.Column="0">
                                             <CheckBox VerticalOptions="Center"
                                                       Scale="1.2">
                                                 <CheckBox.GestureRecognizers>
@@ -172,21 +170,25 @@
 
                                     </Grid>
 
-
                                 </Frame>
-                            </SwipeView>
 
+                            </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-
+                    <CollectionView.Footer>
+                        <Button Text="Add New Task"
+                                Margin="10,10,10,20"
+                                WidthRequest="50"
+                                BackgroundColor="Black"
+                                TextColor="White"
+                                CornerRadius="5"
+                                HorizontalOptions="Start"/>
+                    </CollectionView.Footer>
                 </CollectionView>
+                
             </RefreshView>
-
-            <!--end:: TaskItem Collection View-->
-
-            <!--begin:: Button For go Add Task Page-->
-            <ImageButton Grid.Row="0"
-                         Command="{Binding ShowAddTaskItemPopupCommand}"
+            
+            <ImageButton Command="{Binding ShowAddTaskItemPopupCommand}"
                          WidthRequest="50"
                          HeightRequest="50"
                          VerticalOptions="End"
@@ -201,13 +203,10 @@
                             Opacity="0.8" />
                 </ImageButton.Shadow>
             </ImageButton>
-            <!--end:: Button For go Add Task Page-->
-
 
         </Grid>
         <!--end:: Main Grid-->
+
     </AbsoluteLayout>
-
-
 
 </ContentPage>
