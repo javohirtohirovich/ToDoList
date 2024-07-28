@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
+using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 using ToDoList.Data.Models;
 using ToDoList.Services;
@@ -15,12 +16,14 @@ public partial class MainViewModel : ObservableObject
 {
     private readonly ITaskItemService _taskItemService;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IAudioManager _audioManager;
 
-    public MainViewModel(ITaskItemService taskItemService, IServiceProvider serviceProvider)
+    public MainViewModel(ITaskItemService taskItemService, IServiceProvider serviceProvider, IAudioManager audioManager)
     {
         TaskItems = new ObservableCollection<TaskItemViewModel>();
         this._taskItemService = taskItemService;
         this._serviceProvider = serviceProvider;
+        this._audioManager = audioManager;
         InitializeAsync();
     }
 
@@ -108,7 +111,11 @@ public partial class MainViewModel : ObservableObject
         if (taskItemViewModel is not null)
         {
             var result = await _taskItemService.ChangeTaskToCompletedOrIncompleteAsync(taskItemViewModel.TaskId, taskItemViewModel.IsCompleted);
-            if (result) { TaskItems.Remove(taskItemViewModel); }
+            if (result) 
+            { 
+                TaskItems.Remove(taskItemViewModel);
+                await PlayCompletionSound();
+            }
         }
     }
 
@@ -146,5 +153,11 @@ public partial class MainViewModel : ObservableObject
     public async Task GoEditTaskPage(TaskItemViewModel taskItemViewModel)
     {
         await Shell.Current.GoToAsync($"{nameof(EditTaskPage)}?TaskItemId={taskItemViewModel.TaskId}");
+    }
+
+    private async Task PlayCompletionSound()
+    {
+        var player = _audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("complete_task.wav"));
+        player.Play();
     }
 }

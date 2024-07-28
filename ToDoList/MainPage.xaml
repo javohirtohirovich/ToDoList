@@ -9,7 +9,8 @@
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converter="clr-namespace:ToDoList.Converters"
-             Shell.BackgroundColor="{StaticResource White}"
+             Shell.BackgroundColor="#307B82"
+             Shell.TitleColor="White"
              Background="#5D70BD">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -18,241 +19,192 @@
     </ContentPage.Resources>
     <!--begin:: For Top Status Bar change color-->
     <Page.Behaviors>
-        <mct:StatusBarBehavior StatusBarColor="#808080" />
+        <mct:StatusBarBehavior StatusBarColor="#307B82" />
     </Page.Behaviors>
     <!--end:: For Top Status Bar change color-->
 
-    <!--begin:: Main Grid-->
-    <Grid Padding="0"
-          RowSpacing="0"
-          ColumnSpacing="10">
+    <AbsoluteLayout>
+        <Image Source="background.png"
+               Aspect="AspectFill"
+               AbsoluteLayout.LayoutBounds="0,0,1,1"
+               AbsoluteLayout.LayoutFlags="All"
+               Opacity="1" />
+        <!--begin:: Main Grid-->
+        <Grid Padding="0"
+              RowSpacing="0"
+              ColumnSpacing="10"
+              AbsoluteLayout.LayoutBounds="0,0,1,1"
+              AbsoluteLayout.LayoutFlags="All">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image Source="mainbg.png"
+                   Aspect="AspectFill"
+                   AbsoluteLayout.LayoutBounds="0,0,1,1"
+                   AbsoluteLayout.LayoutFlags="All"
+                   Opacity="1" />
+            <!--begin:: TaskItem Collection View-->
+            <RefreshView  Grid.Row="0"
+                          IsRefreshing="{Binding IsRefreshing}"
+                          Command="{Binding RefreshCommand}">
 
-        <!--begin:: TaskItem Collection View-->
-        <RefreshView  Grid.Row="0"
-                      IsRefreshing="{Binding IsRefreshing}"
-                      Command="{Binding RefreshCommand}">
+                <CollectionView ItemsSource="{Binding TaskItems}"
+                                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="type:TaskItemViewModel">
+                            <SwipeView>
+                     
+                                <SwipeView.LeftItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Edit"
+                                                   IconImageSource="edit_white.png"
+                                                   BackgroundColor="Green" />
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Delete"
+                                                   IconImageSource="trash_white.png"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTaskItemCommand}"
+                                                   CommandParameter="{Binding}"
+                                                   BackgroundColor="Red" />
+                                    </SwipeItems>
+                                    
+                                </SwipeView.RightItems>
 
-            <CollectionView ItemsSource="{Binding TaskItems}"
-                            SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="type:TaskItemViewModel">
-                        <SwipeView>
-                            <Frame Padding="0,0,0,0"
-                                   Margin="10,5,10,0"
-                                   CornerRadius="7"
-                                   BorderColor="Transparent"
-                                   BackgroundColor="{StaticResource White}"
-                                   >
 
-                                <Grid Margin="0,0,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="43" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="43" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <CheckBox VerticalOptions="Center"
-                                                  Scale="1.2">
+                                <Frame Padding="0,0,0,0"
+                                       Margin="10,5,10,0"
+                                       CornerRadius="7"
+                                       BorderColor="Transparent"
+                                       BackgroundColor="{StaticResource White}">
 
-                                        </CheckBox>
-                                    </Grid>
-                                    <Grid Grid.Column="1"
-                                          Margin="0,0,0,0">
+                                    <Grid Margin="0,0,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="43" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="43" />
+                                        </Grid.ColumnDefinitions>
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-
-                                            <Grid Grid.Row="0"
-                                                  MinimumHeightRequest="50">
-                                                <VerticalStackLayout VerticalOptions="CenterAndExpand">
-                                                    <Label Text="{Binding Task}"
-                                                           FontSize="17">
-                                                    </Label>
-                                                    <HorizontalStackLayout Spacing="5"
-                                                                           Margin="0,0,0,10">
-                                                        <HorizontalStackLayout.Triggers>
-                                                            <DataTrigger TargetType="HorizontalStackLayout"
-                                                                         Binding="{Binding DueDate, Converter={StaticResource NullOrEmptyToBooleanConverter}}"
-                                                                         Value="True">
-                                                                <Setter Property="IsVisible"
-                                                                        Value="False" />
-                                                            </DataTrigger>
-                                                        </HorizontalStackLayout.Triggers>
-                                                        <Image Source="calendar.png"
-                                                               WidthRequest="10"
-                                                               HeightRequest="10"
-                                                               Margin="0,1,0,0" />
-
-                                                        <Label>
-                                                            <Label.FormattedText>
-                                                                <FormattedString>
-                                                                    <Span Text="{Binding DueDate, StringFormat='{}{0:ddd, dd MMM}'}"
-                                                                          TextColor="Grey"
-                                                                          FontSize="13" />
-                                                                </FormattedString>
-                                                            </Label.FormattedText>
-                                                        </Label>
-                                                    </HorizontalStackLayout>
-
-                                                </VerticalStackLayout>
-                                            </Grid>
-
+                                            <CheckBox VerticalOptions="Center"
+                                                      Scale="1.2">
+                                                <CheckBox.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CheckTaskCommand}"
+                                                                          CommandParameter="{Binding .}" />
+                                                </CheckBox.GestureRecognizers>
+                                            </CheckBox>
                                         </Grid>
+                                        <Grid Grid.Column="1"
+                                              Margin="0,0,0,0">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Grid Grid.Row="0"
+                                                      MinimumHeightRequest="50">
+                                                    <VerticalStackLayout VerticalOptions="CenterAndExpand">
+                                                        <Label Text="{Binding Task}"
+                                                               FontSize="17">
+                                                        </Label>
+                                                        <HorizontalStackLayout Spacing="5"
+                                                                               Margin="0,0,0,10">
+                                                            <HorizontalStackLayout.Triggers>
+                                                                <DataTrigger TargetType="HorizontalStackLayout"
+                                                                             Binding="{Binding DueDate, Converter={StaticResource NullOrEmptyToBooleanConverter}}"
+                                                                             Value="True">
+                                                                    <Setter Property="IsVisible"
+                                                                            Value="False" />
+                                                                </DataTrigger>
+                                                            </HorizontalStackLayout.Triggers>
+                                                            <Image Source="calendar.png"
+                                                                   WidthRequest="10"
+                                                                   HeightRequest="10"
+                                                                   Margin="0,1,0,0" />
+
+                                                            <Label>
+                                                                <Label.FormattedText>
+                                                                    <FormattedString>
+                                                                        <Span Text="{Binding DueDate, StringFormat='{}{0:ddd, dd MMM}'}"
+                                                                              TextColor="Grey"
+                                                                              FontSize="13" />
+                                                                    </FormattedString>
+                                                                </Label.FormattedText>
+                                                            </Label>
+                                                        </HorizontalStackLayout>
+
+                                                    </VerticalStackLayout>
+                                                </Grid>
+
+                                            </Grid>
+                                        </Grid>
+                                        <Grid Grid.Column="2">
+                                            <ImageButton  Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ChangeTaskImportantStatusCommand}"
+                                                          CommandParameter="{Binding}"
+                                                          VerticalOptions="Center"
+                                                          WidthRequest="20"
+                                                          HeightRequest="20"
+                                                          MinimumHeightRequest="20"
+                                                          MaximumWidthRequest="20">
+                                                <ImageButton.Triggers>
+                                                    <DataTrigger TargetType="ImageButton"
+                                                                 Binding="{Binding IsImportant}"
+                                                                 Value="False">
+                                                        <Setter Property="Source"
+                                                                Value="star_false.png" />
+
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="ImageButton"
+                                                                 Binding="{Binding IsImportant}"
+                                                                 Value="True">
+                                                        <Setter Property="Source"
+                                                                Value="star_true.png" />
+
+                                                    </DataTrigger>
+                                                </ImageButton.Triggers>
+                                            </ImageButton>
+                                        </Grid>
+
                                     </Grid>
-                                    <Grid Grid.Column="2">
-                                        <ImageButton  Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ChangeTaskImportantStatusCommand}"
-                                                      CommandParameter="{Binding}"
-                                                      VerticalOptions="Center"
-                                                      WidthRequest="20"
-                                                      HeightRequest="20"
-                                                      MinimumHeightRequest="20"
-                                                      MaximumWidthRequest="20">
-                                            <ImageButton.Triggers>
-                                                <DataTrigger TargetType="ImageButton"
-                                                             Binding="{Binding IsImportant}"
-                                                             Value="False">
-                                                    <Setter Property="Source"
-                                                            Value="star_false.png" />
-
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="ImageButton"
-                                                             Binding="{Binding IsImportant}"
-                                                             Value="True">
-                                                    <Setter Property="Source"
-                                                            Value="star_true.png" />
-
-                                                </DataTrigger>
-                                            </ImageButton.Triggers>
-                                        </ImageButton>
-                                    </Grid>
-
-                                </Grid>
 
 
-                            </Frame>
-                        </SwipeView>
+                                </Frame>
+                            </SwipeView>
 
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
 
-            </CollectionView>
-        </RefreshView>
+                </CollectionView>
+            </RefreshView>
 
-        <!--end:: TaskItem Collection View-->
+            <!--end:: TaskItem Collection View-->
 
-        <!--begin:: Button For go Add Task Page-->
-        <ImageButton Grid.Row="0"
-                     Command="{Binding ShowAddTaskItemPopupCommand}"
-                     WidthRequest="50"
-                     HeightRequest="50"
-                     VerticalOptions="End"
-                     HorizontalOptions="End"
-                     Margin="0,0,0,20"
-                     CornerRadius="50"
-                     Source="plus.png"
-                     Background="#DFEDF8" 
-                     />
-        <!--end:: Button For go Add Task Page-->
+            <!--begin:: Button For go Add Task Page-->
+            <ImageButton Grid.Row="0"
+                         Command="{Binding ShowAddTaskItemPopupCommand}"
+                         WidthRequest="50"
+                         HeightRequest="50"
+                         VerticalOptions="End"
+                         HorizontalOptions="End"
+                         Margin="0,0,10,20"
+                         CornerRadius="50"
+                         Source="plus.png"
+                         Background="#307B82">
+                <ImageButton.Shadow>
+                    <Shadow Brush="Gray"
+                            Offset="10,10"
+                            Opacity="0.8" />
+                </ImageButton.Shadow>
+            </ImageButton>
+            <!--end:: Button For go Add Task Page-->
 
-        <!--begin:: For Add Quick Task--><!--
-        <Border Grid.Row="1"
-                Background="{StaticResource White}"
-                StrokeThickness="0"
-                IsVisible="{Binding IsEditorFocused}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="50" />
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0"
-                          BackgroundColor="{StaticResource White}">
-                        <CheckBox IsEnabled="False"></CheckBox>
-                    </Grid>
-                    <Grid Grid.Column="1"
-                          VerticalOptions="FillAndExpand">
-                        <Editor x:Name="edtTask"
-                                Text="{Binding TaskTitle}"
-                                VerticalOptions="Center"
-                                VerticalTextAlignment="End"
-                                Placeholder="Add a task"
-                                PlaceholderColor="Grey"
-                                FontSize="17"
-                                Margin="10"
-                                AutoSize="TextChanges"
-                                >
-                            <Editor.Behaviors>
-                                <toolkit:EventToCommandBehavior EventName="Focused"
-                                                                Command="{Binding EditorFocusedCommand}" />
-                                <toolkit:EventToCommandBehavior EventName="Unfocused"
-                                                                Command="{Binding EditorUnfocusedCommand}" />
-                            </Editor.Behaviors>
-                        </Editor>
-                    </Grid>
-                    <Grid Grid.Column="2">
-                        <ImageButton Source="up_arrow.png"
-                                     WidthRequest="30"
-                                     HeightRequest="30"
-                                     Command="{Binding AddQuickTaskCommand}">
-                        </ImageButton>
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="0"
-                      BackgroundColor="{StaticResource White}">
-                    <HorizontalStackLayout HorizontalOptions="Center"
-                                           Spacing="35">
-                        <HorizontalStackLayout Spacing="9"
-                                               VerticalOptions="Center"
-                                               Margin="0,0,0,0">
-                            <Image Source="calendar_add.png"
-                                   WidthRequest="20"
-                                   HeightRequest="20" />
-                            <Label Text="Set due date"
-                                   FontSize="14"
-                                   TextColor="Grey">
-                            </Label>
-                        </HorizontalStackLayout>
-                        <HorizontalStackLayout Spacing="7"
-                                               VerticalOptions="Center"
-                                               Margin="0,0,0,0">
-                            <Image Source="remind.png"
-                                   WidthRequest="20"
-                                   HeightRequest="20" />
-                            <Label Text="Remind me"
-                                   FontSize="14"
-                                   TextColor="Grey">
-                            </Label>
-                        </HorizontalStackLayout>
-                        <HorizontalStackLayout Spacing="7"
-                                               VerticalOptions="Center"
-                                               Margin="0,0,0,0">
-                            <Image Source="repeat.png"
-                                   WidthRequest="20"
-                                   HeightRequest="20" />
-                            <Label Text="Repeat"
-                                   FontSize="14"
-                                   TextColor="Grey">
-                            </Label>
-                        </HorizontalStackLayout>
-                    </HorizontalStackLayout>
 
-                </Grid>
-            </Grid>
-        </Border>
-        --><!--end:: For Add Quick Task-->
+        </Grid>
+        <!--end:: Main Grid-->
+    </AbsoluteLayout>
 
-    </Grid>
-    <!--end:: Main Grid-->
+
 
 </ContentPage>

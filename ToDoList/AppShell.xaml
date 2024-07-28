@@ -4,28 +4,31 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:ToDoList"
        xmlns:views="clr-namespace:ToDoList.Views"
-       Shell.FlyoutBehavior="Flyout"
        Title="ToDoList"
-       Shell.TabBarIsVisible="False"
        >
-
-    <Shell.FlyoutHeader>
+    <ShellContent Title="Tasks"
+                  ContentTemplate="{DataTemplate local:MainPage}"
+                  Route="MainPage"
+                  Icon="home" />
+    <Shell.MenuBarItems>
+        
+    </Shell.MenuBarItems>
+    <!--<Shell.FlyoutHeader>
         <VerticalStackLayout>
             <Image Source="todo.png"
                    WidthRequest="70" />
         </VerticalStackLayout>
     </Shell.FlyoutHeader>
-    
+
 
     <FlyoutItem Title="Home"
                 FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Home"
                       ContentTemplate="{DataTemplate local:MainPage}"
                       Route="MainPage"
-                      Icon="home"
-                      />
-        
-       
+                      Icon="home" />
+
+
     </FlyoutItem>
     <FlyoutItem Title="Completed tasks"
                 FlyoutDisplayOptions="AsMultipleItems">
@@ -35,7 +38,7 @@
 
 
     </FlyoutItem>
-    
+
     <FlyoutItem Title="About"
                 FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="About"
@@ -47,11 +50,12 @@
 
     <Shell.FlyoutFooter>
         <VerticalStackLayout Background="#CACACA">
-            <Label Text="ToDoList App" HorizontalOptions="Start"
+            <Label Text="ToDoList App"
+                   HorizontalOptions="Start"
                    FontSize="15"
                    FontFamily="Bold"
                    Margin="30,0,0,0"
-                   TextColor="#535353"/>
+                   TextColor="#535353" />
             <Label Text="Version: 1.0"
                    HorizontalOptions="StartAndExpand"
                    Margin="34,0,0,10"
@@ -59,5 +63,5 @@
                    FontFamily="Bold"
                    TextColor="#535353" />
         </VerticalStackLayout>
-    </Shell.FlyoutFooter>
+    </Shell.FlyoutFooter>-->
 </Shell>

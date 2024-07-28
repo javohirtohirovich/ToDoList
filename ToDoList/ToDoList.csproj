@@ -61,6 +61,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\about.png" />
 	  <None Remove="Resources\Images\add.png" />
+	  <None Remove="Resources\Images\background.png" />
 	  <None Remove="Resources\Images\calendar.png" />
 	  <None Remove="Resources\Images\calendar_add.png" />
 	  <None Remove="Resources\Images\cancel.png" />
@@ -72,6 +73,7 @@
 	  <None Remove="Resources\Images\completed.png" />
 	  <None Remove="Resources\Images\description.png" />
 	  <None Remove="Resources\Images\edit.png" />
+	  <None Remove="Resources\Images\edit_white.png" />
 	  <None Remove="Resources\Images\home.png" />
 	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\menu.png" />
@@ -88,9 +90,11 @@
 	  <None Remove="Resources\Images\status.png" />
 	  <None Remove="Resources\Images\todo.png" />
 	  <None Remove="Resources\Images\trash.png" />
+	  <None Remove="Resources\Images\trash_white.png" />
 	  <None Remove="Resources\Images\up_arrow.png" />
 	  <None Remove="Resources\Images\x_buton_popup.png" />
 	  <None Remove="Resources\Images\x_clear.png" />
+	  <None Remove="Resources\Raw\complete_task.wav" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -104,6 +108,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.70" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.70" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Plugin.Maui.Audio" Version="3.0.0" />
 		<PackageReference Include="Sebarslan.Maui.NullableDateTimePicker" Version="2.3.1" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 	</ItemGroup>

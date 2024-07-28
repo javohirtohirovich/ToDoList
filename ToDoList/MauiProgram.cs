@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Core;
 using Maui.NullableDateTimePicker;
 using Microsoft.Extensions.Logging;
+using Plugin.Maui.Audio;
 using ToDoList.Data;
 using ToDoList.Services;
 using ToDoList.ViewModels;
@@ -25,6 +26,7 @@ public static class MauiProgram
             });
 
         builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
+        builder.Services.AddSingleton(AudioManager.Current);
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<AddTaskPage>();
         builder.Services.AddTransient<AddTaskPopup>();
