@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Views;
+﻿using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
@@ -72,19 +71,44 @@ public partial class MainViewModel : ObservableObject
     private async Task ShowAddTaskItemPopup()
     {
         var addTaskPopupViewModel = _serviceProvider.GetService<AddTaskPopupViewModel>();
-
-        // Subscribe to the TaskAdded event
         addTaskPopupViewModel.TaskAdded += OnTaskAdded;
 
         var popup = new AddTaskPopup(addTaskPopupViewModel);
         await Application.Current.MainPage.ShowPopupAsync(popup);
 
-        // Unsubscribe from the event after the popup is closed to avoid memory leaks
         addTaskPopupViewModel.TaskAdded -= OnTaskAdded;
     }
+
+    [RelayCommand]
+    private async Task ShowEditTaskItemPopup(TaskItemViewModel taskItemViewModel)
+    {
+
+        var editTaskPopupViewModel = _serviceProvider.GetService<EditTaskPopupViewModel>();
+        if (editTaskPopupViewModel != null && taskItemViewModel != null)
+        {
+            editTaskPopupViewModel.TaskEdited += OnTaskEdited;
+            await editTaskPopupViewModel.LoadTaskItem(taskItemViewModel.TaskId);
+            var popup = new EditTaskPopup(editTaskPopupViewModel);
+            await Application.Current.MainPage.ShowPopupAsync(popup);
+
+            editTaskPopupViewModel.TaskEdited -= OnTaskEdited;
+        }
+    }
+
     private void OnTaskAdded(object sender, TaskItemViewModel taskItemViewModel)
     {
         TaskItems.Add(taskItemViewModel);
+    }
+
+    private void OnTaskEdited(object sender, TaskItemViewModel taskItemViewModel)
+    {
+        var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+
+        if (existingTaskItem != null)
+        {
+            var index = TaskItems.IndexOf(existingTaskItem);
+            TaskItems[index] = taskItemViewModel;
+        }
     }
 
     [RelayCommand]
@@ -111,8 +135,8 @@ public partial class MainViewModel : ObservableObject
         if (taskItemViewModel is not null)
         {
             var result = await _taskItemService.ChangeTaskToCompletedOrIncompleteAsync(taskItemViewModel.TaskId, taskItemViewModel.IsCompleted);
-            if (result) 
-            { 
+            if (result)
+            {
                 TaskItems.Remove(taskItemViewModel);
                 await PlayCompletionSound();
             }

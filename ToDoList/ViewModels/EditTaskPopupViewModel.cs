@@ -8,36 +8,62 @@ using ToDoList.ViewModels.DataViewModels;
 
 namespace ToDoList.ViewModels;
 
-public partial class AddTaskPopupViewModel : ObservableObject
+public partial class EditTaskPopupViewModel : ObservableObject
 {
-    public event EventHandler<TaskItemViewModel> TaskAdded;
-
     private readonly ITaskItemService _taskItemService;
-    public AddTaskPopupViewModel(ITaskItemService taskItemService)
+    public event EventHandler<TaskItemViewModel> TaskEdited;
+
+    public EditTaskPopupViewModel(ITaskItemService taskItemService)
     {
         this._taskItemService = taskItemService;
-        DueDateTasakLbl = "Set due date";
+    }
+
+    [ObservableProperty]
+    private int taskId;
+
+    [ObservableProperty]
+    private string task;
+
+    [ObservableProperty]
+    private DateTime? dueDateTask;
+
+    [ObservableProperty]
+    private string dueDateTasakLbl;
+
+    public async Task LoadTaskItem(int taskId)
+    {
+        var taskItem = await _taskItemService.GetTaskItemAsync(taskId);
+        if (taskItem is not null)
+        {
+            TaskId = taskItem.TaskId;
+            Task = taskItem.Task;
+            DueDateTask = taskItem.DueDate;
+            DueDateTasakLbl = FormatDueDateLabel(taskItem.DueDate);
+        }
     }
 
     [RelayCommand]
-    public async Task AddTask()
+    public async Task EditTaskItem()
     {
-        if (!string.IsNullOrWhiteSpace(Task))
+        if (!String.IsNullOrWhiteSpace(Task))
         {
-            var taskItem = new TaskItem()
+            var taskItem = new TaskItem
             {
-                Task = Task,
-                DueDate = DueDateTask
-            };
+                TaskId = this.TaskId,
+                Task = this.Task,
+                DueDate = DueDateTask,
+                UpdatedAt = DateTime.Now,
 
-            await _taskItemService.AddTaskItemAsync(taskItem);
+            };
+            await _taskItemService.EditTaskItemAsync(TaskId, taskItem);
             var taskItemViewModel = new TaskItemViewModel(taskItem);
 
-            TaskAdded?.Invoke(this, taskItemViewModel);
+            TaskEdited?.Invoke(this, taskItemViewModel);
 
-            DueDateTask = null;
-            DueDateTasakLbl = "Set due date";
-            Task = string.Empty;
+        }
+        else
+        {
+            await Application.Current.MainPage.DisplayAlert("Warning", "A task is required", "OK");
         }
     }
 
@@ -71,15 +97,6 @@ public partial class AddTaskPopupViewModel : ObservableObject
         DueDateTasakLbl = "Set due date";
         DueDateTask = null;
     }
-
-    [ObservableProperty]
-    private DateTime? dueDateTask;
-
-    [ObservableProperty]
-    private string dueDateTasakLbl;
-
-    [ObservableProperty]
-    private string task;
 
     private string FormatDueDateLabel(DateTime? dueDate)
     {

@@ -29,13 +29,15 @@ public static class MauiProgram
         builder.Services.AddSingleton(AudioManager.Current);
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<AddTaskPage>();
-        builder.Services.AddTransient<AddTaskPopup>();
         builder.Services.AddTransient<EditTaskPage>();
+        builder.Services.AddTransient<AddTaskPopup>();
+        builder.Services.AddTransient<EditTaskPopup>();
 
         builder.Services.AddScoped<MainViewModel>();
         builder.Services.AddTransient<AddTaskViewModel>();
         builder.Services.AddTransient<EditTaskViewModel>();
         builder.Services.AddTransient<AddTaskPopupViewModel>();
+        builder.Services.AddTransient<EditTaskPopupViewModel>();
 
         builder.Services.AddTransient<ITaskItemService, TaskItemService>();
         builder.Services.AddTransient<IPopupService, PopupService>();

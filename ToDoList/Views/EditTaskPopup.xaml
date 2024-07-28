@@ -4,11 +4,10 @@
                xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
                xmlns:vm="clr-namespace:ToDoList.ViewModels"
                xmlns:ndtp="clr-namespace:Maui.NullableDateTimePicker;assembly=Maui.NullableDateTimePicker"
-               x:Class="ToDoList.Views.AddTaskPopup"
-               x:DataType="vm:AddTaskPopupViewModel"
+               x:Class="ToDoList.Views.EditTaskPopup"
+               x:DataType="vm:EditTaskPopupViewModel"
                CanBeDismissedByTappingOutsideOfPopup="True"
                VerticalOptions="End">
-
     <Grid BackgroundColor="White"
           Padding="0"
           WidthRequest="400">
@@ -42,8 +41,8 @@
                                  WidthRequest="15"
                                  HeightRequest="15">
                         <ImageButton.Triggers>
-                            <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding DueDateTasakLbl}"
+                            <DataTrigger Binding="{Binding DueDateTasakLbl}"
+                                         TargetType="ImageButton"
                                          Value="Set due date">
                                 <Setter Property="IsVisible"
                                         Value="False" />
@@ -105,15 +104,14 @@
                 </Editor>
             </Grid>
             <Grid Grid.Column="2">
-                <ImageButton Source="up_arrow.png"
-                             WidthRequest="29"
-                             HeightRequest="29"
-                             Command="{Binding AddTaskCommand}">
+                <ImageButton Command="{Binding EditTaskItemCommand}"
+                             Source="edit.png"
+                             WidthRequest="26"
+                             HeightRequest="26"
+                             >
 
                 </ImageButton>
             </Grid>
         </Grid>
     </Grid>
 </toolkit:Popup>
-
-    

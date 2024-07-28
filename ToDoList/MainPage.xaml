@@ -55,7 +55,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="type:TaskItemViewModel">
                             <SwipeView>
-                     
+
                                 <SwipeView.LeftItems>
                                     <SwipeItems>
                                         <SwipeItem Text="Edit"
@@ -71,7 +71,7 @@
                                                    CommandParameter="{Binding}"
                                                    BackgroundColor="Red" />
                                     </SwipeItems>
-                                    
+
                                 </SwipeView.RightItems>
 
 
@@ -80,7 +80,10 @@
                                        CornerRadius="7"
                                        BorderColor="Transparent"
                                        BackgroundColor="{StaticResource White}">
-
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowEditTaskItemPopupCommand}"
+                                                              CommandParameter="{Binding .}" />
+                                    </Frame.GestureRecognizers>
                                     <Grid Margin="0,0,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="43" />
@@ -91,8 +94,7 @@
                                             <CheckBox VerticalOptions="Center"
                                                       Scale="1.2">
                                                 <CheckBox.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CheckTaskCommand}"
-                                                                          CommandParameter="{Binding .}" />
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CheckTaskCommand}" />
                                                 </CheckBox.GestureRecognizers>
                                             </CheckBox>
                                         </Grid>

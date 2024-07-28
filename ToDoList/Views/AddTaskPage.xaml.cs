@@ -9,4 +9,6 @@ public partial class AddTaskPage : ContentPage
 		InitializeComponent();
 		BindingContext = vm;
 	}
+
+	
 }
