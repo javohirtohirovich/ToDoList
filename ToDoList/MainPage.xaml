@@ -94,7 +94,8 @@
                                             <CheckBox VerticalOptions="Center"
                                                       Scale="1.2">
                                                 <CheckBox.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CheckTaskCommand}" CommandParameter="{Binding .}"/>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CheckTaskCommand}"
+                                                                          CommandParameter="{Binding .}" />
                                                 </CheckBox.GestureRecognizers>
                                             </CheckBox>
                                         </Grid>
