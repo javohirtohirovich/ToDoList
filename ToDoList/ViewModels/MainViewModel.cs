@@ -49,9 +49,6 @@ public partial class MainViewModel : ObservableObject
     ObservableCollection<TaskItemViewModel> taskItems;
 
     [ObservableProperty]
-    private string taskTitle;
-
-    [ObservableProperty]
     private bool isRefreshing;
 
 
@@ -114,24 +111,6 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task AddQuickTask()
-    {
-        if (!string.IsNullOrWhiteSpace(TaskTitle))
-        {
-            var taskItem = new TaskItem
-            {
-                Task = TaskTitle
-            };
-            var taskItemViewModel = new TaskItemViewModel(taskItem);
-
-            await _taskItemService.AddTaskItemAsync(taskItem);
-            TaskItems.Add(taskItemViewModel);
-
-            TaskTitle = string.Empty;
-        }
-    }
-
-    [RelayCommand]
     public async Task CheckTask(TaskItemViewModel taskItemViewModel)
     {
         if (taskItemViewModel is not null)
@@ -162,12 +141,6 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    async Task GoAddTaskPage()
-    {
-        await Shell.Current.GoToAsync(nameof(AddTaskPage));
-    }
-
-    [RelayCommand]
     private async Task ChangeTaskImportantStatus(TaskItemViewModel taskItemViewModel)
     {
         var result = await _taskItemService.ChangeTaskImportantStatus(taskItemViewModel.TaskId, taskItemViewModel.IsImportant);
@@ -175,12 +148,6 @@ public partial class MainViewModel : ObservableObject
         {
             taskItemViewModel.IsImportant = !taskItemViewModel.IsImportant;
         }
-    }
-
-    [RelayCommand]
-    public async Task GoEditTaskPage(TaskItemViewModel taskItemViewModel)
-    {
-        await Shell.Current.GoToAsync($"{nameof(EditTaskPage)}?TaskItemId={taskItemViewModel.TaskId}");
     }
 
     private async Task PlayCompletionSound()

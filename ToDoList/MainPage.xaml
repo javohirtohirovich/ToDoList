@@ -16,6 +16,8 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:NullOrEmptyToBooleanConverter x:Key="NullOrEmptyToBooleanConverter" />
+            <converter:DueDateToColorConverter x:Key="DueDateToColorConverter" />
+            <converter:DueDateToImageConverter x:Key="DueDateToImageConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -120,19 +122,18 @@
                                                                             Value="False" />
                                                                 </DataTrigger>
                                                             </HorizontalStackLayout.Triggers>
-                                                            <Image Source="calendar.png"
+                                                            <Image Source="{Binding DueDate, Converter={StaticResource DueDateToImageConverter}}"
                                                                    WidthRequest="10"
                                                                    HeightRequest="10"
                                                                    Margin="0,1,0,0" />
 
-                                                            <Label>
-                                                                <Label.FormattedText>
-                                                                    <FormattedString>
-                                                                        <Span Text="{Binding DueDate, StringFormat='{}{0:ddd, dd MMM}'}"
-                                                                              TextColor="Grey"
-                                                                              FontSize="13" />
-                                                                    </FormattedString>
-                                                                </Label.FormattedText>
+
+                                                            <Label Text="{Binding DueDate, StringFormat='{}{0:ddd, dd MMM}'}"
+                                                                   FontSize="13">
+                                                                <Label.TextColor>
+                                                                    <Binding Path="DueDate"
+                                                                             Converter="{StaticResource DueDateToColorConverter}" />
+                                                                </Label.TextColor>
                                                             </Label>
                                                         </HorizontalStackLayout>
 
@@ -141,31 +142,30 @@
 
                                             </Grid>
                                         </Grid>
-                                        <Grid Grid.Column="2">
-                                            <ImageButton  Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ChangeTaskImportantStatusCommand}"
-                                                          CommandParameter="{Binding}"
-                                                          VerticalOptions="Center"
-                                                          WidthRequest="20"
-                                                          HeightRequest="20"
-                                                          MinimumHeightRequest="20"
-                                                          MaximumWidthRequest="20">
+                                        <Grid Grid.Column="2" ZIndex="1">
+                                            <ImageButton Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ChangeTaskImportantStatusCommand}"
+                                                         CommandParameter="{Binding .}"
+                                                         VerticalOptions="Center"
+                                                         WidthRequest="20"
+                                                         HeightRequest="20"
+                                                         MinimumHeightRequest="20"
+                                                         MaximumWidthRequest="20">
                                                 <ImageButton.Triggers>
                                                     <DataTrigger TargetType="ImageButton"
                                                                  Binding="{Binding IsImportant}"
                                                                  Value="False">
                                                         <Setter Property="Source"
                                                                 Value="star_false.png" />
-
                                                     </DataTrigger>
                                                     <DataTrigger TargetType="ImageButton"
                                                                  Binding="{Binding IsImportant}"
                                                                  Value="True">
                                                         <Setter Property="Source"
                                                                 Value="star_true.png" />
-
                                                     </DataTrigger>
                                                 </ImageButton.Triggers>
                                             </ImageButton>
+
                                         </Grid>
 
                                     </Grid>
@@ -176,9 +176,9 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                
+
             </RefreshView>
-            
+
             <ImageButton Command="{Binding ShowAddTaskItemPopupCommand}"
                          WidthRequest="50"
                          HeightRequest="50"

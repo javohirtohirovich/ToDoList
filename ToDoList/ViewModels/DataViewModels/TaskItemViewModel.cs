@@ -11,6 +11,7 @@ public partial class TaskItemViewModel : ObservableObject
         task = taskItem.Task;
         dueDate = taskItem.DueDate;
         isCompleted = taskItem.IsCompleted;
+        isImportant = taskItem.IsImportant;
         categoryId = taskItem.CategoryId;
         createdAt = taskItem.CreatedAt;
         updatedAt = taskItem.UpdatedAt;

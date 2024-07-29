@@ -30,6 +30,7 @@ public class TaskItemService : ITaskItemService
         return false;
     }
 
+
     public async Task<bool> ChangeTaskToCompletedOrIncompleteAsync(int taskId, bool isCompleted)
     {
         var taskItem = await _context.Tasks.FindAsync(taskId);

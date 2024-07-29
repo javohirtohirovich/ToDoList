@@ -53,12 +53,11 @@ public partial class AddTaskPopupViewModel : ObservableObject
             NullableDateTime = DueDateTask,
             Mode = PickerModes.Date,
             ShowWeekNumbers = true,
-            HeaderBackgroundColor = Color.Parse("#5D70BD"),
-            ActivityIndicatorColor = Color.Parse("#5D70BD"),
-            ForeColor = Color.Parse("#5D70BD"),
-            MinDate = DateTime.Today,
-
-            // .. other calendar options
+            HeaderBackgroundColor = Color.Parse("#347980"),
+            ActivityIndicatorColor = Color.Parse("#347980"),
+            ForeColor = Color.Parse("#347980"),
+            
+            //MinDate = DateTime.Today,
         };
 
         var result = await NullableDateTimePicker.OpenCalendarAsync(nullableDateTimePickerOptions);
