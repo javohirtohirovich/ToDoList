@@ -112,7 +112,7 @@
                                                       MinimumHeightRequest="65">
                                                     <VerticalStackLayout VerticalOptions="CenterAndExpand">
                                                         <Label Text="{Binding Task}"
-                                                               FontSize="17">
+                                                               FontSize="17" Margin="0,0,0,7">
                                                             <Label.TextDecorations>
                                                                 <Binding Path="IsCompleted"
                                                                          Converter="{StaticResource BoolToTextDecorationConverter}" />
