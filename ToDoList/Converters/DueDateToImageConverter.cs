@@ -8,7 +8,7 @@ public class DueDateToImageConverter : IValueConverter
     {
         if (value is DateTime dueDate)
         {
-            return dueDate < DateTime.Now ? "calendar_red.png" : "calendar.png";
+            return dueDate.Date < DateTime.Now.Date ? "calendar_red.png" : "calendar.png";
         }
         return "calendar.png";
     }

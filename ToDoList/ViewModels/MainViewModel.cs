@@ -96,9 +96,9 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    private void OnTaskAdded(object sender, TaskItemViewModel taskItemViewModel)
+    private async void OnTaskAdded(object sender, TaskItemViewModel taskItemViewModel)
     {
-        TaskItems.Add(taskItemViewModel);
+        await LoadTasks();
     }
 
     private void OnTaskEdited(object sender, TaskItemViewModel taskItemViewModel)

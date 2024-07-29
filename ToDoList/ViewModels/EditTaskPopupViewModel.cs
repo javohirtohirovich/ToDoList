@@ -82,9 +82,6 @@ public partial class EditTaskPopupViewModel : ObservableObject
             HeaderBackgroundColor = Color.Parse("#347980"),
             ActivityIndicatorColor = Color.Parse("#347980"),
             ForeColor = Color.Parse("#347980"),
-            MinDate = DateTime.Today,
-
-            // .. other calendar options
         };
 
         var result = await NullableDateTimePicker.OpenCalendarAsync(nullableDateTimePickerOptions);

@@ -56,7 +56,6 @@ public partial class AddTaskPopupViewModel : ObservableObject
             HeaderBackgroundColor = Color.Parse("#347980"),
             ActivityIndicatorColor = Color.Parse("#347980"),
             ForeColor = Color.Parse("#347980"),
-
             //MinDate = DateTime.Today,
         };
 

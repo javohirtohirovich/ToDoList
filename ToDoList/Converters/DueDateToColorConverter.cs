@@ -8,7 +8,7 @@ public class DueDateToColorConverter : IValueConverter
     {
         if (value is DateTime dueDate)
         {
-            return dueDate < DateTime.Now ? Colors.Red : Colors.Grey;
+            return dueDate.Date < DateTime.Now.Date ? Colors.Red : Colors.Grey;
         }
         return Colors.Grey;
     }
