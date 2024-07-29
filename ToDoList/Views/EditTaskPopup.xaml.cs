@@ -5,9 +5,9 @@ namespace ToDoList.Views;
 
 public partial class EditTaskPopup : Popup
 {
-	public EditTaskPopup(EditTaskPopupViewModel vm)
-	{
-		InitializeComponent();
-		BindingContext = vm;
-	}
+    public EditTaskPopup(EditTaskPopupViewModel vm)
+    {
+        InitializeComponent();
+        BindingContext = vm;
+    }
 }

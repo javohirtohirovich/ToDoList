@@ -6,7 +6,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
-using ToDoList.Data.Models;
 using ToDoList.Services;
 using ToDoList.ViewModels.DataViewModels;
 using ToDoList.Views;
