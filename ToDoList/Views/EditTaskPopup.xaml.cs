@@ -10,4 +10,9 @@ public partial class EditTaskPopup : Popup
         InitializeComponent();
         BindingContext = vm;
     }
+
+    private void Popup_Opened(object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e)
+    {
+        TaskEditor.Focus();
+    }
 }

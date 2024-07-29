@@ -8,6 +8,7 @@
                x:DataType="vm:AddTaskPopupViewModel"
                CanBeDismissedByTappingOutsideOfPopup="True"
                VerticalOptions="End"
+               Opened="Popup_Opened"
                >
 
     <Grid BackgroundColor="White"

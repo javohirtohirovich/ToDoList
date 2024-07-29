@@ -148,7 +148,7 @@ public partial class MainViewModel : ObservableObject
         var result = await _taskItemService.ChangeTaskImportantStatus(taskItemViewModel.TaskId, taskItemViewModel.IsImportant);
         if (result)
         {
-            taskItemViewModel.IsImportant = !taskItemViewModel.IsImportant;
+            await LoadTasks();
         }
     }
 

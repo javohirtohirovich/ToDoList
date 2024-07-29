@@ -7,7 +7,8 @@
                x:Class="ToDoList.Views.EditTaskPopup"
                x:DataType="vm:EditTaskPopupViewModel"
                CanBeDismissedByTappingOutsideOfPopup="True"
-               VerticalOptions="End">
+               VerticalOptions="End"
+               Opened="Popup_Opened">
     <Grid BackgroundColor="White"
           Padding="0"
           WidthRequest="400">
