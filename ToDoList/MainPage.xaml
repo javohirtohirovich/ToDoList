@@ -18,6 +18,7 @@
             <converter:NullOrEmptyToBooleanConverter x:Key="NullOrEmptyToBooleanConverter" />
             <converter:DueDateToColorConverter x:Key="DueDateToColorConverter" />
             <converter:DueDateToImageConverter x:Key="DueDateToImageConverter" />
+            <converter:BoolToTextDecorationConverter x:Key="BoolToTextDecorationConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -92,7 +93,8 @@
 
                                         <Grid Grid.Column="0">
                                             <CheckBox VerticalOptions="Center"
-                                                      Scale="1.2">
+                                                      Scale="1.2"
+                                                      IsChecked="{Binding IsCompleted}">
                                                 <CheckBox.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CheckTaskCommand}"
                                                                           CommandParameter="{Binding .}" />
@@ -111,7 +113,12 @@
                                                     <VerticalStackLayout VerticalOptions="CenterAndExpand">
                                                         <Label Text="{Binding Task}"
                                                                FontSize="17">
+                                                            <Label.TextDecorations>
+                                                                <Binding Path="IsCompleted"
+                                                                         Converter="{StaticResource BoolToTextDecorationConverter}" />
+                                                            </Label.TextDecorations>
                                                         </Label>
+
                                                         <HorizontalStackLayout Spacing="5"
                                                                                Margin="0,0,0,10">
                                                             <HorizontalStackLayout.Triggers>
@@ -142,7 +149,8 @@
 
                                             </Grid>
                                         </Grid>
-                                        <Grid Grid.Column="2" ZIndex="1">
+                                        <Grid Grid.Column="2"
+                                              ZIndex="1">
                                             <ImageButton Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ChangeTaskImportantStatusCommand}"
                                                          CommandParameter="{Binding .}"
                                                          VerticalOptions="Center"

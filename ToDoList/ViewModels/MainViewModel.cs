@@ -36,14 +36,17 @@ public partial class MainViewModel : ObservableObject
     public async Task LoadTasks()
     {
         var tasks = await _taskItemService.GetAllTasks()
-                                          .Where(x => !x.IsCompleted)
-                                          .ToListAsync();
+                                       .OrderBy(x => x.IsCompleted)
+                                       .ThenByDescending(x => x.IsImportant)
+                                       .ThenByDescending(x => x.CreatedAt)
+                                       .ToListAsync();
         TaskItems.Clear();
         foreach (var task in tasks)
         {
             TaskItems.Add(new TaskItemViewModel(task));
         }
     }
+
 
     [ObservableProperty]
     ObservableCollection<TaskItemViewModel> taskItems;
@@ -118,7 +121,7 @@ public partial class MainViewModel : ObservableObject
             var result = await _taskItemService.ChangeTaskToCompletedOrIncompleteAsync(taskItemViewModel.TaskId, taskItemViewModel.IsCompleted);
             if (result)
             {
-                TaskItems.Remove(taskItemViewModel);
+                await LoadTasks();
                 await PlayCompletionSound();
                 var toast = Toast.Make("Task completed!", ToastDuration.Short, 12);
                 await toast.Show();
