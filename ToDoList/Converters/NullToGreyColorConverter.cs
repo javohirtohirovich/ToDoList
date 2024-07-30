@@ -2,15 +2,11 @@
 
 namespace ToDoList.Converters;
 
-public class DueDateToColorConverter : IValueConverter
+public class NullToGreyColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is DateTime dueDate)
-        {
-            return dueDate.Date < DateTime.Now.Date ? Color.FromArgb("#EE4E4E") : Colors.Grey;
-        }
-        return Colors.Grey;
+        return value == null ? Colors.Grey : Colors.White;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -18,3 +14,4 @@ public class DueDateToColorConverter : IValueConverter
         throw new NotImplementedException();
     }
 }
+

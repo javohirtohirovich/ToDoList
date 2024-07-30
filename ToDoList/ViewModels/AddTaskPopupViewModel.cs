@@ -18,7 +18,7 @@ public partial class AddTaskPopupViewModel : ObservableObject
     public AddTaskPopupViewModel(ITaskItemService taskItemService)
     {
         this._taskItemService = taskItemService;
-        DueDateTasakLbl = "Set due date";
+        DueDateTaskLbl = "Set due date";
     }
 
     [RelayCommand]
@@ -40,7 +40,7 @@ public partial class AddTaskPopupViewModel : ObservableObject
             var toast = Toast.Make("New task successful add!", ToastDuration.Short, 12);
             await toast.Show();
             DueDateTask = null;
-            DueDateTasakLbl = "Set due date";
+            DueDateTaskLbl = "Set due date";
             Task = string.Empty;
         }
     }
@@ -63,14 +63,14 @@ public partial class AddTaskPopupViewModel : ObservableObject
         if (result is PopupResult popupResult && popupResult.ButtonResult != PopupButtons.Cancel)
         {
             DueDateTask = popupResult.NullableDateTime;
-            DueDateTasakLbl = FormatDueDateLabel(DueDateTask);
+            DueDateTaskLbl = FormatDueDateLabel(DueDateTask);
         }
     }
 
     [RelayCommand]
     private void CancelSelectDate()
     {
-        DueDateTasakLbl = "Set due date";
+        DueDateTaskLbl = "Set due date";
         DueDateTask = null;
     }
 
@@ -78,7 +78,7 @@ public partial class AddTaskPopupViewModel : ObservableObject
     private DateTime? dueDateTask;
 
     [ObservableProperty]
-    private string dueDateTasakLbl;
+    private string dueDateTaskLbl;
 
     [ObservableProperty]
     private string task;

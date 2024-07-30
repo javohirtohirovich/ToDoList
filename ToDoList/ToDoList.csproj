@@ -65,7 +65,9 @@
 	  <None Remove="Resources\Images\calendar.png" />
 	  <None Remove="Resources\Images\calendar_add.png" />
 	  <None Remove="Resources\Images\calendar_red.png" />
+	  <None Remove="Resources\Images\calendar_white.png" />
 	  <None Remove="Resources\Images\cancel.png" />
+	  <None Remove="Resources\Images\cancel_white.png" />
 	  <None Remove="Resources\Images\checking.png" />
 	  <None Remove="Resources\Images\check_mark.png" />
 	  <None Remove="Resources\Images\clipboard.png" />

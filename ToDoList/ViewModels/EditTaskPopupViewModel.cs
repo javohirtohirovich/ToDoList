@@ -30,7 +30,7 @@ public partial class EditTaskPopupViewModel : ObservableObject
     private DateTime? dueDateTask;
 
     [ObservableProperty]
-    private string dueDateTasakLbl;
+    private string dueDateTaskLbl;
 
     public async Task LoadTaskItem(int taskId)
     {
@@ -40,7 +40,7 @@ public partial class EditTaskPopupViewModel : ObservableObject
             TaskId = taskItem.TaskId;
             Task = taskItem.Task;
             DueDateTask = taskItem.DueDate;
-            DueDateTasakLbl = FormatDueDateLabel(taskItem.DueDate);
+            DueDateTaskLbl = FormatDueDateLabel(taskItem.DueDate);
         }
     }
 
@@ -88,14 +88,14 @@ public partial class EditTaskPopupViewModel : ObservableObject
         if (result is PopupResult popupResult && popupResult.ButtonResult != PopupButtons.Cancel)
         {
             DueDateTask = popupResult.NullableDateTime;
-            DueDateTasakLbl = FormatDueDateLabel(DueDateTask);
+            DueDateTaskLbl = FormatDueDateLabel(DueDateTask);
         }
     }
 
     [RelayCommand]
     private void CancelSelectDate()
     {
-        DueDateTasakLbl = "Set due date";
+        DueDateTaskLbl = "Set due date";
         DueDateTask = null;
     }
 

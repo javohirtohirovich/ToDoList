@@ -6,80 +6,72 @@
                xmlns:ndtp="clr-namespace:Maui.NullableDateTimePicker;assembly=Maui.NullableDateTimePicker"
                x:Class="ToDoList.Views.AddTaskPopup"
                x:DataType="vm:AddTaskPopupViewModel"
+               xmlns:converter="clr-namespace:ToDoList.Converters"
                CanBeDismissedByTappingOutsideOfPopup="True"
                VerticalOptions="End"
-               Opened="Popup_Opened"
-               >
-
+               Opened="Popup_Opened">
+    <toolkit:Popup.Resources>
+        <converter:NullToTransparentColorConverter x:Key="NullToTransparentColorConverter" />
+        <converter:NullToCalendarAddImageConverter x:Key="NullToCalendarAddImageConverter" />
+        <converter:NullToGreyColorConverter x:Key="NullToGreyColorConverter" />
+        <converter:NullToCanceImageConverter x:Key="NullToCancelImageConverter" />
+    </toolkit:Popup.Resources>
     <Grid BackgroundColor="White"
           Padding="0"
           WidthRequest="400">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0"
-              BackgroundColor="AliceBlue">
+              BackgroundColor="White">
 
             <HorizontalStackLayout HorizontalOptions="Center"
                                    Spacing="35">
 
+                <Border VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        BackgroundColor="{Binding DueDateTask, Converter={StaticResource NullToTransparentColorConverter}}"
+                        HeightRequest="27"
+                        MinimumWidthRequest="120">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="5,5,5,5" />
+                    </Border.StrokeShape>
+                    <HorizontalStackLayout Padding="0"
+                                           Spacing="9"
+                                           VerticalOptions="Center"
+                                           Margin="0,0,0,0">
 
-                <HorizontalStackLayout Padding="0"
-                                       Spacing="9"
-                                       VerticalOptions="Center"
-                                       Margin="0,0,0,0">
-
-                    <Image Source="calendar_add.png"
-                           WidthRequest="17"
-                           HeightRequest="17" />
-                    <Label Text="{Binding DueDateTasakLbl}"
-                           FontSize="14"
-                           TextColor="Gray">
-                    </Label>
-                    <ImageButton Command="{Binding CancelSelectDateCommand}"
-                                 Source="cancel.png"
-                                 WidthRequest="15"
-                                 HeightRequest="15">
-                        <ImageButton.Triggers>
-                            <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding DueDateTasakLbl}"
-                                         Value="Set due date">
-                                <Setter Property="IsVisible"
-                                        Value="False" />
-                            </DataTrigger>
-                        </ImageButton.Triggers>
-                    </ImageButton>
-                    <HorizontalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShowDatePickerPopupCommand}" />
-                    </HorizontalStackLayout.GestureRecognizers>
-                </HorizontalStackLayout>
-
-
-                <HorizontalStackLayout Spacing="7"
-                                       VerticalOptions="Center"
-                                       Margin="0,0,0,0">
-                    <Image Source="remind.png"
-                           WidthRequest="17"
-                           HeightRequest="17" />
-                    <Label Text="Remind me"
-                           FontSize="14"
-                           TextColor="Gray">
-                    </Label>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout Spacing="7"
-                                       VerticalOptions="Center"
-                                       Margin="0,0,0,0">
-                    <Image Source="repeat.png"
-                           WidthRequest="17"
-                           HeightRequest="17" />
-                    <Label Text="Repeat"
-                           FontSize="14"
-                           TextColor="Gray">
-                    </Label>
-                </HorizontalStackLayout>
+                        <Image Source="{Binding DueDateTask, Converter={StaticResource NullToCalendarAddImageConverter}}"
+                               WidthRequest="17"
+                               HeightRequest="17"
+                               Margin="5,0,0,0" />
+                        <Label Text="{Binding DueDateTaskLbl}"
+                               FontSize="14"
+                               TextColor="{Binding DueDateTask, Converter={StaticResource NullToGreyColorConverter}}"
+                               VerticalOptions="Center">
+                        </Label>
+                        <ImageButton Command="{Binding CancelSelectDateCommand}"
+                                     Source="{Binding DueDateTask, Converter={StaticResource NullToCancelImageConverter}}"
+                                     WidthRequest="15"
+                                     HeightRequest="15"
+                                     Margin="0,0,5,0">
+                            <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton"
+                                             Binding="{Binding DueDateTaskLbl}"
+                                             Value="Set due date">
+                                    <Setter Property="IsVisible"
+                                            Value="False" />
+                                </DataTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
+                        <HorizontalStackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowDatePickerPopupCommand}" />
+                        </HorizontalStackLayout.GestureRecognizers>
+                    </HorizontalStackLayout>
+                </Border>
             </HorizontalStackLayout>
         </Grid>
 
@@ -91,7 +83,9 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0"
                   BackgroundColor="White">
-                <CheckBox IsEnabled="False"></CheckBox>
+                <CheckBox IsEnabled="False"
+                          Color="#3DA6AF">
+                </CheckBox>
             </Grid>
             <Grid Grid.Column="1"
                   VerticalOptions="FillAndExpand">
@@ -103,14 +97,15 @@
                         PlaceholderColor="Grey"
                         FontSize="17"
                         Margin="10"
-                        AutoSize="TextChanges">
+                        AutoSize="TextChanges"
+                        MaxLength="300">
                 </Editor>
             </Grid>
             <Grid Grid.Column="2">
-                <ImageButton Source="up_arrow.png"
-                             WidthRequest="29"
-                             HeightRequest="29"
-                             Command="{Binding AddTaskCommand}">
+                <ImageButton  Command="{Binding AddTaskCommand}"
+                              Source="up_arrow.png"
+                              WidthRequest="29"
+                              HeightRequest="29">
 
                 </ImageButton>
             </Grid>

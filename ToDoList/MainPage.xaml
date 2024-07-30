@@ -58,7 +58,7 @@
                                                    IconImageSource="edit_white.png"
                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowEditTaskItemPopupCommand}"
                                                    CommandParameter="{Binding .}"
-                                                   BackgroundColor="Green" />
+                                                   BackgroundColor="#40A578" />
                                     </SwipeItems>
                                 </SwipeView.LeftItems>
                                 <SwipeView.RightItems>
@@ -67,7 +67,7 @@
                                                    IconImageSource="trash_white.png"
                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTaskItemCommand}"
                                                    CommandParameter="{Binding}"
-                                                   BackgroundColor="Red" />
+                                                   BackgroundColor="#EE4E4E" />
                                     </SwipeItems>
 
                                 </SwipeView.RightItems>
@@ -94,6 +94,7 @@
                                         <Grid Grid.Column="0">
                                             <CheckBox VerticalOptions="Center"
                                                       Scale="1.2"
+                                                      Color="#3DA6AF"
                                                       IsChecked="{Binding IsCompleted}">
                                                 <CheckBox.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CheckTaskCommand}"
@@ -112,7 +113,8 @@
                                                       MinimumHeightRequest="65">
                                                     <VerticalStackLayout VerticalOptions="CenterAndExpand">
                                                         <Label Text="{Binding Task}"
-                                                               FontSize="17" Margin="0,0,0,7">
+                                                               FontSize="17"
+                                                               Margin="0,0,0,7">
                                                             <Label.TextDecorations>
                                                                 <Binding Path="IsCompleted"
                                                                          Converter="{StaticResource BoolToTextDecorationConverter}" />
@@ -151,28 +153,41 @@
                                         </Grid>
                                         <Grid Grid.Column="2"
                                               ZIndex="1">
-                                            <ImageButton Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ChangeTaskImportantStatusCommand}"
-                                                         CommandParameter="{Binding .}"
-                                                         VerticalOptions="Center"
-                                                         WidthRequest="20"
-                                                         HeightRequest="20"
-                                                         MinimumHeightRequest="20"
-                                                         MaximumWidthRequest="20">
-                                                <ImageButton.Triggers>
-                                                    <DataTrigger TargetType="ImageButton"
-                                                                 Binding="{Binding IsImportant}"
-                                                                 Value="False">
-                                                        <Setter Property="Source"
-                                                                Value="star_false.png" />
-                                                    </DataTrigger>
-                                                    <DataTrigger TargetType="ImageButton"
-                                                                 Binding="{Binding IsImportant}"
-                                                                 Value="True">
-                                                        <Setter Property="Source"
-                                                                Value="star_true.png" />
-                                                    </DataTrigger>
-                                                </ImageButton.Triggers>
-                                            </ImageButton>
+                                            <Frame Background="Transparent"
+                                                   WidthRequest="39"
+                                                   HeightRequest="39"
+                                                   MaximumHeightRequest="39"
+                                                   MaximumWidthRequest="39"
+                                                   BorderColor="Transparent">
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ChangeTaskImportantStatusCommand}"
+                                                                          CommandParameter="{Binding .}" />
+                                                </Frame.GestureRecognizers>
+
+                                                <ImageButton Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ChangeTaskImportantStatusCommand}"
+                                                             CommandParameter="{Binding .}"
+                                                             VerticalOptions="Center"
+                                                             WidthRequest="23"
+                                                             HeightRequest="23"
+                                                             MinimumHeightRequest="23"
+                                                             MaximumWidthRequest="23">
+                                                    <ImageButton.Triggers>
+                                                        <DataTrigger TargetType="ImageButton"
+                                                                     Binding="{Binding IsImportant}"
+                                                                     Value="False">
+                                                            <Setter Property="Source"
+                                                                    Value="star_false.png" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="ImageButton"
+                                                                     Binding="{Binding IsImportant}"
+                                                                     Value="True">
+                                                            <Setter Property="Source"
+                                                                    Value="star_true.png" />
+                                                        </DataTrigger>
+                                                    </ImageButton.Triggers>
+                                                </ImageButton>
+
+                                            </Frame>
 
                                         </Grid>
 
