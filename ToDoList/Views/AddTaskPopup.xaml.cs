@@ -17,9 +17,11 @@ public partial class AddTaskPopup : Popup
 
     }
 
-    private void Popup_Opened(object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e)
+    private async void Popup_Opened(object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e)
     {
+        await Task.Delay(100);
         TaskEditor.Focus();
+        await TaskEditor.ShowKeyboardAsync(CancellationToken.None);
     }
 
     private async Task ClosePopup()

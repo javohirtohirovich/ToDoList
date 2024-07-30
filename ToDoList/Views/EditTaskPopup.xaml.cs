@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Core.Platform;
 using CommunityToolkit.Maui.Views;
 using ToDoList.ViewModels;
 
@@ -15,9 +16,11 @@ public partial class EditTaskPopup : Popup
         }
     }
 
-    private void Popup_Opened(object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e)
+    private async void Popup_Opened(object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e)
     {
+        await Task.Delay(100);
         TaskEditor.Focus();
+        await TaskEditor.ShowKeyboardAsync(CancellationToken.None);
     }
 
     private async Task ClosePopup()

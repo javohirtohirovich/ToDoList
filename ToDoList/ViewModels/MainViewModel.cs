@@ -96,31 +96,36 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    private async void OnTaskAdded(object sender, TaskItemViewModel taskItemViewModel)
+    private void OnTaskAdded(object sender, TaskItemViewModel taskItemViewModel)
     {
-        await LoadTasks();
+        TaskItems.Insert(0, taskItemViewModel);
     }
 
     private void OnTaskEdited(object sender, TaskItemViewModel taskItemViewModel)
     {
         var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
 
-        if (existingTaskItem != null)
+        if (existingTaskItem is not null)
         {
             var index = TaskItems.IndexOf(existingTaskItem);
             TaskItems[index] = taskItemViewModel;
+
+            SortTaskItems();
         }
     }
 
     [RelayCommand]
     public async Task CheckTask(TaskItemViewModel taskItemViewModel)
     {
-        if (taskItemViewModel is not null)
+        var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+        if (existingTaskItem is not null)
         {
             var result = await _taskItemService.ChangeTaskToCompletedOrIncompleteAsync(taskItemViewModel.TaskId, taskItemViewModel.IsCompleted);
             if (result)
             {
-                await LoadTasks();
+                var index = TaskItems.IndexOf(existingTaskItem);
+                TaskItems[index].IsCompleted = !taskItemViewModel.IsCompleted;
+                SortTaskItems();
                 await PlayCompletionSound();
                 var toast = Toast.Make("Task completed!", ToastDuration.Short, 12);
                 await toast.Show();
@@ -145,11 +150,18 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private async Task ChangeTaskImportantStatus(TaskItemViewModel taskItemViewModel)
     {
-        var result = await _taskItemService.ChangeTaskImportantStatus(taskItemViewModel.TaskId, taskItemViewModel.IsImportant);
-        if (result)
+        var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+        if (existingTaskItem is not null)
         {
-            await LoadTasks();
+            var result = await _taskItemService.ChangeTaskImportantStatus(taskItemViewModel.TaskId, taskItemViewModel.IsImportant);
+            if (result)
+            {
+                var index = TaskItems.IndexOf(existingTaskItem);
+                TaskItems[index].IsImportant = !taskItemViewModel.IsImportant;
+                SortTaskItems();
+            }
         }
+
     }
 
     private async Task PlayCompletionSound()
@@ -157,4 +169,20 @@ public partial class MainViewModel : ObservableObject
         var player = _audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("complete_task.wav"));
         player.Play();
     }
+
+    private void SortTaskItems()
+    {
+        var sortedTasks = TaskItems.OrderBy(x => x.IsCompleted)
+                                   .ThenByDescending(x => x.IsImportant)
+                                   .ThenByDescending(x => x.CreatedAt)
+                                   .ToList();
+
+        TaskItems.Clear();
+
+        foreach (var task in sortedTasks)
+        {
+            TaskItems.Add(task);
+        }
+    }
+
 }
