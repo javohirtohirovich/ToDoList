@@ -10,10 +10,13 @@ using ToDoList.ViewModels.DataViewModels;
 
 namespace ToDoList.ViewModels;
 
+public delegate Task CloseHandlerEditPopup();
+
 public partial class EditTaskPopupViewModel : ObservableObject
 {
     private readonly ITaskItemService _taskItemService;
     public event EventHandler<TaskItemViewModel> TaskEdited;
+    public event CloseHandlerEditPopup OnClose;
 
     public EditTaskPopupViewModel(ITaskItemService taskItemService)
     {
@@ -64,6 +67,11 @@ public partial class EditTaskPopupViewModel : ObservableObject
 
             var toast = Toast.Make("Task successful edit!", ToastDuration.Short, 12);
             await toast.Show();
+
+            if (OnClose != null)
+            {
+                await OnClose.Invoke();
+            }
         }
         else
         {

@@ -10,9 +10,11 @@ using ToDoList.ViewModels.DataViewModels;
 
 namespace ToDoList.ViewModels;
 
+public delegate Task CloseHandlerAddPopup();
 public partial class AddTaskPopupViewModel : ObservableObject
 {
     public event EventHandler<TaskItemViewModel> TaskAdded;
+    public event CloseHandlerAddPopup OnClose;
 
     private readonly ITaskItemService _taskItemService;
     public AddTaskPopupViewModel(ITaskItemService taskItemService)
@@ -42,6 +44,10 @@ public partial class AddTaskPopupViewModel : ObservableObject
             DueDateTask = null;
             DueDateTaskLbl = "Set due date";
             Task = string.Empty;
+            if (OnClose != null)
+            {
+                await OnClose.Invoke();
+            }
         }
     }
 

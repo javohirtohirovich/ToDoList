@@ -10,6 +10,8 @@
                CanBeDismissedByTappingOutsideOfPopup="True"
                VerticalOptions="End"
                Opened="Popup_Opened">
+   
+    
     <toolkit:Popup.Resources>
         <converter:NullToTransparentColorConverter x:Key="NullToTransparentColorConverter" />
         <converter:NullToCalendarAddImageConverter x:Key="NullToCalendarAddImageConverter" />
