@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+               xmlns:vm="clr-namespace:ToDoList.ViewModels"
+               xmlns:ndtp="clr-namespace:Maui.NullableDateTimePicker;assembly=Maui.NullableDateTimePicker"
+               x:Class="ToDoList.Views.AddTaskPopup"
+               x:DataType="vm:AddTaskPopupViewModel"
+               xmlns:converter="clr-namespace:ToDoList.Converters"
+               CanBeDismissedByTappingOutsideOfPopup="True"
+               VerticalOptions="End"
+               Opened="Popup_Opened">
+    <toolkit:Popup.Resources>
+        <converter:NullToTransparentColorConverter x:Key="NullToTransparentColorConverter" />
+        <converter:NullToCalendarAddImageConverter x:Key="NullToCalendarAddImageConverter" />
+        <converter:NullToGreyColorConverter x:Key="NullToGreyColorConverter" />
+        <converter:NullToCanceImageConverter x:Key="NullToCancelImageConverter" />
+    </toolkit:Popup.Resources>
+    <Grid BackgroundColor="White"
+          Padding="0"
+          WidthRequest="400">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              BackgroundColor="White">
+
+            <HorizontalStackLayout HorizontalOptions="Center"
+                                   Spacing="35">
+
+                <Border VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        BackgroundColor="{Binding DueDateTask, Converter={StaticResource NullToTransparentColorConverter}}"
+                        HeightRequest="27"
+                        MinimumWidthRequest="120">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="5,5,5,5" />
+                    </Border.StrokeShape>
+                    <HorizontalStackLayout Padding="0"
+                                           Spacing="9"
+                                           VerticalOptions="Center"
+                                           Margin="0,0,0,0">
+
+                        <Image Source="{Binding DueDateTask, Converter={StaticResource NullToCalendarAddImageConverter}}"
+                               WidthRequest="17"
+                               HeightRequest="17"
+                               Margin="5,0,0,0" />
+                        <Label Text="{Binding DueDateTaskLbl}"
+                               FontSize="14"
+                               TextColor="{Binding DueDateTask, Converter={StaticResource NullToGreyColorConverter}}"
+                               VerticalOptions="Center">
+                        </Label>
+                        <ImageButton Command="{Binding CancelSelectDateCommand}"
+                                     Source="{Binding DueDateTask, Converter={StaticResource NullToCancelImageConverter}}"
+                                     WidthRequest="15"
+                                     HeightRequest="15"
+                                     Margin="0,0,5,0">
+                            <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton"
+                                             Binding="{Binding DueDateTaskLbl}"
+                                             Value="Set due date">
+                                    <Setter Property="IsVisible"
+                                            Value="False" />
+                                </DataTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
+                        <HorizontalStackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowDatePickerPopupCommand}" />
+                        </HorizontalStackLayout.GestureRecognizers>
+                    </HorizontalStackLayout>
+                </Border>
+            </HorizontalStackLayout>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="50" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0"
+                  BackgroundColor="White">
+                <CheckBox IsEnabled="False"
+                          Color="#3DA6AF">
+                </CheckBox>
+            </Grid>
+            <Grid Grid.Column="1"
+                  VerticalOptions="FillAndExpand">
+                <Editor x:Name="TaskEditor"
+                        Text="{Binding Task}"
+                        VerticalOptions="Center"
+                        VerticalTextAlignment="End"
+                        Placeholder="Add a task"
+                        PlaceholderColor="Grey"
+                        FontSize="17"
+                        Margin="10"
+                        AutoSize="TextChanges"
+                        MaxLength="300">
+                </Editor>
+            </Grid>
+            <Grid Grid.Column="2">
+                <ImageButton  Command="{Binding AddTaskCommand}"
+                              Source="up_arrow.png"
+                              WidthRequest="29"
+                              HeightRequest="29">
+
+                </ImageButton>
+            </Grid>
+        </Grid>
+    </Grid>
+</toolkit:Popup>
+
+    

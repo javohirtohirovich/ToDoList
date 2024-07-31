@@ -1,9 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
+using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
-using ToDoList.Data.Enums;
-using ToDoList.Data.Models;
 using ToDoList.Services;
 using ToDoList.ViewModels.DataViewModels;
 using ToDoList.Views;
@@ -13,28 +15,44 @@ namespace ToDoList.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly ITaskItemService _taskItemService;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IAudioManager _audioManager;
 
-    public MainViewModel(ITaskItemService taskItemService)
+    public MainViewModel(ITaskItemService taskItemService, IServiceProvider serviceProvider, IAudioManager audioManager)
     {
         TaskItems = new ObservableCollection<TaskItemViewModel>();
         this._taskItemService = taskItemService;
+        this._serviceProvider = serviceProvider;
+        this._audioManager = audioManager;
         InitializeAsync();
     }
 
     private async void InitializeAsync()
     {
-        await _taskItemService.UpdateExpiredTasksAsync();
         await LoadTasks();
     }
+
+    public async Task LoadTasks()
+    {
+        var tasks = await _taskItemService.GetAllTasks()
+                                       .OrderBy(x => x.IsCompleted)
+                                       .ThenByDescending(x => x.IsImportant)
+                                       .ThenByDescending(x => x.CreatedAt)
+                                       .ToListAsync();
+        TaskItems.Clear();
+        foreach (var task in tasks)
+        {
+            TaskItems.Add(new TaskItemViewModel(task));
+        }
+    }
+
 
     [ObservableProperty]
     ObservableCollection<TaskItemViewModel> taskItems;
 
     [ObservableProperty]
-    private string taskTitle;
-
-    [ObservableProperty]
     private bool isRefreshing;
+
 
     [RelayCommand]
     private async Task OnRefreshAsync()
@@ -51,30 +69,67 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task AddQuickTask()
+    private async Task ShowAddTaskItemPopup()
     {
-        if (!string.IsNullOrWhiteSpace(TaskTitle))
+        var addTaskPopupViewModel = _serviceProvider.GetService<AddTaskPopupViewModel>();
+        addTaskPopupViewModel.TaskAdded += OnTaskAdded;
+
+        var popup = new AddTaskPopup(addTaskPopupViewModel);
+        await Application.Current.MainPage.ShowPopupAsync(popup);
+
+        addTaskPopupViewModel.TaskAdded -= OnTaskAdded;
+    }
+
+    [RelayCommand]
+    private async Task ShowEditTaskItemPopup(TaskItemViewModel taskItemViewModel)
+    {
+
+        var editTaskPopupViewModel = _serviceProvider.GetService<EditTaskPopupViewModel>();
+        if (editTaskPopupViewModel != null && taskItemViewModel != null)
         {
-            var taskItem = new TaskItem
-            {
-                Title = TaskTitle
-            };
-            var taskItemViewModel = new TaskItemViewModel(taskItem);
+            editTaskPopupViewModel.TaskEdited += OnTaskEdited;
+            await editTaskPopupViewModel.LoadTaskItem(taskItemViewModel.TaskId);
+            var popup = new EditTaskPopup(editTaskPopupViewModel);
+            await Application.Current.MainPage.ShowPopupAsync(popup);
 
-            await _taskItemService.AddTaskItemAsync(taskItem);
-            TaskItems.Add(taskItemViewModel);
+            editTaskPopupViewModel.TaskEdited -= OnTaskEdited;
+        }
+    }
 
-            TaskTitle = string.Empty;
+    private void OnTaskAdded(object sender, TaskItemViewModel taskItemViewModel)
+    {
+        TaskItems.Insert(0, taskItemViewModel);
+    }
+
+    private void OnTaskEdited(object sender, TaskItemViewModel taskItemViewModel)
+    {
+        var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+
+        if (existingTaskItem is not null)
+        {
+            var index = TaskItems.IndexOf(existingTaskItem);
+            TaskItems[index] = taskItemViewModel;
+
+            SortTaskItems();
         }
     }
 
     [RelayCommand]
     public async Task CheckTask(TaskItemViewModel taskItemViewModel)
     {
-        if (taskItemViewModel is not null)
+        var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+        if (existingTaskItem is not null)
         {
             var result = await _taskItemService.ChangeTaskToCompletedOrIncompleteAsync(taskItemViewModel.TaskId, taskItemViewModel.IsCompleted);
-            if (result) { TaskItems.Remove(taskItemViewModel); }
+            if (result)
+            {
+                var index = TaskItems.IndexOf(existingTaskItem);
+                TaskItems[index].IsCompleted = !taskItemViewModel.IsCompleted;
+                SortTaskItems();
+                await PlayCompletionSound();
+                var toast = Toast.Make("Task completed!", ToastDuration.Short, 12);
+                await toast.Show();
+            }
         }
     }
 
@@ -93,60 +148,40 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    async Task GoAddTaskPage()
+    private async Task ChangeTaskImportantStatus(TaskItemViewModel taskItemViewModel)
     {
-        await Shell.Current.GoToAsync(nameof(AddTaskPage));
-    }
-
-    [RelayCommand]
-    public async Task GoEditTaskPage(TaskItemViewModel taskItemViewModel)
-    {
-        await Shell.Current.GoToAsync($"{nameof(EditTaskPage)}?TaskItemId={taskItemViewModel.TaskId}");
-    }
-
-    public async Task LoadTasks()
-    {
-        var tasks = await _taskItemService.GetAllTasks()
-                                          .Where(x => !x.IsCompleted && x.Status!=TaskStatusEnum.Completed && x.Status!=TaskStatusEnum.Cancelled)
-                                          .ToListAsync();
-        var statusOrder = new List<TaskStatusEnum>
+        var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+        if (existingTaskItem is not null)
         {
-            TaskStatusEnum.Overdue,
-            TaskStatusEnum.InProgress,
-            TaskStatusEnum.Pending,
-            TaskStatusEnum.OnHold,
-        };
-        var sortedTasks = tasks.OrderBy(t => statusOrder.IndexOf(t.Status)).ToList();
-
-        TaskItems.Clear();
-        foreach (var task in sortedTasks)
-        {
-            TaskItems.Add(new TaskItemViewModel(task));
-        }
-    }
-
-    [RelayCommand]
-    public async Task ChangeTaskStatus(TaskItemViewModel taskItemViewModel)
-    {
-        if (taskItemViewModel is not null)
-        {
-            var newStatus = taskItemViewModel.Status switch
-            {
-                TaskStatusEnum.Pending => TaskStatusEnum.InProgress,
-                TaskStatusEnum.InProgress => TaskStatusEnum.OnHold,
-                TaskStatusEnum.OnHold => TaskStatusEnum.Cancelled,
-                TaskStatusEnum.Cancelled => TaskStatusEnum.Overdue,
-                TaskStatusEnum.Overdue => TaskStatusEnum.Completed,
-                TaskStatusEnum.Completed => TaskStatusEnum.Pending,
-
-                _ => taskItemViewModel.Status
-            };
-
-            var result = await _taskItemService.ChangeTaskStatus(taskItemViewModel.TaskId, newStatus);
+            var result = await _taskItemService.ChangeTaskImportantStatus(taskItemViewModel.TaskId, taskItemViewModel.IsImportant);
             if (result)
             {
-                taskItemViewModel.Status = newStatus;
+                var index = TaskItems.IndexOf(existingTaskItem);
+                TaskItems[index].IsImportant = !taskItemViewModel.IsImportant;
+                SortTaskItems();
             }
+        }
+
+    }
+
+    private async Task PlayCompletionSound()
+    {
+        var player = _audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("complete_task.wav"));
+        player.Play();
+    }
+
+    private void SortTaskItems()
+    {
+        var sortedTasks = TaskItems.OrderBy(x => x.IsCompleted)
+                                   .ThenByDescending(x => x.IsImportant)
+                                   .ThenByDescending(x => x.CreatedAt)
+                                   .ToList();
+
+        TaskItems.Clear();
+
+        foreach (var task in sortedTasks)
+        {
+            TaskItems.Add(task);
         }
     }
 

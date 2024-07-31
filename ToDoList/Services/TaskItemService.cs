@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
-using ToDoList.Data.Enums;
 using ToDoList.Data.Models;
 
 namespace ToDoList.Services;
@@ -20,20 +19,17 @@ public class TaskItemService : ITaskItemService
         await SaveChangesAsync();
     }
 
-    public async Task<bool> ChangeTaskStatus(int taskId, TaskStatusEnum status)
+    public async Task<bool> ChangeTaskImportantStatus(int taskId, bool isImportant)
     {
         var taskItem = await _context.Tasks.FindAsync(taskId);
         if (taskItem is not null)
         {
-            taskItem.Status = status;
-            if (status == TaskStatusEnum.Completed)
-            {
-                taskItem.IsCompleted = true;
-            }
+            taskItem.IsImportant = !isImportant;
             return await _context.SaveChangesAsync() > 0;
         }
         return false;
     }
+
 
     public async Task<bool> ChangeTaskToCompletedOrIncompleteAsync(int taskId, bool isCompleted)
     {
@@ -41,7 +37,6 @@ public class TaskItemService : ITaskItemService
         if (taskItem is not null)
         {
             taskItem.IsCompleted = !isCompleted;
-            taskItem.Status = TaskStatusEnum.Completed;
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }
@@ -65,11 +60,9 @@ public class TaskItemService : ITaskItemService
         var taskItemDatabase = await _context.Tasks.FindAsync(taskId);
         if (taskItemDatabase is not null)
         {
-            taskItemDatabase.Title = taskItem.Title;
-            taskItemDatabase.Description = taskItem.Description;
+            taskItemDatabase.Task = taskItem.Task;
             taskItemDatabase.DueDate = taskItem.DueDate;
-            taskItemDatabase.Status = taskItem.Status;
-            taskItemDatabase.Priority = taskItem.Priority;
+            taskItemDatabase.IsImportant = taskItem.IsImportant;
             taskItemDatabase.IsCompleted = taskItem.IsCompleted;
             taskItemDatabase.UpdatedAt = DateTime.UtcNow.AddHours(5);
             var result = await _context.SaveChangesAsync();
@@ -91,31 +84,5 @@ public class TaskItemService : ITaskItemService
     public async Task<int> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateExpiredTasksAsync()
-    {
-        var now = DateTime.UtcNow.AddHours(5);
-
-        var expiredTasks = await _context.Tasks
-            .Where(task => task.DueDate < now && task.Status != TaskStatusEnum.Overdue)
-            .ToListAsync();
-
-        var notExpiredTasks = await _context.Tasks
-            .Where(task => task.DueDate > now && task.Status == TaskStatusEnum.Overdue)
-            .ToListAsync();
-
-        if (expiredTasks.Any() || notExpiredTasks.Any())
-        {
-            foreach (var task in expiredTasks)
-            {
-                task.Status = TaskStatusEnum.Overdue;
-            }
-            foreach (var task in notExpiredTasks)
-            {
-                task.Status = TaskStatusEnum.Pending;
-            }
-            await SaveChangesAsync();
-        }
     }
 }
