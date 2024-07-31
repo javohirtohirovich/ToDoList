@@ -13,6 +13,7 @@ public partial class AddTaskPopup : Popup
         if (BindingContext is AddTaskPopupViewModel viewModel)
         {
             viewModel.OnClose += ClosePopup;
+            viewModel.OnReFocusEditor = ReFocusEditorAsync;
         }
 
     }
@@ -27,5 +28,12 @@ public partial class AddTaskPopup : Popup
     private async Task ClosePopup()
     {
         await CloseAsync();
+    }
+
+    private async Task ReFocusEditorAsync()
+    {
+        await Task.Delay(100);
+        TaskEditor.Focus();
+        await TaskEditor.ShowKeyboardAsync(CancellationToken.None);
     }
 }

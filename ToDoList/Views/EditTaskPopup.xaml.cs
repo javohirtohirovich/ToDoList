@@ -9,10 +9,11 @@ public partial class EditTaskPopup : Popup
     public EditTaskPopup(EditTaskPopupViewModel vm)
     {
         InitializeComponent();
-        BindingContext=vm;
+        BindingContext = vm;
         if (BindingContext is EditTaskPopupViewModel viewModel)
         {
             viewModel.OnClose += ClosePopup;
+            viewModel.OnReFocusEditor = ReFocusEditorAsync;
         }
     }
 
@@ -26,5 +27,12 @@ public partial class EditTaskPopup : Popup
     private async Task ClosePopup()
     {
         await CloseAsync();
+    }
+
+    private async Task ReFocusEditorAsync()
+    {
+        await Task.Delay(100);
+        TaskEditor.Focus();
+        await TaskEditor.ShowKeyboardAsync(CancellationToken.None);
     }
 }

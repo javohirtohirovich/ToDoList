@@ -13,10 +13,12 @@ namespace ToDoList.ViewModels;
 public delegate Task CloseHandlerAddPopup();
 public partial class AddTaskPopupViewModel : ObservableObject
 {
+    private readonly ITaskItemService _taskItemService;
     public event EventHandler<TaskItemViewModel> TaskAdded;
     public event CloseHandlerAddPopup OnClose;
+    public Func<Task> OnReFocusEditor { get; set; }
 
-    private readonly ITaskItemService _taskItemService;
+
     public AddTaskPopupViewModel(ITaskItemService taskItemService)
     {
         this._taskItemService = taskItemService;
@@ -70,6 +72,11 @@ public partial class AddTaskPopupViewModel : ObservableObject
         {
             DueDateTask = popupResult.NullableDateTime;
             DueDateTaskLbl = FormatDueDateLabel(DueDateTask);
+        }
+
+        if (OnReFocusEditor != null)
+        {
+            await OnReFocusEditor.Invoke();
         }
     }
 

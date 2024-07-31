@@ -17,6 +17,7 @@ public partial class EditTaskPopupViewModel : ObservableObject
     private readonly ITaskItemService _taskItemService;
     public event EventHandler<TaskItemViewModel> TaskEdited;
     public event CloseHandlerEditPopup OnClose;
+    public Func<Task> OnReFocusEditor { get; set; }
 
     public EditTaskPopupViewModel(ITaskItemService taskItemService)
     {
@@ -97,6 +98,11 @@ public partial class EditTaskPopupViewModel : ObservableObject
         {
             DueDateTask = popupResult.NullableDateTime;
             DueDateTaskLbl = FormatDueDateLabel(DueDateTask);
+        }
+
+        if (OnReFocusEditor != null)
+        {
+            await OnReFocusEditor.Invoke();
         }
     }
 

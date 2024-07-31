@@ -211,11 +211,7 @@
                          CornerRadius="50"
                          Source="plus.png"
                          Background="#307B82">
-                <ImageButton.Shadow>
-                    <Shadow Brush="Gray"
-                            Offset="10,10"
-                            Opacity="0.8" />
-                </ImageButton.Shadow>
+
             </ImageButton>
 
         </Grid>
