@@ -83,8 +83,9 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0"
                   BackgroundColor="White">
-                <CheckBox IsEnabled="False"
-                          Color="#3DA6AF">
+                <CheckBox IsEnabled="True"
+                          Color="#3DA6AF"
+                          IsChecked="{Binding IsCompleted}">
                 </CheckBox>
             </Grid>
             <Grid Grid.Column="1"
