@@ -36,7 +36,6 @@ public partial class MainViewModel : ObservableObject
     {
         var tasks = await _taskItemService.GetAllTasks()
                                        .OrderBy(x => x.IsCompleted)
-                                       .ThenByDescending(x => x.IsImportant)
                                        .ThenByDescending(x => x.CreatedAt)
                                        .ToListAsync();
         TaskItems.Clear();
@@ -98,7 +97,16 @@ public partial class MainViewModel : ObservableObject
 
     private void OnTaskAdded(object sender, TaskItemViewModel taskItemViewModel)
     {
-        TaskItems.Insert(0, taskItemViewModel);
+        if (taskItemViewModel.IsCompleted)
+        {
+            var existingTaskItem = TaskItems.FirstOrDefault(x => x.IsCompleted);
+            var index = TaskItems.IndexOf(existingTaskItem);
+            TaskItems.Insert(index, taskItemViewModel);
+        }
+        else
+        {
+            TaskItems.Insert(0, taskItemViewModel);
+        }
     }
 
     private void OnTaskEdited(object sender, TaskItemViewModel taskItemViewModel)
@@ -173,7 +181,6 @@ public partial class MainViewModel : ObservableObject
     private void SortTaskItems()
     {
         var sortedTasks = TaskItems.OrderBy(x => x.IsCompleted)
-                                   .ThenByDescending(x => x.IsImportant)
                                    .ThenByDescending(x => x.CreatedAt)
                                    .ToList();
 

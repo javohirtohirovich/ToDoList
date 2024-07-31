@@ -18,12 +18,24 @@ public partial class AddTaskPopupViewModel : ObservableObject
     public event CloseHandlerAddPopup OnClose;
     public Func<Task> OnReFocusEditor { get; set; }
 
-
     public AddTaskPopupViewModel(ITaskItemService taskItemService)
     {
         this._taskItemService = taskItemService;
         DueDateTaskLbl = "Set due date";
     }
+
+    [ObservableProperty]
+    private DateTime? dueDateTask;
+
+    [ObservableProperty]
+    private string dueDateTaskLbl;
+
+    [ObservableProperty]
+    private string task;
+
+    [ObservableProperty]
+    private bool isCompleted;
+
 
     [RelayCommand]
     public async Task AddTask()
@@ -33,7 +45,8 @@ public partial class AddTaskPopupViewModel : ObservableObject
             var taskItem = new TaskItem()
             {
                 Task = Task,
-                DueDate = DueDateTask
+                DueDate = DueDateTask,
+                IsCompleted = IsCompleted
             };
 
             await _taskItemService.AddTaskItemAsync(taskItem);
@@ -86,15 +99,6 @@ public partial class AddTaskPopupViewModel : ObservableObject
         DueDateTaskLbl = "Set due date";
         DueDateTask = null;
     }
-
-    [ObservableProperty]
-    private DateTime? dueDateTask;
-
-    [ObservableProperty]
-    private string dueDateTaskLbl;
-
-    [ObservableProperty]
-    private string task;
 
     private string FormatDueDateLabel(DateTime? dueDate)
     {
