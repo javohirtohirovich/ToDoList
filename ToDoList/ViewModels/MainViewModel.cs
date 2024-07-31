@@ -100,8 +100,16 @@ public partial class MainViewModel : ObservableObject
         if (taskItemViewModel.IsCompleted)
         {
             var existingTaskItem = TaskItems.FirstOrDefault(x => x.IsCompleted);
-            var index = TaskItems.IndexOf(existingTaskItem);
-            TaskItems.Insert(index, taskItemViewModel);
+            if(existingTaskItem != null)
+            {
+                var index = TaskItems.IndexOf(existingTaskItem);
+                TaskItems.Insert(index, taskItemViewModel);
+            }
+            else
+            {
+                TaskItems.Add(taskItemViewModel);
+            }
+            
         }
         else
         {
