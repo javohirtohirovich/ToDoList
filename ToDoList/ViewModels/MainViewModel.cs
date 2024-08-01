@@ -82,7 +82,6 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowEditTaskItemPopup(TaskItemViewModel taskItemViewModel)
     {
-
         var editTaskPopupViewModel = _serviceProvider.GetService<EditTaskPopupViewModel>();
         if (editTaskPopupViewModel != null && taskItemViewModel != null)
         {
@@ -100,7 +99,7 @@ public partial class MainViewModel : ObservableObject
         if (taskItemViewModel.IsCompleted)
         {
             var existingTaskItem = TaskItems.FirstOrDefault(x => x.IsCompleted);
-            if(existingTaskItem != null)
+            if (existingTaskItem != null)
             {
                 var index = TaskItems.IndexOf(existingTaskItem);
                 TaskItems.Insert(index, taskItemViewModel);
@@ -109,7 +108,7 @@ public partial class MainViewModel : ObservableObject
             {
                 TaskItems.Add(taskItemViewModel);
             }
-            
+
         }
         else
         {
@@ -120,15 +119,42 @@ public partial class MainViewModel : ObservableObject
     private void OnTaskEdited(object sender, TaskItemViewModel taskItemViewModel)
     {
         var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+        if (existingTaskItem == null) return;
+        var index = TaskItems.IndexOf(existingTaskItem);
 
-        if (existingTaskItem is not null)
+        existingTaskItem.Task = taskItemViewModel.Task;
+        existingTaskItem.DueDate = taskItemViewModel.DueDate;
+        existingTaskItem.IsCompleted = taskItemViewModel.IsCompleted;
+        existingTaskItem.UpdatedAt = taskItemViewModel.UpdatedAt;
+
+        var tempTaskItems = TaskItems.ToList();
+        tempTaskItems.Remove(existingTaskItem);
+
+        if (taskItemViewModel.IsCompleted)
         {
-            var index = TaskItems.IndexOf(existingTaskItem);
-            TaskItems[index] = taskItemViewModel;
+            var existingTaskItemIsCompleted = tempTaskItems.FirstOrDefault(x => x.IsCompleted);
+            if (existingTaskItemIsCompleted is not null)
+            {
+                var indexIsCompleted = tempTaskItems.IndexOf(existingTaskItemIsCompleted);
+                tempTaskItems.Insert(indexIsCompleted, existingTaskItem);
+            }
+            else
+            {
+                tempTaskItems.Add(existingTaskItem);
+            }
+        }
+        else
+        {
+            tempTaskItems.Insert(index, existingTaskItem);
+        }
 
-            SortTaskItems();
+        TaskItems.Clear();
+        foreach (var task in tempTaskItems)
+        {
+            TaskItems.Add(task);
         }
     }
+
 
     [RelayCommand]
     public async Task CheckTask(TaskItemViewModel taskItemViewModel)

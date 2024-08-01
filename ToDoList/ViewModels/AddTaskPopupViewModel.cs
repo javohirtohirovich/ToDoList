@@ -69,6 +69,8 @@ public partial class AddTaskPopupViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowDatePickerPopup()
     {
+        var selectedDateStyle = Application.Current.Resources["SelectedDayStyle"] as Style;
+
         INullableDateTimePickerOptions nullableDateTimePickerOptions = new NullableDateTimePickerOptions
         {
             NullableDateTime = DueDateTask,
@@ -77,6 +79,8 @@ public partial class AddTaskPopupViewModel : ObservableObject
             HeaderBackgroundColor = Color.Parse("#347980"),
             ActivityIndicatorColor = Color.Parse("#347980"),
             ForeColor = Color.Parse("#347980"),
+            SelectedDayStyle = selectedDateStyle,
+
             //MinDate = DateTime.Today,
         };
 

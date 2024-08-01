@@ -36,6 +36,9 @@ public partial class EditTaskPopupViewModel : ObservableObject
     [ObservableProperty]
     private string dueDateTaskLbl;
 
+    [ObservableProperty]
+    private bool isCompleted;
+
     public async Task LoadTaskItem(int taskId)
     {
         var taskItem = await _taskItemService.GetTaskItemAsync(taskId);
@@ -43,6 +46,7 @@ public partial class EditTaskPopupViewModel : ObservableObject
         {
             TaskId = taskItem.TaskId;
             Task = taskItem.Task;
+            IsCompleted = taskItem.IsCompleted;
             DueDateTask = taskItem.DueDate;
             DueDateTaskLbl = FormatDueDateLabel(taskItem.DueDate);
         }
@@ -58,6 +62,7 @@ public partial class EditTaskPopupViewModel : ObservableObject
                 TaskId = this.TaskId,
                 Task = this.Task,
                 DueDate = DueDateTask,
+                IsCompleted = IsCompleted,
                 UpdatedAt = DateTime.Now,
 
             };
@@ -66,7 +71,7 @@ public partial class EditTaskPopupViewModel : ObservableObject
 
             TaskEdited?.Invoke(this, taskItemViewModel);
 
-            var toast = Toast.Make("Task successful edit!", ToastDuration.Short, 12);
+            var toast = Toast.Make("Task successful edited!", ToastDuration.Short, 12);
             await toast.Show();
 
             if (OnClose != null)
@@ -83,6 +88,7 @@ public partial class EditTaskPopupViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowDatePickerPopup()
     {
+        var selectedDateStyle = Application.Current.Resources["SelectedDayStyle"] as Style;
         INullableDateTimePickerOptions nullableDateTimePickerOptions = new NullableDateTimePickerOptions
         {
             NullableDateTime = DueDateTask,
@@ -91,6 +97,7 @@ public partial class EditTaskPopupViewModel : ObservableObject
             HeaderBackgroundColor = Color.Parse("#347980"),
             ActivityIndicatorColor = Color.Parse("#347980"),
             ForeColor = Color.Parse("#347980"),
+            SelectedDayStyle = selectedDateStyle,
         };
 
         var result = await NullableDateTimePicker.OpenCalendarAsync(nullableDateTimePickerOptions);

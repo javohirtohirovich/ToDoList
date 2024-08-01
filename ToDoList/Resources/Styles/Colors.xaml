@@ -14,6 +14,7 @@
 
     <!--begin:: New Color-->
     <Color x:Key="ButtonTextColor">#808080</Color>
+    <Color x:Key="SelectedDateColor">#3F7E87</Color>
 
     <!--begin:: Priority Color-->
     <Color x:Key="LowPriorityColor">LightGreen</Color>
