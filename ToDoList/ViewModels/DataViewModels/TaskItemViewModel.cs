@@ -12,7 +12,6 @@ public partial class TaskItemViewModel : ObservableObject
         dueDate = taskItem.DueDate;
         isCompleted = taskItem.IsCompleted;
         isImportant = taskItem.IsImportant;
-        categoryId = taskItem.CategoryId;
         createdAt = taskItem.CreatedAt;
         updatedAt = taskItem.UpdatedAt;
     }
@@ -30,9 +29,6 @@ public partial class TaskItemViewModel : ObservableObject
 
     [ObservableProperty]
     private bool isImportant;
-
-    [ObservableProperty]
-    private int? categoryId;
 
     [ObservableProperty]
     private DateTime createdAt;

@@ -12,9 +12,6 @@ public class TaskItem
     public DateTime? DueDate { get; set; }
     public bool IsCompleted { get; set; } = false;
     public bool IsImportant { get; set; } = false;
-    public int? CategoryId { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
-
-    public Category Category { get; set; }
 }
