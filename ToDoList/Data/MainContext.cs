@@ -6,8 +6,6 @@ namespace ToDoList.Data;
 public class MainContext : DbContext
 {
     public DbSet<TaskItem> Tasks { get; set; }
-    public DbSet<Category> Categories { get; set; }
-
     public MainContext()
     {
     }
@@ -17,7 +15,4 @@ public class MainContext : DbContext
         var dbPath = Path.Combine(FileSystem.AppDataDirectory, "todolist.db");
         optionsBuilder.UseSqlite($"Filename = {dbPath}");
     }
-    //protected override void OnModelCreating(ModelBuilder modelBuilder)
-    //{
-    //}
 }
