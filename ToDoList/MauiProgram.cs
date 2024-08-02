@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
 using Maui.NullableDateTimePicker;
-using Microsoft.Extensions.Logging;
 using Plugin.Maui.Audio;
 using ToDoList.Data;
 using ToDoList.Services;

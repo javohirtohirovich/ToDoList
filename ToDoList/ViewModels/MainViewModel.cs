@@ -62,6 +62,11 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private bool isRefreshing;
 
+    private bool isMuted;
+
+    [ObservableProperty]
+    private string soundIcon = "volume.png";
+
 
     [RelayCommand]
     private async Task OnRefreshAsync()
@@ -182,8 +187,10 @@ public partial class MainViewModel : ObservableObject
                         pendingGroup?.Add(existingTaskItem);
                         SortTaskItems(pendingGroup);
                     }
-
-                    await PlayCompletionSound();
+                    if (!isMuted)
+                    {
+                        await PlayCompletionSound();
+                    }
                     var toast = Toast.Make("Task completed!", ToastDuration.Short, 12);
                     await toast.Show();
                     break;
@@ -235,7 +242,12 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-
+    [RelayCommand]
+    private void ToggleSound()
+    {
+        isMuted = !isMuted;
+        SoundIcon = isMuted ? "mute.png" : "volume.png";
+    }
 
     private async Task PlayCompletionSound()
     {

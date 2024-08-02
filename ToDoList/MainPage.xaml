@@ -28,7 +28,12 @@
         <mct:StatusBarBehavior StatusBarColor="#307B82" />
     </Page.Behaviors>
     <!--end:: For Top Status Bar change color-->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="{Binding SoundIcon}" Command="{Binding ToggleSoundCommand}">
+            
+        </ToolbarItem>
 
+    </ContentPage.ToolbarItems>
     <AbsoluteLayout>
 
         <Image Source="background.png"

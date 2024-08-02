@@ -81,6 +81,7 @@
 		<None Remove="Resources\Images\home.png" />
 		<None Remove="Resources\Images\logo.png" />
 		<None Remove="Resources\Images\menu.png" />
+		<None Remove="Resources\Images\mute.png" />
 		<None Remove="Resources\Images\next.png" />
 		<None Remove="Resources\Images\on_hold.png" />
 		<None Remove="Resources\Images\overdue.png" />
@@ -97,6 +98,7 @@
 		<None Remove="Resources\Images\trash.png" />
 		<None Remove="Resources\Images\trash_white.png" />
 		<None Remove="Resources\Images\up_arrow.png" />
+		<None Remove="Resources\Images\volume.png" />
 		<None Remove="Resources\Images\x_buton_popup.png" />
 		<None Remove="Resources\Images\x_clear.png" />
 		<None Remove="Resources\Raw\complete_task.wav" />
