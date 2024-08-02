@@ -19,6 +19,7 @@
             <converter:DueDateToColorConverter x:Key="DueDateToColorConverter" />
             <converter:DueDateToImageConverter x:Key="DueDateToImageConverter" />
             <converter:BoolToTextDecorationConverter x:Key="BoolToTextDecorationConverter" />
+            <converter:GridVisibilityConverter x:Key="GridVisibilityConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -49,7 +50,7 @@
                 <CollectionView ItemsSource="{Binding TaskGroups}"
                                 IsGrouped="True"
                                 SelectionMode="None">
-                    
+
                     <CollectionView.GroupHeaderTemplate>
                         <DataTemplate x:DataType="type:TaskGroup">
                             <Label Text="{Binding GroupName}"
@@ -59,7 +60,7 @@
                                    Padding="10,5" />
                         </DataTemplate>
                     </CollectionView.GroupHeaderTemplate>
-                    
+
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="type:TaskItemViewModel">
                             <SwipeView>
@@ -134,7 +135,7 @@
                                                     <VerticalStackLayout VerticalOptions="CenterAndExpand">
                                                         <Label Text="{Binding Task}"
                                                                FontSize="17"
-                                                               Margin="0,0,0,3">
+                                                               Margin="0,0,0,0">
                                                             <Label.TextDecorations>
                                                                 <Binding Path="IsCompleted"
                                                                          Converter="{StaticResource BoolToTextDecorationConverter}" />
@@ -210,7 +211,19 @@
                                             </Frame>
 
                                         </Grid>
-
+                                        <Grid VerticalOptions="End"
+                                              HeightRequest="5"
+                                              Grid.ColumnSpan="3"
+                                              BackgroundColor="#FEF8E1">
+                                            <Grid.Triggers>
+                                                <DataTrigger TargetType="Grid"
+                                                             Binding="{Binding DueDate, Converter={StaticResource GridVisibilityConverter}}"
+                                                             Value="False">
+                                                    <Setter Property="IsVisible"
+                                                            Value="False" />
+                                                </DataTrigger>
+                                            </Grid.Triggers>
+                                        </Grid>
                                     </Grid>
 
                                 </Frame>

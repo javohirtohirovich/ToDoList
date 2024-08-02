@@ -10,8 +10,8 @@
                CanBeDismissedByTappingOutsideOfPopup="True"
                VerticalOptions="End"
                Opened="Popup_Opened">
-   
-    
+
+
     <toolkit:Popup.Resources>
         <converter:NullToTransparentColorConverter x:Key="NullToTransparentColorConverter" />
         <converter:NullToCalendarAddImageConverter x:Key="NullToCalendarAddImageConverter" />
@@ -41,6 +41,9 @@
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="5,5,5,5" />
                     </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowDatePickerPopupCommand}" />
+                    </Border.GestureRecognizers>
                     <HorizontalStackLayout Padding="0"
                                            Spacing="9"
                                            Margin="0,0,0,0">
@@ -68,9 +71,7 @@
                                 </DataTrigger>
                             </ImageButton.Triggers>
                         </ImageButton>
-                        <HorizontalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowDatePickerPopupCommand}" />
-                        </HorizontalStackLayout.GestureRecognizers>
+
                     </HorizontalStackLayout>
                 </Border>
 

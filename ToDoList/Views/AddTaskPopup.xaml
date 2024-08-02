@@ -35,10 +35,13 @@
                         HorizontalOptions="Center"
                         BackgroundColor="{Binding DueDateTask, Converter={StaticResource NullToTransparentColorConverter}}"
                         HeightRequest="27"
-                        MinimumWidthRequest="120">
+                        MinimumWidthRequest="125">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="5,5,5,5" />
                     </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowDatePickerPopupCommand}" />
+                    </Border.GestureRecognizers>
                     <HorizontalStackLayout Padding="0"
                                            Spacing="9"
                                            VerticalOptions="Center"
@@ -67,9 +70,6 @@
                                 </DataTrigger>
                             </ImageButton.Triggers>
                         </ImageButton>
-                        <HorizontalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowDatePickerPopupCommand}" />
-                        </HorizontalStackLayout.GestureRecognizers>
                     </HorizontalStackLayout>
                 </Border>
             </HorizontalStackLayout>
@@ -91,6 +91,8 @@
             <Grid Grid.Column="1"
                   VerticalOptions="FillAndExpand">
                 <Editor x:Name="TaskEditor"
+                        Keyboard="Text"
+                        IsTextPredictionEnabled="True"
                         Text="{Binding Task}"
                         VerticalOptions="Center"
                         VerticalTextAlignment="End"
