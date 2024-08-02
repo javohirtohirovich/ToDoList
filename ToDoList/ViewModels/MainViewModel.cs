@@ -20,7 +20,7 @@ public partial class MainViewModel : ObservableObject
 
     public MainViewModel(ITaskItemService taskItemService, IServiceProvider serviceProvider, IAudioManager audioManager)
     {
-        TaskItems = new ObservableCollection<TaskItemViewModel>();
+        TaskGroups = new ObservableCollection<TaskGroup>();
         this._taskItemService = taskItemService;
         this._serviceProvider = serviceProvider;
         this._audioManager = audioManager;
@@ -34,20 +34,23 @@ public partial class MainViewModel : ObservableObject
 
     public async Task LoadTasks()
     {
-        var tasks = await _taskItemService.GetAllTasks()
-                                       .OrderBy(x => x.IsCompleted)
-                                       .ThenByDescending(x => x.CreatedAt)
-                                       .ToListAsync();
-        TaskItems.Clear();
-        foreach (var task in tasks)
+        var tasks = await _taskItemService.GetAllTasks().ToListAsync();
+
+        var groupedTasks = new List<TaskGroup>
         {
-            TaskItems.Add(new TaskItemViewModel(task));
+            new TaskGroup("Tasks", tasks.Where(t => !t.IsCompleted).OrderByDescending(x=>x.CreatedAt).Select(t => new TaskItemViewModel(t))),
+            new TaskGroup("Completed", tasks.Where(t => t.IsCompleted).OrderByDescending(x=>x.UpdatedAt).Select(t => new TaskItemViewModel(t)))
+        };
+
+        TaskGroups.Clear();
+        foreach (var group in groupedTasks)
+        {
+            TaskGroups.Add(group);
         }
     }
 
-
     [ObservableProperty]
-    ObservableCollection<TaskItemViewModel> taskItems;
+    ObservableCollection<TaskGroup> taskGroups;
 
     [ObservableProperty]
     private bool isRefreshing;
@@ -98,113 +101,130 @@ public partial class MainViewModel : ObservableObject
     {
         if (taskItemViewModel.IsCompleted)
         {
-            var existingTaskItem = TaskItems.FirstOrDefault(x => x.IsCompleted);
-            if (existingTaskItem != null)
-            {
-                var index = TaskItems.IndexOf(existingTaskItem);
-                TaskItems.Insert(index, taskItemViewModel);
-            }
-            else
-            {
-                TaskItems.Add(taskItemViewModel);
-            }
-
+            var completedGroup = TaskGroups.FirstOrDefault(g => g.GroupName == "Completed");
+            completedGroup?.Insert(0, taskItemViewModel);
         }
         else
         {
-            TaskItems.Insert(0, taskItemViewModel);
+            var pendingGroup = TaskGroups.FirstOrDefault(g => g.GroupName == "Tasks");
+            pendingGroup?.Insert(0, taskItemViewModel);
         }
     }
+
 
     private void OnTaskEdited(object sender, TaskItemViewModel taskItemViewModel)
     {
-        var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
-        if (existingTaskItem == null) return;
-        var index = TaskItems.IndexOf(existingTaskItem);
-
-        existingTaskItem.Task = taskItemViewModel.Task;
-        existingTaskItem.DueDate = taskItemViewModel.DueDate;
-        existingTaskItem.IsCompleted = taskItemViewModel.IsCompleted;
-        existingTaskItem.UpdatedAt = taskItemViewModel.UpdatedAt;
-
-        var tempTaskItems = TaskItems.ToList();
-        tempTaskItems.Remove(existingTaskItem);
-
-        if (taskItemViewModel.IsCompleted)
+        foreach (var group in TaskGroups)
         {
-            var existingTaskItemIsCompleted = tempTaskItems.FirstOrDefault(x => x.IsCompleted);
-            if (existingTaskItemIsCompleted is not null)
+            var existingTaskItem = group.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+            if (existingTaskItem != null)
             {
-                var indexIsCompleted = tempTaskItems.IndexOf(existingTaskItemIsCompleted);
-                tempTaskItems.Insert(indexIsCompleted, existingTaskItem);
-            }
-            else
-            {
-                tempTaskItems.Add(existingTaskItem);
-            }
-        }
-        else
-        {
-            tempTaskItems.Insert(index, existingTaskItem);
-        }
+                var index = group.IndexOf(existingTaskItem);
+                group.Remove(existingTaskItem);
 
-        TaskItems.Clear();
-        foreach (var task in tempTaskItems)
-        {
-            TaskItems.Add(task);
+                existingTaskItem.Task = taskItemViewModel.Task;
+                existingTaskItem.DueDate = taskItemViewModel.DueDate;
+                existingTaskItem.IsCompleted = taskItemViewModel.IsCompleted;
+                existingTaskItem.UpdatedAt = taskItemViewModel.UpdatedAt;
+
+                if (taskItemViewModel.IsCompleted)
+                {
+                    var completedGroup = TaskGroups.FirstOrDefault(g => g.GroupName == "Completed");
+                    completedGroup?.Insert(0, existingTaskItem);
+                }
+                else
+                {
+                    var pendingGroup = TaskGroups.FirstOrDefault(g => g.GroupName == "Tasks");
+                    pendingGroup?.Add(existingTaskItem);
+                    SortTaskItems(pendingGroup);
+                }
+                break;
+            }
         }
     }
+
 
 
     [RelayCommand]
     public async Task CheckTask(TaskItemViewModel taskItemViewModel)
     {
-        var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
-        if (existingTaskItem is not null)
+        foreach (var group in TaskGroups)
         {
-            var result = await _taskItemService.ChangeTaskToCompletedOrIncompleteAsync(taskItemViewModel.TaskId, taskItemViewModel.IsCompleted);
-            if (result)
+            var existingTaskItem = group.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+            if (existingTaskItem != null)
             {
-                var index = TaskItems.IndexOf(existingTaskItem);
-                TaskItems[index].IsCompleted = !taskItemViewModel.IsCompleted;
-                SortTaskItems();
-                await PlayCompletionSound();
-                var toast = Toast.Make("Task completed!", ToastDuration.Short, 12);
-                await toast.Show();
+                var result = await _taskItemService.ChangeTaskToCompletedOrIncompleteAsync(taskItemViewModel.TaskId, taskItemViewModel.IsCompleted);
+                if (result)
+                {
+                    group.Remove(existingTaskItem);
+                    existingTaskItem.IsCompleted = !taskItemViewModel.IsCompleted;
+                    existingTaskItem.UpdatedAt = DateTime.Now.AddHours(5);
+
+                    if (existingTaskItem.IsCompleted)
+                    {
+                        var completedGroup = TaskGroups.FirstOrDefault(g => g.GroupName == "Completed");
+                        completedGroup?.Insert(0, existingTaskItem);
+                        SortTaskItems(completedGroup);
+                    }
+                    else
+                    {
+                        var pendingGroup = TaskGroups.FirstOrDefault(g => g.GroupName == "Tasks");
+                        pendingGroup?.Add(existingTaskItem);
+                        SortTaskItems(pendingGroup);
+                    }
+
+                    await PlayCompletionSound();
+                    var toast = Toast.Make("Task completed!", ToastDuration.Short, 12);
+                    await toast.Show();
+                    break;
+                }
             }
         }
     }
+
 
     [RelayCommand]
     public async Task DeleteTaskItem(TaskItemViewModel taskItemViewModel)
     {
-        if (taskItemViewModel is not null)
+        foreach (var group in TaskGroups)
         {
-            var answer = await Application.Current.MainPage.DisplayAlert("Warning!", "Are you sure you want to delete this task?", "Yes", "No");
-            if (answer)
+            var existingTaskItem = group.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+            if (existingTaskItem != null)
             {
-                var result = await _taskItemService.DeleteTaskItemAsync(taskItemViewModel.TaskId);
-                if (result) { TaskItems.Remove(taskItemViewModel); }
+                var answer = await Application.Current.MainPage.DisplayAlert("Warning!", "Are you sure you want to delete this task?", "Yes", "No");
+                if (answer)
+                {
+                    var result = await _taskItemService.DeleteTaskItemAsync(taskItemViewModel.TaskId);
+                    if (result)
+                    {
+                        group.Remove(existingTaskItem);
+                    }
+                }
+                break;
             }
         }
     }
+
 
     [RelayCommand]
     private async Task ChangeTaskImportantStatus(TaskItemViewModel taskItemViewModel)
     {
-        var existingTaskItem = TaskItems.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
-        if (existingTaskItem is not null)
+        foreach (var group in TaskGroups)
         {
-            var result = await _taskItemService.ChangeTaskImportantStatus(taskItemViewModel.TaskId, taskItemViewModel.IsImportant);
-            if (result)
+            var existingTaskItem = group.FirstOrDefault(x => x.TaskId == taskItemViewModel.TaskId);
+            if (existingTaskItem != null)
             {
-                var index = TaskItems.IndexOf(existingTaskItem);
-                TaskItems[index].IsImportant = !taskItemViewModel.IsImportant;
-                SortTaskItems();
+                var result = await _taskItemService.ChangeTaskImportantStatus(taskItemViewModel.TaskId, taskItemViewModel.IsImportant);
+                if (result)
+                {
+                    existingTaskItem.IsImportant = !taskItemViewModel.IsImportant;
+                    SortTaskItems(group);
+                }
+                break;
             }
         }
-
     }
+
 
     private async Task PlayCompletionSound()
     {
@@ -212,18 +232,19 @@ public partial class MainViewModel : ObservableObject
         player.Play();
     }
 
-    private void SortTaskItems()
+    private void SortTaskItems(TaskGroup group)
     {
-        var sortedTasks = TaskItems.OrderBy(x => x.IsCompleted)
-                                   .ThenByDescending(x => x.CreatedAt)
-                                   .ToList();
+        var sortedTasks = group.OrderBy(x => x.IsCompleted)
+                               .ThenByDescending(x => x.IsCompleted ? x.UpdatedAt : x.CreatedAt)
+                               .ToList();
 
-        TaskItems.Clear();
+        group.Clear();
 
         foreach (var task in sortedTasks)
         {
-            TaskItems.Add(task);
+            group.Add(task);
         }
     }
+
 
 }

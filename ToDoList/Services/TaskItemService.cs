@@ -37,6 +37,7 @@ public class TaskItemService : ITaskItemService
         if (taskItem is not null)
         {
             taskItem.IsCompleted = !isCompleted;
+            taskItem.UpdatedAt = DateTime.UtcNow.AddHours(5);
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }

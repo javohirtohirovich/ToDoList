@@ -75,11 +75,13 @@
 		<None Remove="Resources\Images\close.png" />
 		<None Remove="Resources\Images\completed.png" />
 		<None Remove="Resources\Images\description.png" />
+		<None Remove="Resources\Images\down.png" />
 		<None Remove="Resources\Images\edit.png" />
 		<None Remove="Resources\Images\edit_white.png" />
 		<None Remove="Resources\Images\home.png" />
 		<None Remove="Resources\Images\logo.png" />
 		<None Remove="Resources\Images\menu.png" />
+		<None Remove="Resources\Images\next.png" />
 		<None Remove="Resources\Images\on_hold.png" />
 		<None Remove="Resources\Images\overdue.png" />
 		<None Remove="Resources\Images\pending.png" />

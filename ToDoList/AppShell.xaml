@@ -6,7 +6,7 @@
        xmlns:views="clr-namespace:ToDoList.Views"
        Title="ToDoList"
        >
-    <ShellContent Title="Tasks"
+    <ShellContent Title="To Do List"
                   ContentTemplate="{DataTemplate local:MainPage}"
                   Route="MainPage"
                   Icon="home" />

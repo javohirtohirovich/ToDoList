@@ -63,7 +63,7 @@ public partial class EditTaskPopupViewModel : ObservableObject
                 Task = this.Task,
                 DueDate = DueDateTask,
                 IsCompleted = IsCompleted,
-                UpdatedAt = DateTime.Now,
+                UpdatedAt = DateTime.UtcNow.AddHours(5),
 
             };
             await _taskItemService.EditTaskItemAsync(TaskId, taskItem);
