@@ -38,8 +38,14 @@ public partial class MainViewModel : ObservableObject
 
         var groupedTasks = new List<TaskGroup>
         {
-            new TaskGroup("Tasks", tasks.Where(t => !t.IsCompleted).OrderByDescending(x=>x.CreatedAt).Select(t => new TaskItemViewModel(t))),
-            new TaskGroup("Completed", tasks.Where(t => t.IsCompleted).OrderByDescending(x=>x.UpdatedAt).Select(t => new TaskItemViewModel(t)))
+            new TaskGroup("Tasks", tasks.Where(t => !t.IsCompleted)
+                                    .OrderByDescending(t => t.IsImportant)
+                                    .ThenByDescending(t => t.CreatedAt)
+                                    .Select(t => new TaskItemViewModel(t))),
+            new TaskGroup("Completed", tasks.Where(t => t.IsCompleted)
+                                        .OrderByDescending(t => t.IsImportant)
+                                        .ThenByDescending(t => t.UpdatedAt)
+                                        .Select(t => new TaskItemViewModel(t)))
         };
 
         TaskGroups.Clear();
@@ -48,6 +54,7 @@ public partial class MainViewModel : ObservableObject
             TaskGroups.Add(group);
         }
     }
+
 
     [ObservableProperty]
     ObservableCollection<TaskGroup> taskGroups;
@@ -103,11 +110,13 @@ public partial class MainViewModel : ObservableObject
         {
             var completedGroup = TaskGroups.FirstOrDefault(g => g.GroupName == "Completed");
             completedGroup?.Insert(0, taskItemViewModel);
+            SortTaskItems(completedGroup);
         }
         else
         {
             var pendingGroup = TaskGroups.FirstOrDefault(g => g.GroupName == "Tasks");
             pendingGroup?.Insert(0, taskItemViewModel);
+            SortTaskItems(pendingGroup);
         }
     }
 
@@ -130,7 +139,8 @@ public partial class MainViewModel : ObservableObject
                 if (taskItemViewModel.IsCompleted)
                 {
                     var completedGroup = TaskGroups.FirstOrDefault(g => g.GroupName == "Completed");
-                    completedGroup?.Insert(0, existingTaskItem);
+                    completedGroup?.Add(existingTaskItem);
+                    SortTaskItems(completedGroup);
                 }
                 else
                 {
@@ -226,6 +236,7 @@ public partial class MainViewModel : ObservableObject
     }
 
 
+
     private async Task PlayCompletionSound()
     {
         var player = _audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("complete_task.wav"));
@@ -234,7 +245,8 @@ public partial class MainViewModel : ObservableObject
 
     private void SortTaskItems(TaskGroup group)
     {
-        var sortedTasks = group.OrderBy(x => x.IsCompleted)
+        var sortedTasks = group.OrderByDescending(x => x.IsImportant)
+                               .ThenBy(x => x.IsCompleted)
                                .ThenByDescending(x => x.IsCompleted ? x.UpdatedAt : x.CreatedAt)
                                .ToList();
 
@@ -245,6 +257,5 @@ public partial class MainViewModel : ObservableObject
             group.Add(task);
         }
     }
-
 
 }
